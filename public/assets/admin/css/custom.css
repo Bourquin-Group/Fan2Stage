@@ -1,0 +1,135 @@
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+      width: 60px;
+    height: 30px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.round {
+    line-height: 48px;
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 100%;
+    /* background: #2255a4; */
+    line-height: 52px;
+}
+
+
+.badge {
+    padding: 3px 7px;
+    font-size: 11px !important;
+    margin-top: 1px;
+}
+
+.badge-danger {
+    background-color: #ef5c6a;
+}
+
+.badge-danger {
+    color: #fff;
+    background-color: #dc3545;
+}
+
+
+.badge-success {
+    background-color: #7eef88;
+    color: #fff;
+}
+
+.alert.alert-error.alert-dismissible.fade.show {
+    color: white;
+    background-color: red;
+    border-radius: 10px;
+}
+
+/* vimal 12-04-2023 */
+.img_thumline span img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: #D9D9D9;
+  border-radius: 10px;
+}
+
+.img_thumline {
+  display: flex;
+  width: 100%;
+  overflow: auto;
+  margin-bottom: 8px;
+  margin-left: 17%;
+}
+.img_thumline span {
+  display: inline-block;
+  min-width: 120px;
+  aspect-ratio: 2/1;
+  margin: 16px 16px 8px 0;
+  position: relative;
+  border-radius: 10px;
+  border: 1px solid #D9D9D9;
+  overflow: hidden;
+  background: #081A34;
+  width: 120px;
+}
+.invalid-feedback {
+  display:block !important;
+}
+/* vimal 12-04-2023 */
