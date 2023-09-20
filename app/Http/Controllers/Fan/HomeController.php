@@ -18,9 +18,11 @@ class HomeController extends Controller
 {
     public function homepage(Request $request){
         $timezone_region = timezone::where('timezone',Session::get('user_timezone'))->first();
-        // dd($timezone_region);
+        // dd(Session::get('user_timezone'));
+        if(Session::get('user_timezone')){
         date_default_timezone_set($timezone_region['region']);
-       
+        }
+        
         $artist = app('App\Http\Controllers\API\ArtistController')->allArtist($request);
         $artistArray = json_decode ($artist->content(), true);
         $artist_profile = $artistArray['data'];
@@ -34,6 +36,7 @@ class HomeController extends Controller
         $scheduleevent_data = $scheduleeventArray['data'];
 
         return view('fanweb.dashboard',compact('artist_profile','liveevent_data','scheduleevent_data'));
+        
     }
 
     public function showliveevent(Request $request){
@@ -96,7 +99,7 @@ class HomeController extends Controller
         $sc_event = app('App\Http\Controllers\API\ArtistController')->artistDetail($request);
         $sc_eventArray = json_decode ($sc_event->content(), true);
         $a_profile = $sc_eventArray['profile'];
-
+        
         $profile = app('App\Http\Controllers\API\AuthController')->viewProfile($request);
         $profileArray = json_decode ($profile->content(), true);
         $profile = $profileArray['data'];

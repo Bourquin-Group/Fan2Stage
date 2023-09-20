@@ -27,17 +27,84 @@ class StripeController extends Controller
         return view('fanweb.bookevent',compact('event'));
     }   
 
-    public function stripeencryption(Request $request){
+    // ------------------------Flutter card detail encryption------------------------
+
+    private string $encryptMethod = 'AES-256-CBC';
+    private string $key;
+    private string $iv;
+
+    public function __construct()
+    {
+        $mykey = 'your_dynamic_key_here';
+        $myiv = 'ThisIsASecuredBlock';
+        $this->key = substr(hash('sha256', $mykey), 0, 32);
+        $this->iv = substr(hash('sha256', $myiv), 0, 16);
+    }
+
+    public function stripeencryption2(Request $request)
+    {
+        $value="This is some sensitive data";
+        dd(openssl_encrypt(
+            $value,
+            $this->encryptMethod,
+            $this->key,
+            0,
+            $this->iv
+        ));
+    }
+
+    public function stripeencryption(Request $request)
+    {
+        $base64Value = "SlZGr3M3QhrVn7RI6wDSIAFWRZA3buAySWrjh/l/u2A=";
+       dd(openssl_decrypt(
+            $base64Value,
+            $this->encryptMethod,
+            $this->key,
+            0,
+            $this->iv
+        ));
+    }
+
+
+    // ------------------------Flutter card detail encryption------------------------
+    
+
+    public function stripeencryption1(Request $request){
 
         $dataToEncrypt = 'This is some sensitive data';
-        $dynamicEncryptionKey = 'your_dynamic_key_here';
+        $dynamicEncryptionKey = 'your_dynamic_key_here...........';
 
         // $encryptedData = Crypt::encrypt($dataToEncrypt, $dynamicEncryptionKey);
-        $encryptedData ="eyJpdiI6Imh4YlR5cG5NSGVQSG1Fdy9UUm04Nmc9PSIsInZhbHVlIjoiSjdjQU5Qd1dIWjk4R2FrRTI2VHQwakpMWUV0a1JoNkg1bTQxL09nakoxUlJOUGN4cjBmRDhrR0Q3WGFqMjl5byIsIm1hYyI6IjQ4NmQyY2RiNTgwZDQ5NDFmZTA2MWU0OTk2OThhNzk1OTI4MzU4ODg3MmJkMzlkMjhjZmQ2MTcwY2RmYzA0NjAiLCJ0YWciOiIifQ==";
+        $encryptedData ="81MJkMeyZPUxkx73gttE5x5AXYmAmmNsdvuiQfQBeng=";
 
         $decryptedData = Crypt::decrypt($encryptedData);
         dd($decryptedData);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function subscriptionPost(Request $request)
     {
