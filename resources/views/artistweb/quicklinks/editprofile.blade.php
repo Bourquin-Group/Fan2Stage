@@ -157,7 +157,7 @@
                 <label for="">Time Zone*</label>
                 <select name="timezone" placeholder="Select timezone">
                     <option value="">Select Time Zone</option>
-                    @if($a_profile['timezone'] == '-')
+                    @if($a_profile['timezone'] == '-' || $a_profile['timezone'] == null)
                     @forEach($timezone as $value)                    
                         <option value="{{$value->id}}" @if ($a_profile['timezone'] == $value->timezone) {{ 'selected' }} @endif >{{$value->timezone}}</option>
                     @endforeach

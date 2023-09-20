@@ -92,7 +92,7 @@
 
           <div class="form-section">
             <label for="">Time Zone</label>
-            <input type="text" name="event_timezone" id="event_timezone" value="{{$a_profile['timezone']}}" readonly>
+            <input type="text" name="event_timezone" id="event_timezone" value="{{$a_profile['timezone']['timezone']}}" readonly>
             {{-- <select name="event_timezone" id="event_timezone">
               @forEach($timezone as $value)
               <option value="PST" {{($edit_event['event_timezone'] == $value->timezone)   ? 'Selected' : ''}}>{{$value->timezone}}</option>
