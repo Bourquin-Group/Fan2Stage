@@ -69,7 +69,7 @@ class MainController extends Controller
                 'stripe_charge_id' => Null,
            ];
            $payment = Payment::create($data);
-           Session::flash('success', "Payment has been a success");
+           Session::flash('success', "Subscription Activated Successfully");
 
            $data = array(
             'name' => $artist->name,
@@ -154,7 +154,7 @@ class MainController extends Controller
                                         return redirect()->back();
                                     }  
                 }
-                Session::flash('success', "Payment has been a success");
+                Session::flash('success', "Subscription Activated Successfully");
               
             }catch (Exception $e) {
                 Session::flash('error', "Payment has been failed. Try again later..");

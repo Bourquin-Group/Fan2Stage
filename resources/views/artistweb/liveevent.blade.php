@@ -125,8 +125,8 @@
 <script>
     $(document).ready(function(){
       $(document).on("click", ".endlive", function (e) {
-        var event_id = 80;
-        // var event_id = $("input[name=event_id]").val();
+        // var event_id = 1;
+        var event_id = $("input[name=event_id]").val();
             e.preventDefault();
             Swal.fire({
                 title: 'Do you want to end the event?',
@@ -172,13 +172,13 @@
                 url: url,
                 success: function (data) {
                     if(data['livecount'] && data['livecount'] != ''){
-                        // $('#livecount').html(data['livecount']);
+                        //$('#livecount').html(data['livecount']);
                         if(data['livecount'] >= 2){
                             // $.playCrowdAudio();
                         }
                     }
                     if(data['bookedcount'] && data['bookedcount'] != ''){
-                        $('#bookedcount').html(data['bookedcount']);
+                        //$('#bookedcount').html(data['bookedcount']);
                     }
                 },
                 error: function (data) {
@@ -274,9 +274,7 @@
     // $(document).ready(function(){
 
         // socket script
-    //  var socket = io.connect("http://127.0.0.1:7002");
      var socket = io.connect("https://live-stream.f2s.live");
-    //  var socket = io.connect("https://fan2stage-live.colanapps.in");
 
   
                     
@@ -284,7 +282,6 @@
                         
                     function endLive(eventId) {
                         // console.log('hello vimal');
-                        // alert(eventId);
                         socket.emit('end-event', { event: eventId });
                         
                     }
@@ -295,8 +292,8 @@
                     function signIn() {
                         var event_id = $('#event_id').val();
                         var userid = $('#user_id').val();
-                        // const event_id = 80;
-                        // const userid = 202;
+                        // const event_id = 1;
+                        // const userid = 43;
 
                         socket.emit('join-event', { event: event_id, user_id: userid });
                     }
@@ -409,13 +406,7 @@
                         $('#actt6').html(msg['actt6']);
                         console.log('artist_action_graph_count response: ', msg)
                     });
-                    // socket.on('action_graph_count', (msg) => {
-                    //     // console.log()
-                    //     $('#livecount').html(msg['livecount']);
-                    //     console.log('action_graph_count response: ', msg);
-                    // });
-
-                    setInterval(function () {
+	setInterval(function () {
 		document.getElementById("aact1").style.cssText = `height: calc(0% + 0px)`;
 		document.getElementById("aact2").style.cssText = `height: calc(0% + 0px)`;
 		document.getElementById("aact3").style.cssText = `height: calc(0% + 0px)`;
@@ -423,6 +414,11 @@
 		document.getElementById("aact5").style.cssText = `height: calc(0% + 0px)`;
 		document.getElementById("aact6").style.cssText = `height: calc(0% + 0px)`;
 	}, 8000);
+                    // socket.on('action_graph_count', (msg) => {
+                    //     // console.log()
+                    //     $('#livecount').html(msg['livecount']);
+                    //     console.log('action_graph_count response: ', msg);
+                    // });
     
                    
                // socket script
