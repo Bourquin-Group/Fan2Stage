@@ -56,7 +56,7 @@
                                   <label class="error mb-2" id="paymenterror"></label>
                                   <div class="form-section">
                                   <label for="">Card Number</label>
-                                  <input type="text" autocomplete='off' id="card" class='form-control card-number' maxlength="19" placeholder="Enter card number"  name="card" onkeyup="if (/[^\d\s]/g.test(this.value)) this.value = this.value.replace(/[^\d\s]/g, '');">
+                                  <input type="text" autocomplete='off' id="card" class='form-control card-number' placeholder="Enter card number"  name="card" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
                                   <label class="error paymenterror" id="card-error"></label>
                                   @if($errors->has('card'))
                                   <label class="error" id="paymenterror">{{$errors->first('card')}}</label>
@@ -111,7 +111,6 @@
 </section>
 @endsection
 @section('footer')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet" href="https://jqueryvalidation.org/files/demo/css/screen.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
@@ -140,25 +139,18 @@
        });
   
        if (!$form.data('cc-on-file')) {
-           var regex = /^[a-z]*$/i;
-           var numbers = /^[0-9]+$/;
-           var card =  $('#card').val();
-        
+        var card =  $('#card').val();
            var month =  $('#month').val();
            var year =  $('#year').val();
            var cvv  =  $('#cvv').val();
            var validation =0;
            var account_holder_name  =  $('#account_holder_name').val();
            if(card == '')
-          
            {
             validation =1;
-           
             $('#card-error').html('Please enter a Card');
            }
-           $("#card").inputFilter(function(value) {
-               return /^\d*$/.test(value);    // Allow digits only, using a RegExp
-               },"Only digits allowed");
+
            if(month == '')
            {
             validation =1;
@@ -307,11 +299,6 @@
    }
   
 });
-$('#card').on('keypress change', function () {
-                 $(this).val(function (index, value) {
-                     return value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');
-                 });
-            });
 //   $("#payment-form").validate({
 //     rules: {
 //         card:"required",
