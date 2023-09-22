@@ -99,7 +99,7 @@
                                 $date = DateTime::createFromFormat('H:i:s',$sdata['event_time']);
                                 $date->modify('+'.$sdata['event_duration'].' minutes');
                             ?>
-                            <p>{{date("g A", strtotime($sdata['event_time']." UTC"))}} - {{date("g:i A", strtotime($date->format('h:i A')." UTC"))}}</p>
+                            <p>{{date("g:i A", strtotime($sdata['event_time']." UTC"))}} - {{date("g:i A", strtotime($date->format('h:i A')." UTC"))}}</p>
                           </div>
                           <div class="event_card_bottom_right">
                                 @if($sdata['booking_status'] == 'true')

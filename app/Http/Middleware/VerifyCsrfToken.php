@@ -13,6 +13,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
-        'https://fan2stage.colanapps.in/auth/apple/callback',
+        'https://staging.f2s.live/auth/apple/callback',
     ];
 }

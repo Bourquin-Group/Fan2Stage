@@ -46,14 +46,15 @@ class ArtistCron extends Command
      */
     public function handle()
     {
-        $current_time = date("H:i:s");
+        
+       
         // $starttime = date("H:i:s", strtotime("+30 minutes", $current_time));
         $buffertime = basic_setting::where('funcode','AER')->first();
 
         $starttime = date("H:i:s", strtotime("+".$buffertime->funval1." minutes"));
-       \Log::info($starttime);
-        // $starttime = "09:00:00";
-     
+        // \Log::info($starttime);
+        // \Log::info($artistid);
+        // $starttime = "05:56:00";
         // $artistid = Event::where('event_time',$starttime)->where('event_status',1)->pluck('user_id')->toArray();
         // $useremail = User::whereIn('id',$artistid)->pluck('email')->toArray();
         

@@ -28,7 +28,6 @@ class HomepageController extends Controller
     public function homepage(Request $request){
         $timezone_region = timezone::where('id',Session::get('user_timezone'))->first();
         if(Session::get('user_timezone')){
-
         date_default_timezone_set($timezone_region['region']);
         }
         

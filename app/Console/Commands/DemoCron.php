@@ -43,12 +43,19 @@ class DemoCron extends Command
      * @return int
      */
     public function handle()
-    {
-        $current_time = date("H:i:s");
+    { 
+      
+        
+        // $current_time = date("H:i:s A");
+      
+      
+       
         // $starttime = date("H:i:s", strtotime("+30 minutes", $current_time));
         $buffertime = basic_setting::where('funcode','FER')->first();
+       
         $starttime = date("H:i:s", strtotime("+".$buffertime->funval1." minutes"));
-        // $starttime = "05:56:00";
+        
+        // $starttime = "11:15:00";
 
         // $event = Event::where('event_time',$starttime)->where('event_status',1)->pluck('id')->toArray();
         // $userid = Eventbooking::whereIn('event_id',$event)->pluck('user_id')->toArray();
@@ -60,8 +67,9 @@ class DemoCron extends Command
          ->leftJoin('users', 'users.id', '=', 'eventbookings.user_id')
          ->where('events.event_time',$starttime)
          ->get()->toArray();
-$values =$event;
-// \Log::info($values);
+        
+   $values =$event;
+//  Log::info($values);
 foreach($values as $value){
     // \Log::info($value->id);
     $data = array(
@@ -72,6 +80,7 @@ foreach($values as $value){
                 );
                 // $email = Auth::user()->email;
                 $useremail = $value->email;
+                // \Log::info($useremail);
                 Mail::send('mail.eventremainder',$data,function($message) use($useremail){
                             // $message->to($email);
                             $message->cc($useremail);
@@ -79,6 +88,5 @@ foreach($values as $value){
                             });
         }
 
-        // 
     }
 }

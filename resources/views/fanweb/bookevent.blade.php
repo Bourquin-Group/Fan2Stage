@@ -56,7 +56,7 @@
                                   <label class="error mb-2" id="paymenterror"></label>
                                   <div class="form-section">
                                   <label for="">Card Number</label>
-                                  <input type="text" autocomplete='off' id="card" class='form-control card-number' placeholder="Enter card number"  name="card" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                                  <input type="text" maxlength="19" autocomplete='off' id="card" class='form-control card-number'  placeholder="Enter card number"  name="card" oninput="if (/[^\d\s]/g.test(this.value))this.value=this.value.replace(/[^0-9]/g,'');">
                                   <label class="error paymenterror" id="card-error"></label>
                                   @if($errors->has('card'))
                                   <label class="error" id="paymenterror">{{$errors->first('card')}}</label>
@@ -111,6 +111,7 @@
 </section>
 @endsection
 @section('footer')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet" href="https://jqueryvalidation.org/files/demo/css/screen.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
@@ -299,6 +300,12 @@
    }
   
 });
+
+$('#card').on('keyup', function () {
+                 $(this).val(function (index, value) {
+                     return value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');
+                 });
+            });
 //   $("#payment-form").validate({
 //     rules: {
 //         card:"required",
