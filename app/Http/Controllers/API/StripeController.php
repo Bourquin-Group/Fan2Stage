@@ -35,8 +35,8 @@ class StripeController extends Controller
 
     public function __construct()
     {
-        $mykey = 'your_dynamic_key_here';
-        $myiv = 'ThisIsASecuredBlock';
+        $mykey = 'rZvX3gMaTsM12aT90uaElo2ICT0VsewC_Fan2Stage';
+        $myiv = '8Ee{+>Z=]<@8p_Fan2Stage';
         $this->key = substr(hash('sha256', $mykey), 0, 32);
         $this->iv = substr(hash('sha256', $myiv), 0, 16);
     }
@@ -67,40 +67,176 @@ class StripeController extends Controller
 
 
     // ------------------------Flutter card detail encryption------------------------
-    
+   
+    public function subscriptionPostapi(Request $request)
+    {
+       
+        $base64Value = "SlZGr3M3QhrVn7RI6wDSIAFWRZA3buAySWrjh/l/u2A=";
+       dd(openssl_decrypt(
+            $base64Value,
+            $this->encryptMethod,
+            $this->key,
+            0,
+            $this->iv
+        ));
+        
+        $event_id =$request->event_id;
+        $type = $request->type;
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'card' => 'required',
+            'month' => 'required',
+            'year' => 'required',
+            'cvv' => 'required',
+            'account_holder_name' => 'required',
+        ],[
+            'card' => 'Please enter a Card number',
+            'month' => 'Please enter a Month',
+            'year' => 'Please enter a Year',
+            'cvv' => 'Please enter a CVV',
+            'account_holder_name' => 'Please enter a Account Holder Name',
+        ]);
 
-    public function stripeencryption1(Request $request){
+        if($validator->fails()){
+            return response()->json([
+                'message' => 'Invalid params passed',
+                'errors' => $validator->errors()
+            ], 400);       
+        }
 
-        $dataToEncrypt = 'This is some sensitive data';
-        $dynamicEncryptionKey = 'your_dynamic_key_here...........';
+        //type =0 is free plan, 1 is cost plan
+        $events = Event::where('id',$event_id)->where('event_status',1)->first();
+        // $renewal_date = Carbon::now()->addMonth($events->events_per_month);
+        if($type ==0)
+        {
+            $fan = User::find(auth()->user()->id);
+           
+            $data = [
+                'user_id' => $fan->id,
+                'subscriptionplans_id' =>null,
+                'payment_date' =>Carbon::now(),
+                'type'  => 1,
+                'payment_status' => 1,
+                'amount'  => 0.00,
+                'total'=> 0.00,
+                'stripe_product_id'=> Null,
+                'stripe_price_id'=> Null,
+                'stripe_customer_id' => Null,
+                'stripe_charge_id' => Null,
+           ];
+           $payment = fanpayment::create($data);
+           Session::flash('success', "Subscription Activated Successfully");
+          
+        }elseif($type ==1){
+            try {
+                $fan = User::find(auth()->user()->id);
 
-        // $encryptedData = Crypt::encrypt($dataToEncrypt, $dynamicEncryptionKey);
-        $encryptedData ="81MJkMeyZPUxkx73gttE5x5AXYmAmmNsdvuiQfQBeng=";
+                $stripe = new Stripe\StripeClient(env('STRIPE_SECRET'));
+                
+                Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+                $card_details = array(
+                    "card" => array(
+                    "name" => $request->name,
+                    "number" => $request->card,
+                    "exp_month" => $request->month,
+                    "exp_year" => $request->year,
+                    "cvc" => $request->cvv
+                )
+                    );
+                $stripeToken = $stripe->tokens->create($card_details);
+                $eventStatus = Eventbooking::where(['event_id' => $event_id,'artist_id' => $request->artist_id,'status'=> 1,'user_id' => auth()->user()->id])->first();
+                if($eventStatus){
+                    $response = [
+                        'status' => 208,
+                        'success'   => false,
+                        'message' => 'Event Has Been Booked Already',
+                    ];
+                    return response()->json($response, 208);
+                }else{
+                if($events){
+                
+                                    // $interval =$events->cost;
+                                    $billdetail = billinginformation::where('user_id',auth()->user()->id)->first();
+                                    if($billdetail){
+                                    $customer = \Stripe\Customer::create([
+                                        'name'      => $request->name,
+                                        'email' => $fan->email,
+                                        'source'    => $request->stripetoken,
+                                        'address'   => [
+                                        'line1'       => $billdetail->address,
+                                        'postal_code' => $billdetail->postal_code,
+                                        'city'        => $billdetail->city,
+                                        'state'       => $billdetail->state,
+                                        'country'     => $billdetail->country,
+                                        ],
+                                    ]);
+                                }else{
+                                    $response = [
+                                        'status' => 208,
+                                        'success'   => false,
+                                        'message' => 'please fill the billing information to make payment.',
+                                    ];
+                                    return response()->json($response, 208);
+                                }
 
-        $decryptedData = Crypt::decrypt($encryptedData);
-        dd($decryptedData);
+                                    $charge =Stripe\Charge::create ([
+                                        "amount" => 100 * ($events->eventamount),
+                                        "currency" => "usd",
+                                        "source" => $stripeToken,
+                                        "description" => "Making fan payment." 
+                                    ]);
+
+                                    if($charge && $customer)
+                                    {
+                                        $data = [
+                                            'user_id' => $fan->id,
+                                            'event_id' => $event_id,
+                                            'payment_date' =>Carbon::now(),
+                                            'type'  => 1,
+                                            'payment_status' => 1,
+                                            'amount'  =>$events->eventamount,
+                                            'total'=> $events->eventamount,
+                                            'stripe_customer_id' => $customer->id,
+                                            'stripe_charge_id' => $charge->id,
+                                        ];
+                                         $payment = fanpayment::create($data);
+
+                                         $inputs = [ 
+                                            'artist_id' => $request->artist_id,
+                                            'event_id' => $event_id,
+                                            'amount' => $events->eventamount,
+                                            'payment_status' => 1,
+                                            'status' => 1,
+                                            'user_id' => auth()->user()->id
+                                        ];
+                                        $Event = Eventbooking::create($inputs);
+                                        $response = [
+                                            'status' => 200,
+                                            'success'   => true,
+                                            'message' => 'Subscription Activated Successfully',
+                                        ];
+                                        return response()->json($response, 200);
+                                        
+                                    }else{
+                                        $response = [
+                                            'status' => 404,
+                                            'success'   => false,
+                                            'message' => 'Payment has been failed. Try again later..',
+                                        ];
+                                        return response()->json($response, 404);
+                                    }  
+                    }
+                }
+            }catch (Exception $e) {
+                $response = [
+                    'status' => 404,
+                    'success'   => false,
+                    'message' => 'Payment has been failed. Try again later..',
+                ];
+                return response()->json($response, 404);
+            }   
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -113,29 +249,12 @@ class StripeController extends Controller
         $type = $request->type;
         $input = $request->all();
         $validator = Validator::make($input, [
-            // 'first_name' =>  'required',
-            // 'last_name' =>  'required',
-            // 'email' => ['required','regex:/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'],
-            // 'address' => 'required',
-            // 'city' => 'required',
-            // 'state' => 'required',
-            // 'country' => 'required',
-            // 'postal_code' => 'required',
             'card' => 'required',
             'month' => 'required',
             'year' => 'required',
             'cvv' => 'required',
             'account_holder_name' => 'required',
         ],[
-            // 'first_name' => 'Please enter a First Name',
-            // 'last_name' => 'Please enter a Last Name',
-            // 'email.required'=> 'Please Enter Your Email',
-            // 'email.regex'=> 'Invalid Email Address',
-            // 'address' => 'Please enter a Address Line',
-            // 'city' => 'Please enter a City',
-            // 'state' => 'Please enter a State',
-            // 'country' => 'Please enter a Country',
-            // 'postal_code' => 'Please enter a Postal Code',
             'card' => 'Please enter a Card number',
             'month' => 'Please enter a Month',
             'year' => 'Please enter a Year',

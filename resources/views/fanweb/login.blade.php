@@ -71,7 +71,7 @@ label.error {
                               <a href="{{ URL('auth/google')}}"><span class="google-icon"></span></a>
                          
                               <a  onclick="signInWithApple()"><span class="ios-icon"></span></a>
-                              <a href="{{ URL('auth/instagram')}}"><span class="insta-icon"></span></a>
+                              {{-- <a href="{{ URL('auth/instagram')}}"><span class="insta-icon"></span></a> --}}
                           </div>
                       </div>
 

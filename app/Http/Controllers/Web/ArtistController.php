@@ -19,6 +19,7 @@ use App\Models\Favourite;
 use App\Models\Event;
 use App\Models\genre;
 use App\Models\timezone;
+use App\Models\billinginformation;
 
 class ArtistController extends Controller
 {
@@ -89,15 +90,6 @@ class ArtistController extends Controller
         }
     }
     public function changepassword(Request $request){
-        // $c_password = app('App\Http\Controllers\API\AuthController')->changePassword($request);
-        // $c_passwordArray = json_decode ($c_password->content(), true);
-        // if(isset($c_passwordArray['success']) && $c_passwordArray['success'] == 'true'){
-        //     return redirect('/web/editprofile');
-        // }else{
-        //     $error = $c_passwordArray['data']['co_name'];
-        //     session()->flash($error,$c_passwordArray['data']['error']);
-        //     return Redirect::back()->withInput();
-        // }
         $validator = $this->validate($request,[
             'current_password' => 'required|string',
             'new_password' => ['required','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/'],
@@ -143,6 +135,63 @@ class ArtistController extends Controller
             'flag' => 3,
             'message' => 'Password Changed Successfully.',
         ]);
+        // return $this->sendResponse('success', 'Password Changed Successfully.');
+    }
+    
+    public function billinginformation(Request $request){
+        $validator = $this->validate($request,[
+            'address' => 'required|string',
+            'city' => 'required|string',
+            'state' => ['required'],
+            'country' => 'required',
+            'postalcode' => 'required',
+        ],[
+            'address.required' => 'Please enter address',
+            'city.required' => 'Please enter city',
+            'state.required' => 'Please enter state',
+            'country.required' => 'Please enter country',
+            'postalcode.required' => 'Please enter postalcode',
+        ]);
+        $user = billinginformation::where('user_id',Auth::user()->id)->first();
+        $userbilling = User::where('id',Auth::user()->id)->first();
+                if($user){
+                    $user->address    = $request['address'];
+                    $user->city  = $request['city'];
+                    $user->state         = $request['state'];
+                    $user->country         = $request['country'];
+                    $user->postalcode         = $request['postalcode'];
+                    $user->save();
+
+                    $userbilling->billinginfo = 1;
+                    $userbilling->save();
+                    return response()->json([
+                        'status'    =>200,
+                        'success' => true,
+                        'flag' => 3,
+                        'message' => 'Billing information updated successfully',
+                    ]);
+                }
+                else{
+                    $inputs = [ 
+                        'user_id' => auth()->user()->id,
+                        'address' => $request['address'],
+                        'city' => $request['city'],
+                        'state' => $request['state'],
+                        'country' => $request['country'],
+                        'postalcode' => $request['postalcode'],
+                    ];
+                        $storebillinfo = billinginformation::create($inputs);
+                        if($storebillinfo){
+                            $userbilling->billinginfo = 1;
+                            $userbilling->save();
+                            return response()->json([
+                                'status'    =>200,
+                                'success' => true,
+                                'flag' => 3,
+                                'message' => 'Billing information created successfully',
+                            ]);
+                        }
+                }
         // return $this->sendResponse('success', 'Password Changed Successfully.');
     }
     public function followers(Request $request){

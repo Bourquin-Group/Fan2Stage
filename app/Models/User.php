@@ -46,6 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'timezone',
         'dob',
         'uuid',
+        'billinginfo',
         'newsletter',
         'subscription_plan_id',
         'current_payment_id'

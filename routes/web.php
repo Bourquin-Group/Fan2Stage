@@ -268,13 +268,20 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
             //  Change Password
             Route::post('changepasswordweb', [App\Http\Controllers\Web\ArtistController::class, 'changepassword'])->name('changepasswordweb');
             //  Change Password
-
             });
 
+            //  Billing Information
+            Route::post('billinginformationweb', [App\Http\Controllers\Web\ArtistController::class, 'billinginformation'])->name('billinginformationweb');
+            //  Billing Information
+            
             // Artist Subscription
             Route::get('subscription', [App\Http\Controllers\Web\MainController::class, 'subscription'])->name('subscription');
             Route::post('subscription', [App\Http\Controllers\Web\MainController::class, 'subscriptionPost'])->name('subscription.post');
             Route::get('subscription-payment/{id}', [App\Http\Controllers\Web\MainController::class, 'subscriptionPayment'])->name('subscription-payment');
+            // Artist Subscription
+
+            // Artist Subscription
+            Route::get('billinginfo', [App\Http\Controllers\Web\MainController::class, 'billinginfo'])->name('billinginfo');
             // Artist Subscription
 
         });

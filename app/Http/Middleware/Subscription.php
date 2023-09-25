@@ -18,7 +18,7 @@ class Subscription
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->subscription_plan_id)
+        if(Auth::user()->subscription_plan_id && Auth::user()->billinginfo)
         {
             $today = Carbon::now()->format('Y-m-d');
             $validCheck =  Payment::where('id',Auth::user()->current_payment_id)->where('renewal_date','>=',$today)->first();
@@ -30,7 +30,11 @@ class Subscription
             }
         }
         else{
+            if(Auth::user()->billinginfo){
                 return redirect('/web/subscription');
+            }else{
+                return redirect('/web/billinginfo');
+            }
             }
         }
     }

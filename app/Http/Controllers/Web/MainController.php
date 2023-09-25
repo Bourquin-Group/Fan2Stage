@@ -10,6 +10,7 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\Artist_profiles;
 use App\Models\subscriptionplan;
+use App\Models\billinginformation;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Mail;
@@ -31,6 +32,20 @@ class MainController extends Controller
                 }
         }
         return view('artistweb.mainContent',compact('planlist','expired_status'));
+    }
+    public function billinginfo(Request $request){
+        $user = billinginformation::where('user_id',auth()->user()->id)->first();
+        $getbillinfo = [];
+        if($user){
+            $getbillinfo['id']     = $user->user_id;
+            $getbillinfo['address']     = $user->address;
+            $getbillinfo['city']          = $user->city;
+            $getbillinfo['state']   = $user->state;
+            $getbillinfo['country']   = $user->country;
+            $getbillinfo['postalcode']   = $user->postalcode;
+            
+        } 
+        return view('artistweb.billinginfoContent',compact('getbillinfo'));
     }
     public function about(Request $request){
         $aboutus = app('App\Http\Controllers\API\CmsManageController')->aboutus();
@@ -103,19 +118,27 @@ class MainController extends Controller
                 if($subscriptionplan){
                 
                                     $interval =$subscriptionplan->cost;
+
+                                    $billdetail = billinginformation::where('user_id',auth()->user()->id)->first();
+                                    $web = User::find(auth()->user()->id);
+                                    if($billdetail){
                                     $customer = \Stripe\Customer::create([
-                                        'name'      => $request->account_holder_name,
-                                        'email' => $artist->email,
+                                        'name'      => $request->name,
+                                        'email' => $web->email,
                                         'source'    => $request->stripetoken,
                                         'address'   => [
-                                        'line1'       => $request->address,
-                                        'postal_code' => $request->postal_code,
-                                        'city'        => $request->city,
-                                        'state'       => $request->state,
-                                        'country'     => $request->country,
+                                        'line1'       => $billdetail->address,
+                                        'postal_code' => $billdetail->postal_code,
+                                        'city'        => $billdetail->city,
+                                        'state'       => $billdetail->state,
+                                        'country'     => $billdetail->country,
                                         ],
                                     ]);
-
+                                }else{
+                                    Session::flash('error1', "please fill the billing information to make Subscription");
+                                    return redirect('web/billinginfo');
+                                }
+                                    
                                     $charge =Stripe\Charge::create ([
                                         "amount" => 100 * ($subscriptionplan->cost_value),
                                         "currency" => "usd",
