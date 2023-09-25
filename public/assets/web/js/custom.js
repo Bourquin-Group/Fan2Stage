@@ -112,6 +112,20 @@ $(document).ready(function(){
           .setAttribute("aria-expanded", this.classList.contains("opened"));
       });
 
+
+
+      $("#add-class").click(() => {
+        $(".profiletab-wrapper").removeClass("edit-input-filed");
+        $(".billing-form").addClass("edit-input-section");
+        $(".billing-align").addClass("edit-input-section");
+      });
+  
+      $(".remove-class").click(() => {
+        $(".billing-form").removeClass("edit-input-section");
+        $(".billing-align").removeClass("edit-input-section");
+      });
+      
+
 });
 
 const icons = document.querySelector('.icon'),
