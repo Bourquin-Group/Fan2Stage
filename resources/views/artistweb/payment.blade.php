@@ -162,7 +162,7 @@ label.error {
                                         <div class="billinginfo">
                                         <div class="form-section">
                                             <label for="">CVV</label>
-                                            <input type="text" placeholder="(Eg). 123" name="cvv"  id="cvv"   autocomplete='off'
+                                            <input type="text" placeholder="(Eg). 123" maxlength="3" name="cvv"  id="cvv"   autocomplete='off'
                                           class='form-control card-cvc'>
                                           <label class="error" id="cvv_error"></label>
                                            {{-- @if($errors->has('cvv'))
@@ -197,7 +197,7 @@ label.error {
 @endsection
 @section('script')
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet" href="https://jqueryvalidation.org/files/demo/css/screen.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
@@ -287,20 +287,24 @@ label.error {
  });
  
  function stripeResponseHandler(status, response) {
-    var cvv  =  $('#cvv').val();
+          var card  =  $('#card').val();       
+          var month  =  $('#month').val();
+          var year  =  $('#year').val();
+          var cvv  =  $('#cvv').val();
           var account_holder_name  =  $('#account_holder_name').val();
-          if(account_holder_name != '' && cvv != '')
+          if(account_holder_name != '' && cvv != '' && year != '' && card != '' && month != '' ){
+         
+          if (response.error) {
       
-        if (response.error) {
                     if(response.error.param == "number"){
                       $('#card_error').html(response.error.message);
                     }else{
                       $('#card_error').html("");
                     }
                     if(response.error.code == "missing_payment_information"){
-                      $('#paymenterror').html(response.error.message);
+                      $('#card_error').html(response.error.message);
                     }else{
-                      $('#paymenterror').html("");
+                      $('#card_error').html("");
                     }
                     if(response.error.param == "exp_month"){
                       $('#month_error').html(response.error.message);
@@ -312,7 +316,7 @@ label.error {
                     }else{
                       $('#year_error').html("");
                     }
-       }else{
+       }}else { 
         if (response.error) {
                     if(response.error.param == "number"){
                       $('#card_error').html(response.error.message);
@@ -346,7 +350,7 @@ label.error {
        }
             if(card == '')
            {
-            $('#card_error').html('Please enter a Card ');
+            $('#card_error').html('Please enter a Card Number ');
            }
 
            if(month == '')
