@@ -17,7 +17,11 @@
                   <div class="event_card_bottom">
                     <div class="event_card_bottom_left">
                       <h3>{{ $list['event_title']}}  </h3>
-                      <p>11 Am - 2 Pm</p>
+                      <?php
+                                $date = DateTime::createFromFormat('H:i:s',$list['event_time']);
+                                $date->modify('+'.$list['event_duration'].' minutes');
+                          ?>
+                          <p>{{date("g:i A", strtotime($list['event_time']." UTC"))}} - {{date("g:i A", strtotime($date->format('h:i A')." UTC"))}}</p>
                     </div>
                     <div class="event_card_bottom_right">
                       <button>View</button>

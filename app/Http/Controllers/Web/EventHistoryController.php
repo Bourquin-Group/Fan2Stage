@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Event_joined_by_fans;
 use App\Models\fansactivitygraph;
+use App\Models\fanpayment;
 use DB;
 class EventHistoryController extends Controller
 {
@@ -24,6 +25,8 @@ class EventHistoryController extends Controller
     {
 
       //return  date("g:i a", strtotime("12 am GMT"));
+      // dd($id);
+        $fantips=fanpayment::with('userDetail')->where('event_id',$id)->get();
          $eventHistory = Event::find($id);
          $sum = fansactivitygraph::where('event_id',$id)->get( array(
           DB::raw('SUM(actid1) as action1'),
@@ -40,7 +43,7 @@ class EventHistoryController extends Controller
         }else{
           $action_average = 0;
         }
-      return view('artistweb.eventhistorydetail',compact('eventHistory','action_average'));
+      return view('artistweb.eventhistorydetail',compact('eventHistory','action_average','fantips'));
       //return $event_history_data = app('App\Http\Controllers\API\EventController')->eventshowweb($id);
           
     }

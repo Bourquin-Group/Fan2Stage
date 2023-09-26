@@ -1145,6 +1145,7 @@ common css start
     line-height: 125%;
     color: #FFFFFF;
     margin: 0;
+    width: 35%;
 }
 .re_btn{
     font-weight: 600;
@@ -2999,7 +3000,7 @@ homepage popup css end
 }
 
 .more_informstion {
-    display: flex;
+    /* display: flex; */
     padding: 30px 0;
     flex-wrap: wrap ;
 }
@@ -3017,11 +3018,11 @@ homepage popup css end
 }
 
 .cardDetails {
-    width: 40%;
+    /* width: 40%;
     max-width: 100%;
-    min-width: 300px;
+    min-width: 300px; */
     padding: 0 30px;
-    flex: 1 1 200px;
+    /* flex: 1 1 200px; */
 }
 
 .detail_header {
@@ -3823,9 +3824,9 @@ a.img-icon {
 /* 25-08-2023 */
 
 label#month_error {
-    width: 173px;
+    /* width: 173px; */
 }
 label#year_error {
-    width: 173px;
+    /* width: 173px; */
     margin-left: 15px;
 }

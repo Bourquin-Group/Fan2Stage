@@ -34,4 +34,8 @@ class fanpayment extends Model
     public function subscriptionPlan(){
         return $this->belongsTo(subscriptionplan::class,'subscriptionplans_id');
     }
+    public function userDetail(){
+        return $this->belongsTo(User::class,'user_id','id');
+        // return $this->belongsTo(User::class,'user_id','id')->where('user_type','artists')->orWhere('user_type','admin');
+    }
 }

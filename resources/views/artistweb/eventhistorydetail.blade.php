@@ -58,7 +58,7 @@
                           <div class="tips_setion">
                             <div class="tips_setion_icon"><img src="{{ asset('/assets/images/cards-with-dollar.svg')}}" alt=""><p class="tips_setion_content">Tips Amount Received So far </p> </div>
                             
-                            <h3>$ {{$eventHistory->donation->sum('amount')}}</h3>
+                            <h3>$ {{$fantips->sum('amount')}}</h3>
                             <button data-bs-toggle="modal" href="#exampleModalToggle" role="button">View All</button>
                         </div>
                           
@@ -192,7 +192,7 @@
 
 
     </secction>
-    
+
     <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered tips_popup">
         <div class="modal-content">
@@ -205,9 +205,9 @@
               <span><img src="{{ asset('/assets/images/popup_seach_icon.svg')}}" alt=""></span>
               <input type="text" id="searchTheKeys" placeholder="Search">
             </div>
+            @foreach($eventHistory->eventJoinedByFans as $key=>$list)
             <div class="sender_profile_header_section" id="matchKey">
-              @foreach($eventHistory->donation as $list)
-                @if($loop->iteration % 2== 0)
+
                   <div class="sender_profile_header"  >
                     <div class="sender_profile" id="subjectName">
                       <div class="sender_logo">
@@ -218,28 +218,14 @@
                         <p>{{$list->created_at->format('d-m-Y')}} | {{$list->created_at->format('h:i A')}}</p>
                       </div>
                     </div>
+                   
                     <div class="tips_amoumt">
-                      <h6>${{$list->amount}}</h6>
+                      <h6>${{$fantips->sum('amount')}}</h6>
                     </div>
+                   
                   </div>
-                @else
-                  <div class="sender_profile_header">
-                    <div class="sender_profile"   id="teacherName">
-                      <div class="sender_logo">
-                        <img src="{{$list->user->image()}}" alt="">
-                      </div>
-                      <div class="sender_name">
-                        <h4>{{optional($list->user)->name}}</h4>
-                        <p>{{$list->created_at->format('d-m-Y')}} | {{$list->created_at->format('h:i A')}}</p>
-                      </div>
-                    </div>
-                    <div class="tips_amoumt">
-                      <h6>${{$list->amount}}</h6>
-                    </div>
-                  </div>   
-                @endif
-              @endforeach
             </div>
+            @endforeach
           </div>
         </div>
       </div>
