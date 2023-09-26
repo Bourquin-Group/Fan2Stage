@@ -167,7 +167,7 @@ class EventController extends Controller
                 
                 $contains = Str::contains($myString, 'player.twitch.tv');
                 if($contains){
-                    $contains1 = str_replace("www.example.com", "fan2stage.colanapps.in", $myString);
+                    $contains1 = str_replace("www.example.com", "staging.f2s.live", $myString);
                 }else{
                     $contains1 = $request['link_to_event_stream'];
                 }
@@ -194,7 +194,7 @@ class EventController extends Controller
                         ];
                         return response()->json($response);
                     }else{
-                        $contains1 = "https://player.twitch.tv/?channel=".$username."&parent=fan2stage.colanapps.in";
+                        $contains1 = "https://player.twitch.tv/?channel=".$username."&parent=staging.f2s.live";
                     }
                     
                     
@@ -470,7 +470,7 @@ class EventController extends Controller
                 
                 $contains = Str::contains($myString, 'player.twitch.tv');
                 if($contains){
-                    $contains1 = str_replace("www.example.com", "fan2stage.colanapps.in", $myString);
+                    $contains1 = str_replace("www.example.com", "staging.f2s.live", $myString);
                 }else{
                     $contains1 = $request['link_to_event_stream'];
                 }
@@ -498,7 +498,7 @@ class EventController extends Controller
                         ];
                         return response()->json($response);
                     }else{
-                        $contains1 = "https://player.twitch.tv/?channel=".$username."&parent=fan2stage.colanapps.in";
+                        $contains1 = "https://player.twitch.tv/?channel=".$username."&parent=staging.f2s.live";
                     }
                     
                 }else{

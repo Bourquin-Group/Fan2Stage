@@ -324,7 +324,7 @@ class ArtistController extends Controller
         }
 
         // get current live event of artist
-        $artistliveEvent = Event::where('user_id',$authid)->where('event_date',Carbon::today())->where('starteventflag',0)->orderBy('event_time','ASC')->get();
+        $artistliveEvent = Event::where('user_id',$authid)->where('event_date',Carbon::today())->where('starteventflag',0)->where('event_status',1)->orderBy('event_time','ASC')->get();
         $live_event = [];
         $tolive_event = [];
         // dd($artistliveEvent);
