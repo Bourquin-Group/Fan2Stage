@@ -16,6 +16,7 @@ use App\Models\Event_joined_by_fans;
 use App\Models\Favourite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Mail;
 use App\Http\Controllers\API\BaseController as BaseController;
 
@@ -160,13 +161,58 @@ class EventController extends Controller
                 // }else{
                 //     $filename_array = $data->event_image;
                 // }
+                
+                // url twitch and youtube
+                $myString = $request['link_to_event_stream'];
+                
+                $contains = Str::contains($myString, 'player.twitch.tv');
+                if($contains){
+                    $contains1 = str_replace("www.example.com", "fan2stage.colanapps.in", $myString);
+                }else{
+                    $contains1 = $request['link_to_event_stream'];
+                }
+                
+                
+                 $contains2 = Str::contains($myString, 'www.twitch.tv');
+                if($contains2){
+                    $url = $request['link_to_event_stream'];
+                // Parse the URL
+                $urlParts = parse_url($url);
+
+                if (isset($urlParts['path'])) {
+                    // Remove leading slash if present
+                    $path = ltrim($urlParts['path'], '/');
+                    
+                    // Split the path by '/' and get the username (which is the last part)
+                    $pathParts = explode('/', $path);
+                    $username = end($pathParts);
+                    if($username == '' || $username == NULL){
+                        $response = [
+                            'success'   => false,
+                            'flag' => 1,
+                            'message' => 'Invalid Url',
+                        ];
+                        return response()->json($response);
+                    }else{
+                        $contains1 = "https://player.twitch.tv/?channel=".$username."&parent=fan2stage.colanapps.in";
+                    }
+                    
+                    
+                }else{
+                    $contains1 = $request['link_to_event_stream'];
+                } 
+                }else {
+                    $contains1 = $request['link_to_event_stream'];
+                }
+                // url twitch and youtube
+                // url twitch and youtube
                     
                 $inputs = [ 
                     'event_title' => $request['event_title'],
                     'event_duration' => $request['event_duration'],
                     'event_image' => $filename_array,
                     'event_status' => 1,
-                    'link_to_event_stream' => $request['link_to_event_stream'],
+                    'link_to_event_stream' => $contains1,
                     'eventamount' => ($request['eventamount'] != null)? $request['eventamount'] : 0 ,
                     'genre' => $request['genre'],
                     'event_count' => 0,
@@ -330,47 +376,72 @@ class EventController extends Controller
 
     public function eventupdate(Request $request, $id)
     {
+        // dd($request);
         $authid = Auth::User()->id;
         $usertype = User::where('id',$authid)->first();
         if($usertype->user_type=='artists' || $usertype->user_type=='admin')
         {
                 $input = $request->all();
-                // $validator = Validator::make($input, [
-                //     'event_title' => 'required',
-                //     'event_duration' => 'required',
-                //     'event_image' => 'required',
-                //     'event_status' => 'required',
-                //     'link_to_event_stream' => 'required',
-                //     'genre' => 'required',
-                //     'event_timezone' => 'required',
-                //     'event_count' => 'required',
-                //     'event_date' => 'required',
-                //     'event_time' => 'required',
-                //     'event_description' => 'required'
-                // ]);
- 
-                // if($validator->fails()){
-                //     return response()->json([
-                //         'message' => 'Invalid params passed', // the ,message you want to show
-                //           'errors' => $validator->errors()
-                //       ], 422);       
-                // }
+                $todayDate = date('Y-m-d');
+                $event = Event::where('id',$request->id)->first();
+                $validation = [
+                        'event_title' => 'required',
+                        'event_duration' => 'required',
+                        'link_to_event_stream' => 'required',
+                        // 'eventamount' => 'numeric',
+                        'genre' => 'required',
+                        // 'number' => 'required|numeric|min:1',
+                        'event_date' => 'required|after_or_equal:'.$todayDate,
+                        'event_time' => 'required',
+                        'event_timezone' => 'required',
+                        'event_description' => 'required',
+                        // 'eventamount' => 'numeric'
+                    ];
+                    if(!$event->event_image || $event->event_image == null){
+                        $event_image = [ 'number' => 'required|numeric|min:1',];
+                        $validation = array_merge($validation, $event_image);
+                    }
+                    
+                    $validator = Validator::make($request->all(),$validation,
+                    [
+                        'event_title.required' => 'Please Enter The Event Title',
+                    'event_duration.required' => 'Please Select Event Duration',
+                    'number.min' => 'Please Upload The Event Image',
+                    'event_time.required' => 'Please Select The Event Time',
+                    'genre.required' => 'Please Select  The Genre ',
+                    'link_to_event_stream.required' => 'Please Give The Event Link',
+                    // 'eventamount.required' => 'Please Enter The Amount',
+                    // 'eventamount.numeric' => 'Please Give Only Digits',
+                    'event_date.required' => 'Please Select The Event Date',
+                    'event_date.after_or_equal' => 'Please Select Today or Next Date',
+                    'event_timezone.required' => 'Please Select The Time Zone',
+                    'event_description.required' => 'Please Enter The Event Discription',
+                    ]
+                );
+            
+
+                
+                if($validator->fails()){
+                    return response()->json(['success' => false, 'error' => $validator->errors()->toArray()]);
+                }
                 $number  = $request['number'];
                 if($number == 0){
                     $filename_array = $request['oldimg'];
                 }else{
+                    // dd('2',$number);
                     if($number > 0){
                         $fil = [];
                     for($i =0; $i<$number; $i++)
                     {
                     $name = $request['file_name'.$i];
+                    // dd($name);
                     $tmp = $request['file'.$i];
                     $destinationPath = public_path().'/eventimages/'.$name;
                     move_uploaded_file($tmp,$destinationPath);
                     $fil[]=$name;
                     }
                         $oldimg_array = explode(',',$request['oldimg']);
-                        $old_new = array_merge($oldimg_array,$fil);
+                        $old_new = array_merge(array_filter($oldimg_array),$fil);
                         $filename_array = implode(',',$old_new);
                     
                 }else{
@@ -393,11 +464,56 @@ class EventController extends Controller
                         $event = Event::where('user_id',Auth::user()->id)->where('id',$id)->first();
                     }
                 if($event){
+                    // url twitch and youtube
+                
+                $myString = $input['link_to_event_stream'];
+                
+                $contains = Str::contains($myString, 'player.twitch.tv');
+                if($contains){
+                    $contains1 = str_replace("www.example.com", "fan2stage.colanapps.in", $myString);
+                }else{
+                    $contains1 = $request['link_to_event_stream'];
+                }
+                
+                
+                 $contains2 = Str::contains($myString, 'www.twitch.tv');
+                if($contains2){
+                    $url = $input['link_to_event_stream'];
+                // Parse the URL
+                $urlParts = parse_url($url);
+
+                if (isset($urlParts['path'])) {
+                    // Remove leading slash if present
+                    $path = ltrim($urlParts['path'], '/');
+                    
+                    // Split the path by '/' and get the username (which is the last part)
+                    $pathParts = explode('/', $path);
+                    $username = end($pathParts);
+                    
+                    if($username == '' || $username == NULL){
+                        $response = [
+                            'success'   => false,
+                            'flag' => 1,
+                            'message' => 'Invalid Url',
+                        ];
+                        return response()->json($response);
+                    }else{
+                        $contains1 = "https://player.twitch.tv/?channel=".$username."&parent=fan2stage.colanapps.in";
+                    }
+                    
+                }else{
+                    $contains1 = $request['link_to_event_stream'];
+                } 
+                }else {
+                    $contains1 = $request['link_to_event_stream'];
+                }
+                // url twitch and youtube
+
                     // dd(date("g:i:s", strtotime($input['event_time']." GMT")));
                     $event->event_title = $input['event_title'];
                     $event->event_duration = $input['event_duration'];
                     $event->event_image =  $filename_array;
-                    $event->link_to_event_stream = $input['link_to_event_stream'];
+                    $event->link_to_event_stream = $contains1;
                     $event->eventamount = $input['eventamount'];
                     $event->genre = $input['genre'];
                     $event->event_timezone = $input['event_timezone'];

@@ -132,7 +132,8 @@
             <div class="form-section">
               <label for="">Stream Link*</label>
               <input type="url" placeholder="Paste stream Link here" name="link_to_event_stream" value="{{ old('link_to_event_stream') }}">
-            <span class="error_msg" id="link_to_event_stream1"></span>
+            <span class="error_msg streamurl" id="link_to_event_stream1"></span>
+            <span class="error_msg" id="streamurl"></span>
             </div>
             <div class="form-section">
               <label for="">Amount</label>
@@ -182,7 +183,6 @@ $(document).ready(function () {
 
         // / WHEN YOU UPLOAD ONE OR MULTIPLE FILES /
         $(document).on('change', '#avatar', function () {
-            console.log($("#avatar").prop("files").length);
             len_files = $("#avatar").prop("files").length;
             for (var i = 0; i < len_files; i++) {
                 var file_data = $("#avatar").prop("files")[i];
@@ -194,7 +194,6 @@ $(document).ready(function () {
                     window.URL.createObjectURL(file_data) + '" alt="' + file_data.name + '" /></span>';
                 $('.img_thumline').append(construc);
             }
-           console.log(form_data);
         });
        
         // / UPLOAD CLICK /
@@ -212,7 +211,6 @@ $(document).ready(function () {
           var timezone = $("#event_timezone").val();
           form_data.append('event_timezone', timezone);
           var genres = $("#genre").val();
-          console.log(genres);
           form_data.append('genre', genres);
           var link = $("input[name=link_to_event_stream]").val();
           form_data.append('link_to_event_stream', link);
@@ -240,14 +238,21 @@ $(document).ready(function () {
                   var error_msg  = JSON.parse(data);
                if(error_msg['status'] == 0){
                 var error_msg1  = error_msg['message'];
-                console.log(error_msg1);
                 var error_msg2  = error_msg['flag'];
                 if(error_msg2 && error_msg2 == 1){
-                  var event_image_error  = error_msg1;
-                  $('#main_msg').html(event_image_error);
+                  var event_validate_error  = error_msg1;
+                  if(event_validate_error == 'Invalid Url'){
+                    $('#link_to_event_stream1').css('display','none');
+                    $('#streamurl').css('display','block');
+                    $('#streamurl').html(event_validate_error);
+                  }else{
+                    $('#main_msg').html(event_validate_error);
+                  }
+                  
                 }else{
                   $('#main_msg').html('');
                 }
+
                 if(error_msg1['number'] && error_msg1['number'].length > 0){
                   var event_image_error  = error_msg1['number'][0];
                   $('#event_image').html(event_image_error);
@@ -292,6 +297,8 @@ $(document).ready(function () {
                 }
                 if(error_msg1['link_to_event_stream'] && error_msg1['link_to_event_stream'].length > 0){
                   var link_to_event_stream_error  = error_msg1['link_to_event_stream'][0];
+                  $('#streamurl').css('display','none');
+                  $('#link_to_event_stream1').css('display','block');
                   $('#link_to_event_stream1').html(link_to_event_stream_error);
                 }else{
                   $('#link_to_event_stream1').html('');
@@ -354,6 +361,8 @@ $(document).ready(function () {
                   }
                   if(error_msg['link_to_event_stream'] && error_msg['link_to_event_stream'].length > 0){
                     var link_to_event_stream_error  = error_msg['link_to_event_stream'][0];
+                    $('#streamurl').css('display','none');
+                    $('#link_to_event_stream1').css('display','block');
                     $('#link_to_event_stream1').html(link_to_event_stream_error);
                   }
                   if(error_msg['event_description'] && error_msg['event_description'].length > 0){

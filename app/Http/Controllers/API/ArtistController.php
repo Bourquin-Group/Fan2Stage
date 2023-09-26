@@ -332,7 +332,11 @@ class ArtistController extends Controller
             
             $even = date('H:i A', strtotime($value->event_time));
             
-            $current_time = date('H:i A');
+            // $current_time = date('H:i A');
+            $event_time_set= timezone::where('id',Auth::user()->timezone)->first();
+            $dateNow = Carbon::now();
+            $dateNow->setTimezone($event_time_set->region);
+            $current_time = date('H:i A',strtotime($dateNow));
             
             if($current_time < $even){
                 // dd($value->id,$even,$current_time);

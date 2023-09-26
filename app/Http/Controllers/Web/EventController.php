@@ -17,6 +17,7 @@ use App\Models\genre;
 use App\Models\timezone;
 use App\Models\eventduration;
 use Carbon\Carbon;
+use Session;
 class EventController extends Controller
 {
          public function eventCreate(Request $request){
@@ -38,12 +39,6 @@ class EventController extends Controller
     if($va == 'true'){
       return response()->json($sc_eventArray['event_id']);
     }else{
-      // dd($sc_eventArray['message']);
-      // if(isset($sc_eventArray['flag']) == 1){
-      //   return response()->json(['message' => $sc_eventArray['message'], 'flag' => $sc_eventArray['flag']]);
-      // }else{
-      // return response()->json($sc_eventArray['error']);
-      // }
       if(isset($sc_eventArray['flag']) == 1){
         return response()->json(['status' => 0,'message' => $sc_eventArray['message'], 'flag' => $sc_eventArray['flag']]);
       }else{
@@ -76,7 +71,12 @@ public function eventUpdate(Request $request,$ids){
   if($va == 'true'){
     return response()->json(['eventid'=>$edit_eventArray['event_id'],'message'=>'Event Updated Successfully']);
   }else{
-    return response()->json($edit_eventArray['error']);
+    if(isset($edit_eventArray['flag']) == 1){
+      return response()->json(['status' => 0,'message' => $edit_eventArray['message'], 'flag' => $edit_eventArray['flag']]);
+    }else{
+    return response()->json(['status' => 0, 'message' => $edit_eventArray['error']]);
+    }
+    // return response()->json($edit_eventArray['error']);
   }
   
 }
@@ -87,10 +87,12 @@ public function eventUpdate(Request $request,$ids){
     // dd($id);
       $id = Crypt::decryptString($ids);
       $profile = app('App\Http\Controllers\API\ArtistController')->artistDetail($request);
+      // dd($profile);
       $profileArray = json_decode ($profile->content(), true);
       $a_profile = $profileArray['profile'];
 
       $sc_event = app('App\Http\Controllers\API\EventController')->eventshowweb($id);
+      
       $sc_eventArray = json_decode ($sc_event->content(), true);
       $sc_event = $sc_eventArray['data'];
 
@@ -114,6 +116,7 @@ public function eventUpdate(Request $request,$ids){
       $event = Event::where('id',$id)->where('event_status',1)->first();
 
       $eventstarttime = date("H:i A", strtotime($event->event_time));
+      // dd($eventstarttime);
       // date_default_timezone_set("America/New_York");
       // $lastfiveminutes = date('h:i A', strtotime('-5 minutes', strtotime($event->event_time)));
       // $test = '15:14:10 +0800';
@@ -124,14 +127,24 @@ public function eventUpdate(Request $request,$ids){
 
 
       $even = date('H:i A', strtotime('-30 minutes', strtotime($event->event_time)));
-      $current_time = date('H:i A');
+      // dd($even);
+     
+      $event_time_set= timezone::where('id',Auth::user()->timezone)->first();
+      $dateNow = Carbon::now();
+      $dateNow->setTimezone($event_time_set->region);
+      $current_time = date('H:i A',strtotime($dateNow));
+      // dd($current_time);
       if($current_time >= $even && $currentdate == $todaydate){
+       
       // if(time() >= strtotime($even) && time() <= strtotime($lastfiveminutes)){
         $eventcheck = Event::where('user_id',auth()->user()->id)->where('event_status',1)->where('starteventflag',1)->first();
+        // dd($eventcheck);
         // $eventcheck = Event::where('user_id',auth()->user()->id)->where('event_status',1)->where('event_date',Carbon::today())->where('event_time',date("H:i:s"))->where('eventstarttime',null)->first();
 
         if($eventcheck){
+
           if($eventcheck->id == $id){
+
             $event->eventstarttime = Carbon::now();
             $event->starteventflag = 1;
               $event->save();
@@ -143,7 +156,7 @@ public function eventUpdate(Request $request,$ids){
             return response()->json([
               'success' => false,
               'flag' => 1,
-              'message' => 'You cannot start two events at a time!',
+              'message' => 'You cannot start two events at a  time!',
           ]);
           }
           

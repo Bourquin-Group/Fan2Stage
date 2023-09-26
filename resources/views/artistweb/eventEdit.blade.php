@@ -32,6 +32,7 @@
           </div>
           
         </div>
+        <span class="error_msg" id="event_image"></span>
         <div class="img_thumline mb-4" style="margin-bottom:77px !important">
           <?php 
             $id = 1;
@@ -65,17 +66,20 @@
               <label for="">Event Title</label>
               <input type="text" placeholder="" name="event_title" value="{{(isset($edit_event['event_title'])) ? $edit_event['event_title']: ''}}">
               <input type="hidden" name="id" value="{{$edit_event['event_id']}}">
+              <span class="error_msg" id="eventtitle1"></span>
             </div>
 
         <div class="event_innersection">
           <div class="form-section">
             <label for="">Event Date</label>
             <input type="date" placeholder="21 Jan 2023" id="theDates"name="event_date" value="{{ date_format(date_create($edit_event['event_date']), 'Y-m-d') }}">
+            <span class="error_msg" id="event_date1"></span>
           </div>
       
           <div class="form-section">
             <label for="">Event Time</label>
             <input type="time" name="event_time" id="event_time" value="{{date('H:i', strtotime($edit_event['event_time']))}}">
+            <span class="error_msg" id="event_time1"></span>
           </div>
 
           <div class="form-section">
@@ -88,6 +92,7 @@
               <option value="{{$value->duration}}" {{($edit_event['event_duration'] == $value->duration) ? 'Selected' : ''}}>{{($value->duration)}} {{(in_array($value->duration, $durations)) ? 'Hour' : 'Mins'}}</option>
                         @endforeach
             </select>
+            <span class="error_msg" id="event_duration1"></span>
           </div>
 
           <div class="form-section">
@@ -98,6 +103,7 @@
               <option value="PST" {{($edit_event['event_timezone'] == $value->timezone)   ? 'Selected' : ''}}>{{$value->timezone}}</option>
                         @endforeach
             </select> --}}
+            <span class="error_msg" id="event_timezone1"></span>
           </div>
 
           <div class="form-section">
@@ -110,6 +116,7 @@
                         <option value="{{$value->genre1}}" {{(in_array($value->genre1, $genre)) ? 'selected' : ''}}>{{$value->genre1}}</option>
                         @endforeach
               </select>
+              <span class="error_msg" id="genre1"></span>
             </div>
           </div>
           <div class="form-section">
@@ -120,12 +127,15 @@
               <img src="{{ asset('assets/web/images/copy_icon.svg') }}" alt="" srcset="">
             </div> 
           </div>
+          <span class="error_msg streamurl" id="link_to_event_stream1"></span>
+            <span class="error_msg" id="streamurl"></span>
           </div>
           <div class="form-section">
             <label for="">Event Amount</label>
             <div class="cpy-sec  url_icon">
             <div class="copy-input">
               <input type="text" name="eventamount" id="" value="{{(isset($edit_event['eventamount'])) ? $edit_event['eventamount']: ''}}">
+              <span class="error_msg" id="eventamount1"></span>
             </div> 
           </div>
           </div>
@@ -136,6 +146,7 @@
               <textarea name="event_description" id="event_description" >{{(isset($edit_event['event_description'])) ? $edit_event['event_description']: ''}}
               </textarea>
             </div>
+            <span class="error_msg" id="event_description1"></span>
          
 
         </form>
@@ -295,51 +306,138 @@ var form_data = new FormData();
                 processData: false,
                 data: form_data, // Setting the data attribute of ajax with form_data
                 success: function (data) {
-                  // console.log(data);
-                  window.location.href = "{{ url('web/artisthome') }}";
+                  var error_msg  = JSON.parse(data);
+               if(error_msg['status'] == 0){
+                var error_msg1  = error_msg['message'];
+                var error_msg2  = error_msg['flag'];
+                if(error_msg2 && error_msg2 == 1){
+                  var event_validate_error  = error_msg1;
+                  if(event_validate_error == 'Invalid Url'){
+                    $('#link_to_event_stream1').css('display','none');
+                    $('#streamurl').css('display','block');
+                    $('#streamurl').html(event_validate_error);
+                  }else{
+                    $('#main_msg').html(event_validate_error);
+                  }
+                  
+                }else{
+                  $('#main_msg').html('');
+                }
+
+                if(error_msg1['number'] && error_msg1['number'].length > 0){
+                  var event_image_error  = error_msg1['number'][0];
+                  $('#event_image').html(event_image_error);
+                }else{
+                  $('#event_image').html('');
+                }
+                if(error_msg1['event_title'] && error_msg1['event_title'].length > 0){
+                  var event_title_error  = error_msg1['event_title'][0];
+                  $('#eventtitle1').html(event_title_error);
+                }else{
+                  $('#eventtitle1').html('');
+                }
+                if(error_msg1['event_date'] && error_msg1['event_date'].length > 0){
+                  var event_date_error  = error_msg1['event_date'][0];
+                  $('#event_date1').html(event_date_error);
+                }else{
+                  $('#event_date1').html('');
+                }
+                if(error_msg1['event_time'] && error_msg1['event_time'].length > 0){
+                  var event_time_error  = error_msg1['event_time'][0];
+                  $('#event_time1').html(event_time_error);
+                }else{
+                  $('#event_time1').html('');
+                }
+                if(error_msg1['event_duration'] && error_msg1['event_duration'].length > 0){
+                  var event_duration_error  = error_msg1['event_duration'][0];
+                  $('#event_duration1').html(event_duration_error);
+                }else{
+                  $('#event_duration1').html('');
+                }
+                if(error_msg1['event_timezone'] && error_msg1['event_timezone'].length > 0){
+                  var event_timezone_error  = error_msg1['event_timezone'][0];
+                  $('#event_timezone1').html(event_timezone_error);
+                }else{
+                  $('#event_timezone1').html('');
+                }
+                if(error_msg1['genre'] && error_msg1['genre'].length > 0){
+                  var genre_error  = error_msg1['genre'][0];
+                  $('#genre1').html(genre_error);
+                }else{
+                  $('#genre1').html('');
+                }
+                if(error_msg1['link_to_event_stream'] && error_msg1['link_to_event_stream'].length > 0){
+                  var link_to_event_stream_error  = error_msg1['link_to_event_stream'][0];
+                  $('#streamurl').css('display','none');
+                  $('#link_to_event_stream1').css('display','block');
+                  $('#link_to_event_stream1').html(link_to_event_stream_error);
+                }else{
+                  $('#link_to_event_stream1').html('');
+                }
+                if(error_msg1['eventamount'] && error_msg1['eventamount'].length > 0){
+                  var eventamount_error  = error_msg1['eventamount'][0];
+                  $('#eventamount1').html(eventamount_error);
+                }else{
+                  $('#eventamount1').html('');
+                }
+                if(error_msg1['event_description'] && error_msg1['event_description'].length > 0){
+                  var event_description_error  = error_msg1['event_description'][0];
+                  $('#event_description1').html(event_description_error);
+                }else{
+                  $('#event_description1').html('');
+                }
+
+               }else{
+                window.location.href = "{{ url('web/artisthome') }}";
                   localStorage.setItem("eventupdate","Event Updated Successfully");
+               }
+                  // console.log(data);
+                  // window.location.href = "{{ url('web/artisthome') }}";
+                  // localStorage.setItem("eventupdate","Event Updated Successfully");
                   // location.reload();
                 },
                 error:function(data){
-                  console.log(data);
-                  // var error_msg  = JSON.parse(data['responseText']);
-                  // console.log(error_msg['event_duration'][0]);
-                  // if(error_msg['number'] && error_msg['number'].length > 0){
-                  //   var event_image_error  = error_msg['number'][0];
-                  //   $('#event_image').html(event_image_error);
-                  // }
-                  // if(error_msg['event_title'] && error_msg['event_title'].length > 0){
-                  //   var event_title_error  = error_msg['event_title'][0];
-                  //   $('#eventtitle1').html(event_title_error);
-                  // }
-                  // if(error_msg['event_date'] && error_msg['event_date'].length > 0){
-                  //   var event_date_error  = error_msg['event_date'][0];
-                  //   $('#event_date1').html(event_date_error);
-                  // }
-                  // if(error_msg['event_time'] && error_msg['event_time'].length > 0){
-                  //   var event_time_error  = error_msg['event_time'][0];
-                  //   $('#event_time1').html(event_time_error);
-                  // }
-                  // if(error_msg['event_duration'] && error_msg['event_duration'].length > 0){
-                  //   var event_duration_error  = error_msg['event_duration'][0];
-                  //   $('#event_duration1').html(event_duration_error);
-                  // }
-                  // if(error_msg['event_timezone'] && error_msg['event_timezone'].length > 0){
-                  //   var event_timezone_error  = error_msg['event_timezone'][0];
-                  //   $('#event_timezone1').html(event_timezone_error);
-                  // }
-                  // if(error_msg['genre'] && error_msg['genre'].length > 0){
-                  //   var genre_error  = error_msg['genre'][0];
-                  //   $('#genre1').html(genre_error);
-                  // }
-                  // if(error_msg['link_to_event_stream'] && error_msg['link_to_event_stream'].length > 0){
-                  //   var link_to_event_stream_error  = error_msg['link_to_event_stream'][0];
-                  //   $('#link_to_event_stream1').html(link_to_event_stream_error);
-                  // }
-                  // if(error_msg['event_description'] && error_msg['event_description'].length > 0){
-                  //   var event_description_error  = error_msg['event_description'][0];
-                  //   $('#event_description1').html(event_description_error);
-                  // }
+                  console.log('vimal',data);
+                  var error_msg  = JSON.parse(data['responseText']);
+                  console.log(error_msg['event_duration'][0]);
+                  if(error_msg['number'] && error_msg['number'].length > 0){
+                    var event_image_error  = error_msg['number'][0];
+                    $('#event_image').html(event_image_error);
+                  }
+                  if(error_msg['event_title'] && error_msg['event_title'].length > 0){
+                    var event_title_error  = error_msg['event_title'][0];
+                    $('#eventtitle1').html(event_title_error);
+                  }
+                  if(error_msg['event_date'] && error_msg['event_date'].length > 0){
+                    var event_date_error  = error_msg['event_date'][0];
+                    $('#event_date1').html(event_date_error);
+                  }
+                  if(error_msg['event_time'] && error_msg['event_time'].length > 0){
+                    var event_time_error  = error_msg['event_time'][0];
+                    $('#event_time1').html(event_time_error);
+                  }
+                  if(error_msg['event_duration'] && error_msg['event_duration'].length > 0){
+                    var event_duration_error  = error_msg['event_duration'][0];
+                    $('#event_duration1').html(event_duration_error);
+                  }
+                  if(error_msg['event_timezone'] && error_msg['event_timezone'].length > 0){
+                    var event_timezone_error  = error_msg['event_timezone'][0];
+                    $('#event_timezone1').html(event_timezone_error);
+                  }
+                  if(error_msg['genre'] && error_msg['genre'].length > 0){
+                    var genre_error  = error_msg['genre'][0];
+                    $('#genre1').html(genre_error);
+                  }
+                  if(error_msg['link_to_event_stream'] && error_msg['link_to_event_stream'].length > 0){
+                    var link_to_event_stream_error  = error_msg['link_to_event_stream'][0];
+                    $('#streamurl').css('display','none');
+                    $('#link_to_event_stream1').css('display','block');
+                    $('#link_to_event_stream1').html(link_to_event_stream_error);
+                  }
+                  if(error_msg['event_description'] && error_msg['event_description'].length > 0){
+                    var event_description_error  = error_msg['event_description'][0];
+                    $('#event_description1').html(event_description_error);
+                  }
                   
                 }
             });
