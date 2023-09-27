@@ -40,69 +40,83 @@ class StripeController extends Controller
         $this->key = substr(hash('sha256', $mykey), 0, 32);
         $this->iv = substr(hash('sha256', $myiv), 0, 16);
     }
-
-    public function stripeencryption2(Request $request)
-    {
-        $value="This is some sensitive data";
-        dd(openssl_encrypt(
-            $value,
-            $this->encryptMethod,
-            $this->key,
-            0,
-            $this->iv
-        ));
-    }
-
-    public function stripeencryption(Request $request)
-    {
-        $base64Value = "SlZGr3M3QhrVn7RI6wDSIAFWRZA3buAySWrjh/l/u2A=";
-       dd(openssl_decrypt(
-            $base64Value,
-            $this->encryptMethod,
-            $this->key,
-            0,
-            $this->iv
-        ));
-    }
-
-
-    // ------------------------Flutter card detail encryption------------------------
-   
     public function subscriptionPostapi(Request $request)
     {
-       
-        $base64Value = "SlZGr3M3QhrVn7RI6wDSIAFWRZA3buAySWrjh/l/u2A=";
-       dd(openssl_decrypt(
-            $base64Value,
+        $event_id = openssl_decrypt(
+            $request->event_id,
             $this->encryptMethod,
             $this->key,
             0,
             $this->iv
-        ));
+        );
+        $artist_id = openssl_decrypt(
+            $request->artist_id,
+            $this->encryptMethod,
+            $this->key,
+            0,
+            $this->iv
+        );
+        $card = openssl_decrypt(
+            $request->card,
+            $this->encryptMethod,
+            $this->key,
+            0,
+            $this->iv
+        );
+        $month = openssl_decrypt(
+            $request->month,
+            $this->encryptMethod,
+            $this->key,
+            0,
+            $this->iv
+        );
+        $year = openssl_decrypt(
+            $request->year,
+            $this->encryptMethod,
+            $this->key,
+            0,
+            $this->iv
+        );
+        $cvv = openssl_decrypt(
+            $request->cvv,
+            $this->encryptMethod,
+            $this->key,
+            0,
+            $this->iv
+        );
+        $account_holder_name = openssl_decrypt(
+            $request->account_holder_name,
+            $this->encryptMethod,
+            $this->key,
+            0,
+            $this->iv
+        );
+        // dd($event_id,$artist_id,$card,$month,$year,$cvv,$account_holder_name);
         
-        $event_id =$request->event_id;
+        
+        // $event_id =$event_id;
         $type = $request->type;
-        $input = $request->all();
-        $validator = Validator::make($input, [
-            'card' => 'required',
-            'month' => 'required',
-            'year' => 'required',
-            'cvv' => 'required',
-            'account_holder_name' => 'required',
-        ],[
-            'card' => 'Please enter a Card number',
-            'month' => 'Please enter a Month',
-            'year' => 'Please enter a Year',
-            'cvv' => 'Please enter a CVV',
-            'account_holder_name' => 'Please enter a Account Holder Name',
-        ]);
+        // $input = $request->all();
+        // $validator = Validator::make($input, [
+        //     'card' => 'required',
+        //     'month' => 'required',
+        //     'year' => 'required',
+        //     'cvv' => 'required',
+        //     'account_holder_name' => 'required',
+        // ],[
+        //     'card' => 'Please enter a Card number',
+        //     'month' => 'Please enter a Month',
+        //     'year' => 'Please enter a Year',
+        //     'cvv' => 'Please enter a CVV',
+        //     'account_holder_name' => 'Please enter a Account Holder Name',
+        // ]);
 
-        if($validator->fails()){
-            return response()->json([
-                'message' => 'Invalid params passed',
-                'errors' => $validator->errors()
-            ], 400);       
-        }
+        // if($validator->fails()){
+        //     return response()->json([
+        //         'message' => 'Invalid params passed',
+        //         'errors' => $validator->errors()
+        //     ], 400);       
+        // }
 
         //type =0 is free plan, 1 is cost plan
         $events = Event::where('id',$event_id)->where('event_status',1)->first();
@@ -125,7 +139,7 @@ class StripeController extends Controller
                 'stripe_charge_id' => Null,
            ];
            $payment = fanpayment::create($data);
-           Session::flash('success', "Subscription Activated Successfully");
+           Session::flash('success', "Payment has been success");
           
         }elseif($type ==1){
             try {
@@ -136,11 +150,11 @@ class StripeController extends Controller
                 Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
                 $card_details = array(
                     "card" => array(
-                    "name" => $request->name,
-                    "number" => $request->card,
-                    "exp_month" => $request->month,
-                    "exp_year" => $request->year,
-                    "cvc" => $request->cvv
+                    "name" => $account_holder_name,
+                    "number" => $card,
+                    "exp_month" => $month,
+                    "exp_year" => $year,
+                    "cvc" => $cvv
                 )
                     );
                 $stripeToken = $stripe->tokens->create($card_details);
@@ -159,7 +173,7 @@ class StripeController extends Controller
                                     $billdetail = billinginformation::where('user_id',auth()->user()->id)->first();
                                     if($billdetail){
                                     $customer = \Stripe\Customer::create([
-                                        'name'      => $request->name,
+                                        'name'      => $account_holder_name,
                                         'email' => $fan->email,
                                         'source'    => $request->stripetoken,
                                         'address'   => [
@@ -202,7 +216,7 @@ class StripeController extends Controller
                                          $payment = fanpayment::create($data);
 
                                          $inputs = [ 
-                                            'artist_id' => $request->artist_id,
+                                            'artist_id' => $artist_id,
                                             'event_id' => $event_id,
                                             'amount' => $events->eventamount,
                                             'payment_status' => 1,
@@ -213,7 +227,7 @@ class StripeController extends Controller
                                         $response = [
                                             'status' => 200,
                                             'success'   => true,
-                                            'message' => 'Subscription Activated Successfully',
+                                            'message' => 'Payment has been success',
                                         ];
                                         return response()->json($response, 200);
                                         
@@ -238,7 +252,7 @@ class StripeController extends Controller
         }
     }
 
-
+    // ------------------------Flutter card detail encryption------------------------
 
 
 

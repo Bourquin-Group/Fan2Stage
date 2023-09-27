@@ -58,7 +58,7 @@ Route::middleware('auth:api')->group( function () {
 
 	// Fan Subscription
 	Route::post('subscription-posts', 'App\Http\Controllers\API\StripeController@subscriptionPost')->name('subscription-posts');
-	Route::post('stripeencryption', 'App\Http\Controllers\API\StripeController@stripeencryption')->name('stripeencryption');
+	Route::post('subscriptionPostapi', 'App\Http\Controllers\API\StripeController@subscriptionPostapi')->name('subscriptionPostapi');
 	Route::get('getbookevent/{id}', 'App\Http\Controllers\API\StripeController@bookevent')->name('getbookevent');
 	// Fan Subscription
 
