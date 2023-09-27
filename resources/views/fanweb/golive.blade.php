@@ -53,9 +53,8 @@
                     <div class="imgsection">
                         {{-- <video controls=""> --}}
                             {{-- <iframe src="https://player.twitch.tv/?channel=esl_dota2&parent=localhost" frameborder="0" allowfullscreen="true" scrolling="no" height="378" width="620"></iframe> --}}
-                            <iframe src="https://zakah.colanapps.in/public-form" frameborder="0" style="width:100%;height:100%" allowfullscreen></iframe>
-                            {{-- <iframe src="{{$event['link_to_event_stream']}}" frameborder="0" style="width:100%;height:100%" allowfullscreen></iframe> --}}
-                            {{-- <iframe src="https://www.youtube.com/watch?v=HNDtcXVo5ow" frameborder="0" allowfullscreen="true" scrolling="no" height="378" width="620"></iframe> --}}
+                            
+                            <iframe src="{{$event['link_to_event_stream']}}" frameborder="0" style="width:100%;height:100%" allowfullscreen></iframe>
                             
                           {{-- </video> --}}
                     </div>

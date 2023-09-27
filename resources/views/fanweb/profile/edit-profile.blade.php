@@ -687,15 +687,16 @@ function phoneFormat(input) {//returns (###) ###-####
    });
   });
   </script>
+  <script>
+    var uploaderBtn = document.querySelector("#profile_fan")
+    uploaderBtn.addEventListener("change", function (event) {
+      console.log(src,preview ,"text")
+    if (event.target.files.length > 0) {
+      var src = URL.createObjectURL(event.target.files[0]);
+      var preview = (document.querySelector(".imgs").src = src);
+      console.log(src,preview ,"text")
+    }
+  });
+  </script>
 @endsection
-<script>
-  var uploaderBtn = document.querySelector("#profile_fan")
-  uploaderBtn.addEventListener("change", function (event) {
-    console.log(src,preview ,"text")
-  if (event.target.files.length > 0) {
-    var src = URL.createObjectURL(event.target.files[0]);
-    var preview = (document.querySelector(".imgs").src = src);
-    console.log(src,preview ,"text")
-  }
-});
-</script>
+
