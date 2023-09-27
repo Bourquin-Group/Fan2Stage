@@ -205,7 +205,7 @@
               <span><img src="{{ asset('/assets/images/popup_seach_icon.svg')}}" alt=""></span>
               <input type="text" id="searchTheKeys" placeholder="Search">
             </div>
-            @foreach($eventHistory->eventJoinedByFans as $key=>$list)
+            @foreach($fantips1 as $key=>$list)
             <div class="sender_profile_header_section" id="matchKey">
 
                   <div class="sender_profile_header"  >
@@ -214,13 +214,17 @@
                         <img src="{{$list->user->image()}}" alt="">
                       </div>
                       <div class="sender_name">
-                        <h4>{{optional($list->user)->name}}</h4>
+                        <h4>{{optional($list->fanDetail)->name}}</h4>
                         <p>{{$list->created_at->format('d-m-Y')}} | {{$list->created_at->format('h:i A')}}</p>
                       </div>
                     </div>
                    
                     <div class="tips_amoumt">
-                      <h6>${{$fantips->sum('amount')}}</h6>
+                     
+                     
+                      <h6>${{$list->amount}}</h6>
+
+                      
                     </div>
                    
                   </div>
@@ -230,7 +234,7 @@
         </div>
       </div>
 </div>
-
+ 
 @endsection
 @section('script')
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">

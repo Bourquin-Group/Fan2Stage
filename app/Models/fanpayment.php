@@ -36,6 +36,11 @@ class fanpayment extends Model
     }
     public function userDetail(){
         return $this->belongsTo(User::class,'user_id','id');
-        // return $this->belongsTo(User::class,'user_id','id')->where('user_type','artists')->orWhere('user_type','admin');
+    }
+    public function eventJoinedByFans(){
+        return $this->hasMany(Event_joined_by_fans::class,'event_id');
+    }
+    public function user(){
+        return $this->belongsTo(User::class,'user_id','id');
     }
 }

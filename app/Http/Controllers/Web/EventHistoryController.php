@@ -23,6 +23,9 @@ class EventHistoryController extends Controller
 
     public function eventHistoryDetails($id)
     {
+      
+      $fantips=fanpayment::with('userDetail')->where('event_id',$id)->sum('amount');
+      $fantips1=fanpayment::with('userDetail')->where('event_id',$id)->get();
 
       //return  date("g:i a", strtotime("12 am GMT"));
       // dd($id);
@@ -43,7 +46,7 @@ class EventHistoryController extends Controller
         }else{
           $action_average = 0;
         }
-      return view('artistweb.eventhistorydetail',compact('eventHistory','action_average','fantips'));
+        return view('artistweb.eventhistorydetail',compact('eventHistory','action_average','fantips','fantips1'));
       //return $event_history_data = app('App\Http\Controllers\API\EventController')->eventshowweb($id);
           
     }
