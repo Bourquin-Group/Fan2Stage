@@ -36,10 +36,13 @@ class StripeController extends Controller
     public function __construct()
     {
         $mykey = 'rZvX3gMaTsM12aT90uaElo2ICT0VsewC_Fan2Stage';
-        $myiv = '8Ee{+>Z=]<@8p_Fan2Stage';
+        $myiv = '_=8Ee{+>Z=]<@8p_Fan2Stage';
         $this->key = substr(hash('sha256', $mykey), 0, 32);
         $this->iv = substr(hash('sha256', $myiv), 0, 16);
     }
+
+    // ------------------------Flutter card detail encryption------------------------
+   
     public function subscriptionPostapi(Request $request)
     {
         $event_id = openssl_decrypt(
@@ -150,11 +153,11 @@ class StripeController extends Controller
                 Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
                 $card_details = array(
                     "card" => array(
-                    "name" => $account_holder_name,
-                    "number" => $card,
-                    "exp_month" => $month,
-                    "exp_year" => $year,
-                    "cvc" => $cvv
+                    "name" => (string)$account_holder_name,
+                    "number" => (string)$card,
+                    "exp_month" => (int)$month,
+                    "exp_year" => (int)$year,
+                    "cvc" => (int)$cvv
                 )
                     );
                 $stripeToken = $stripe->tokens->create($card_details);
@@ -252,7 +255,7 @@ class StripeController extends Controller
         }
     }
 
-    // ------------------------Flutter card detail encryption------------------------
+
 
 
 
