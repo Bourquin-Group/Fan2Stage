@@ -203,7 +203,7 @@
                                <td><?php echo $value->userArtist->name; ?></td>
                                <td><?php echo $value->stage_name; ?></td>
                                <td><img src="<?php echo $url; ?>"  width="50" height="50"></td> 
-                               <!-- <td><//?php echo $artist_event->count('user_id'); ?></td> -->
+                               <td>{{$value->eventBooking->where('event_id', $value->id)->count()}}</td>
                         </tr>
   
                         <?php }?>
