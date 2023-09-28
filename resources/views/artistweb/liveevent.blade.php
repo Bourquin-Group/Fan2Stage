@@ -163,33 +163,33 @@
     var crowd = document.getElementById('crowd');
     var crowd1 = document.getElementById('crowd1');
      $(document).ready(function(){
-        var ajax_call = function() {
-            var id = $('#event_id').val();
-            var url = "/web/livefancount/"+id;
+        // var ajax_call = function() {
+        //     var id = $('#event_id').val();
+        //     var url = "/web/livefancount/"+id;
         
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: function (data) {
-                    if(data['livecount'] && data['livecount'] != ''){
-                        //$('#livecount').html(data['livecount']);
-                        if(data['livecount'] >= 2){
-                            // $.playCrowdAudio();
-                        }
-                    }
-                    if(data['bookedcount'] && data['bookedcount'] != ''){
-                        //$('#bookedcount').html(data['bookedcount']);
-                    }
-                },
-                error: function (data) {
-                    console.log('Error:', data);
-                }
-            });
-            };
+        //     $.ajax({
+        //         type: "GET",
+        //         url: url,
+        //         success: function (data) {
+        //             if(data['livecount'] && data['livecount'] != ''){
+        //                 //$('#livecount').html(data['livecount']);
+        //                 if(data['livecount'] >= 2){
+        //                     // $.playCrowdAudio();
+        //                 }
+        //             }
+        //             if(data['bookedcount'] && data['bookedcount'] != ''){
+        //                 //$('#bookedcount').html(data['bookedcount']);
+        //             }
+        //         },
+        //         error: function (data) {
+        //             console.log('Error:', data);
+        //         }
+        //     });
+        //     };
 
-        var interval = 8000; 
-        ajax_call();
-        setInterval(ajax_call, interval); 
+        // var interval = 8000; 
+        // ajax_call();
+        // setInterval(ajax_call, interval); 
         
 
 
