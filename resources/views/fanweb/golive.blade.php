@@ -187,7 +187,7 @@
                     <textarea class="form-group" name="event_review" id="event_review" cols="30" rows="5"></textarea>
                     <span class="error_msg" id="event_review1"></span>
                   {{-- </div> --}}
-                  <button type="button" class="btn-close top-pos" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <button type="button" class="btn-close top-pos" data-bs-dismiss="modal" aria-label="Close" id="exiteventcancel"></button>
                 </div>
                 <div class="modal-body">
                     <h4 class="font-18">Leave a Tip</h4> 
@@ -213,7 +213,9 @@
                 </div>
                 <div class="modal-footer premium-footer">
                   <button type="button" class="btn go-btn ms-0" id="rate">Submit</button>
-                  <a href="{{ url('fan/fanhome')}}"><button type="button" class="btn go-btn ms-0" id="rate">Cancel</button></a>
+                  {{-- <a href="{{ url('fan/fanhome')}}"> --}}
+                    <button type="button" class="btn go-btn ms-0" id="exiteventcancel">Cancel</button>
+                {{-- </a> --}}
                 </div> 
             {{-- </form> --}}
               </div>
@@ -308,6 +310,31 @@ var crowd = document.getElementById('crowd');
                   
                 }
             });
+
+
+        });
+        $(document).on("click", "#exiteventcancel", function (e) {
+          var event_id = $("input[name=event_id]").val();
+            e.preventDefault();
+            $.ajax({
+                headers: {
+                    'X-CSRF-Token': '{{ csrf_token() }}',
+                },
+                url: "{{route('exitliveeventapi') }}",
+             
+                type: 'POST',
+                data: {'eventid':event_id}, // Setting the data attribute of ajax with form_data
+                success: function (data) {
+                    console.log(data);
+                    location.replace('/fan/fanhome');
+                },
+                error:function(data){
+                  console.log(data);
+                  
+                }
+            });
+
+            
         });
         // var myInterval = setInterval(function(){/*...*/}, 2000);
         // var ajax_call = setInterval(function() {

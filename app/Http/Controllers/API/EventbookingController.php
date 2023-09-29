@@ -415,6 +415,29 @@ class EventbookingController extends Controller
                     ]);
                 }
     }
+    public function exiteventapi(Request $request){
+        $booking_id = Eventbooking::where('event_id',$request->eventid)->where('user_id',Auth::user()->id)->first();
+        if($booking_id){
+            $booking_id->event_status = 0;
+                    $booking_id->eventreviewstatus = 0;
+                    $booking_id->joinEvent_Time = null;
+                    $booking_id->exitEvent_Time = Carbon::now();
+                    $booking_id->save();
+                    return response()->json([
+                        'status'   => 200,  
+                        'success' => true,
+                        'event_id' =>$request->eventid,
+                        'message' => 'Successfully Exit From The Event',
+                    ]);
+        }else{
+            return response()->json([
+                'status'   => 409,  
+                'success' => false,
+                'event_id' =>$request->eventid,
+                'message' => 'Event not exit successfully',
+            ]);
+        }
+    }
 
     public function checkjoinevent(Request $request){
         $id=$request->event_id;
@@ -437,6 +460,46 @@ class EventbookingController extends Controller
       ]);
       }
 
+    }
+    public function freebookevent($id){
+        // $id = base64_decode($id);
+        $event = Event::where('id',$id)->where('event_status',1)->first();
+        if($event){
+            $inputs = [ 
+                'artist_id' => $event->user_id,
+                'event_id' => $id,
+                'amount' => 0,
+                'payment_status' => 1,
+                'status' => 1,
+                'user_id' => auth()->user()->id
+            ];
+            $Event = Eventbooking::create($inputs);
+            if($Event){
+                $response = [
+                    'status' => 200,
+                    'success'   => true,
+                    'bookig_status' => true,
+                    'message' => 'Event Booked Successfully',
+                ];
+                return response()->json($response, 200);
+            }else{
+                $response = [
+                    'status' => 409,
+                    'success'   => true,
+                    'bookig_status' => false,
+                    'message' => 'Event Not Booked Successfully',
+                ];
+                return response()->json($response, 409);
+            }
+        }else{
+            $response = [
+                'status' => 400,
+                'success'   => true,
+                'bookig_status' => false,
+                'message' => 'Event Not Found',
+            ];
+            return response()->json($response, 400);
+        }
     }
        
 }

@@ -120,4 +120,15 @@ class GoliveController extends Controller
           }
         
     }
+    public function exitliveeventapi(Request $request){
+        $review = app('App\Http\Controllers\API\EventbookingController')->exiteventapi($request);
+        $reviewArray = json_decode ($review->content(), true);
+        $va = $reviewArray['success'];
+        if($va == 'true'){
+            return response()->json(['event_id' => $reviewArray['event_id'], 'message' => $reviewArray['message'], 'event_id' => $reviewArray['event_id']]);
+          }else{
+            return response()->json(['status' => 0, 'message' => $reviewArray['error']]);
+          }
+        
+    }
 }

@@ -413,6 +413,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
                 Route::get('livecount/{id}', [App\Http\Controllers\Fan\GoliveController::class, 'livecount'])->name('livecount');
                 Route::get('liveshow/{id}', [App\Http\Controllers\Fan\GoliveController::class, 'liveshow'])->name('liveshow');
                 Route::post('exitliveevent', [App\Http\Controllers\Fan\GoliveController::class, 'exitliveevent'])->name('exitliveevent');
+                Route::post('exitliveeventapi', [App\Http\Controllers\Fan\GoliveController::class, 'exitliveeventapi'])->name('exitliveeventapi');
                 // actionCount
                 Route::post('actioncount', [App\Http\Controllers\Fan\GoliveController::class, 'actioncount'])->name('actioncount');
                 Route::get('actiongraphcount/{id}', [App\Http\Controllers\Fan\GoliveController::class, 'actiongraphcount'])->name('actiongraphcount');

@@ -96,6 +96,7 @@ Route::middleware('auth:api')->group( function () {
 	Route::post('Eventbooking','App\Http\Controllers\API\EventbookingController@Eventbooking')->name('Eventbooking');
 	Route::get('bookingevents/{id}','App\Http\Controllers\API\EventbookingController@bookingevents')->name('bookingevents');
 	Route::get('cancelbooking/{id}','App\Http\Controllers\API\EventbookingController@cancelbooking')->name('cancelbooking');
+	Route::get('freebookevent/{id}', 'App\Http\Controllers\API\EventbookingController@freebookevent')->name('freebookevent');
     // Event Booking
 
 	// Booking Event Filter
@@ -105,6 +106,7 @@ Route::middleware('auth:api')->group( function () {
 	// Join and Exit Event
 	Route::post('joinEvent','App\Http\Controllers\API\EventbookingController@joinEvent')->name('joinEvent');
 	Route::post('exitEvent','App\Http\Controllers\API\EventbookingController@exitEvent')->name('exitEvent');
+	Route::post('exiteventapi','App\Http\Controllers\API\EventbookingController@exiteventapi')->name('exiteventapi');
 	// Join and Exit Event
 	
 	// donation
