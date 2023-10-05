@@ -19,7 +19,7 @@
     </div>
     <div class="inner_main_section custom_container">
       <div class="profile_card">
-        <input type="text" id="timemsg" value="{{Session::get('timezonechange')}}">
+        <input type="hidden" id="timemsg" value="{{Session::get('timezonechange')}}">
         <div class="profile_img_section">
           <img
             class="profile_img"
