@@ -11,6 +11,7 @@ use App\Models\Artist_profiles;
 use App\Models\subscriptionplan;
 use App\Models\billinginformation;
 use App\Models\Newsletters;
+use App\Models\timezone_change;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Laravel\Socialite\Facades\Socialite;
 use Jenssegers\Agent\Agent;
-
+use Session;
 use Newsletter;
 
 class AuthController extends BaseController
@@ -577,6 +578,28 @@ class AuthController extends BaseController
                     $user->preferred_genre    = (count($genre) > 0 ) ? implode(',',$request['preferred_genre']) : NULL;
                     $user->timezone         = $request['timezone'];
                     $user->save();
+
+                    // update day light time change
+                    if($request['timezone'] != null){
+                        $timezone_date = timezone_change::where('user_id',Auth::user()->id)->first();
+                        $effectiveDate = date('Y-m-d');
+                        if($timezone_date){
+                            $timezone_date->modify_date = date('Y-m-d', strtotime("+3 months", strtotime($effectiveDate)));
+                            $timezone_date->status = 1;
+                            $timezone_date->save();
+                            Session::put('timezonechange', "yes");
+                        }else{
+                            $inputsss = [
+                                'status' => 1,
+                                'modify_date' => date('Y-m-d', strtotime("+3 months", strtotime($effectiveDate))),
+                                'user_id' => auth()->user()->id
+                            ];
+                            timezone_change::create($inputsss);
+                            Session::put('timezonechange', "yes");
+                        }
+                        
+                    }
+                    // update day light time change
                     return response()->json([
                         'status'    =>200,
                         'success' => true,
@@ -590,6 +613,35 @@ class AuthController extends BaseController
                         'message' => 'Profile Not Updated Successfully',
                     ]);
                 }
+            }
+            public function timezone_no(Request $request){
+                        $timezone_date = timezone_change::where('user_id',Auth::user()->id)->first();
+                        $effectiveDate = date('Y-m-d');
+                        if($timezone_date){
+                            $timezone_date->modify_date = date('Y-m-d', strtotime("+1 months", strtotime($effectiveDate)));
+                            $timezone_date->status = 0;
+                            $timezone_date->save();
+                            Session::put('timezonechange', true);
+                            return response()->json([
+                                'status'    =>200,
+                                'success' => true,
+                                'message' => 'timezone change successfully',
+                            ]);
+
+                        }else{
+                            $inputsss = [
+                                'status' => 0,
+                                'modify_date' => date('Y-m-d', strtotime("+1 months", strtotime($effectiveDate))),
+                                'user_id' => auth()->user()->id
+                            ];
+                            timezone_change::create($inputsss);
+                            Session::put('timezonechange', true);
+                            return response()->json([
+                                'status'    =>200,
+                                'success' => true,
+                                'message' => 'timezone change successfully',
+                            ]);
+                        }
             }
 
     public function logout(Request $request)

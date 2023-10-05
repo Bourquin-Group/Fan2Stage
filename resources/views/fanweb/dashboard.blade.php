@@ -6,6 +6,7 @@
             <div class="home-fav">
                 <p class="font-40">Enjoy Your Favorite
                     <span class="event-wrapper"><span class="event-inner">Events</span></span>
+                    <input type="hidden" id="timemsg" value="{{Session::get('timezonechange')}}">
                 </p>
             </div>
         </div>
@@ -126,6 +127,23 @@
             </div>
 
         </div>
+        <div class="modal fade rating-pop-up" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title font-22" id="exampleModalLabel">Time Zone Change</h5>
+                  <button type="button" class="btn-close top-pos" data-bs-dismiss="modal" aria-label="Close" id="timezone_no"></button>
+                </div>
+                <div class="modal-footer premium-footer">
+                    <a href="{{ url('fan/edit-profile')}}">
+                        <button type="button" class="btn go-btn ms-0" id="rate">Yes</button>
+                    </a>
+                    <button type="button" class="btn go-btn ms-0" data-bs-dismiss="modal" id="timezone_no">No</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        
 
        
 </section>
@@ -133,6 +151,35 @@
    
 @endsection
 @section('footer')
+<script>
+    var val = document.getElementById("timemsg").value;
+
+    window.onload = function() {
+        // alert(val);
+        // Check the session variable and display the modal if set
+        if(val == "no"){
+            $("#exampleModal2").modal('show');
+        }
+        
+    }
+
+    $(document).on("click", "#timezone_no", function (e) {
+     e.preventDefault();
+     $.ajax({
+         headers: {
+             'X-CSRF-Token': '{{ csrf_token() }}',
+         },
+         url: "{{route('timezone_no') }}",
+      
+         type: 'POST',
+         success: function (data) {
+          console.log(data);
+         },
+         error:function(data){
+         }
+     });
+ });
+</script>
 
 <script>
     const formatToPhone = (event) => {

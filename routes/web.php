@@ -361,6 +361,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
 
             Route::post('change-password', [App\Http\Controllers\Fan\HomeController::class, 'changePassword'])->name('changePassword');
             Route::post('changepasswordfan', [App\Http\Controllers\Fan\HomeController::class, 'changePasswordfan'])->name('changepasswordfan');
+
+            Route::post('timezone_no', [App\Http\Controllers\Fan\HomeController::class, 'timezone_no'])->name('timezone_no');
             // Artist Profile
             Route::get('artistprofile/{id}', [App\Http\Controllers\Fan\ArtistController::class, 'artistprofile'])->name('artistprofile');
             // Artist Profile

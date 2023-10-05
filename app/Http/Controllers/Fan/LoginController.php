@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Fan;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
+use App\Models\timezone_change;
+use App\Models\timezone_notify;
 use Auth;
 use Session;
 use Redirect;
@@ -21,6 +24,34 @@ class LoginController extends Controller
       if($login_dataArray['success'] == 'true'){
         $login = $login_dataArray['data'];
         Session::put('user_timezone', $login['timezone']);
+
+        $timezone_date = timezone_change::where('user_id',Auth::user()->id)->first();
+        $timezone_getdate = timezone_notify::where('id',1)->first();
+        
+        if($timezone_date['status'] == 0){ //no
+          if($timezone_getdate['date'] == date('Y-m-d') && $timezone_date['modify_date'] == date('Y-m-d')){
+            Session::put('timezonechange', "no");
+          }else{
+            if($timezone_date['modify_date'] == date('Y-m-d')){
+              Session::put('timezonechange', "no");
+
+            }else{
+              Session::put('timezonechange', "yes");
+            }
+          }
+        }else{
+          if($timezone_getdate['date'] == date('Y-m-d') && $timezone_date['modify_date'] == date('Y-m-d')){ //yes
+            Session::put('timezonechange', "no");
+          }else{
+            if($timezone_date['modify_date'] == date('Y-m-d')){
+              Session::put('timezonechange', "no");
+
+            }else{
+              Session::put('timezonechange', "yes");
+            }
+          }
+        }
+        
         return redirect('/fan/fanhome');
       }else{
         if($login_dataArray['message'] == 'Your Email Is Not Existing'){

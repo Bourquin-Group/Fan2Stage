@@ -135,15 +135,15 @@ class HomeController extends Controller
             return response()->json(['status' => 0, 'message' => $artistArray['error']]);
             }
         }
-        // if($artistArray['success'] =='true')
-        // {
-        //   Session::flash('success1', $artistArray['message']);
-        // }
-        // else{
-        // $login = [];
-        // Session::flash('error', $artistArray['message']);
-        // }
-        // return redirect('/fan/edit-profile');
+    }
+    public function timezone_no(Request $request)
+    {
+        $artist = app('App\Http\Controllers\API\AuthController')->timezone_no($request);
+        $artistArray = json_decode ($artist->content(), true);
+        $va = $artistArray['success'];
+        if($va == 'true'){
+            return response()->json(['status' => 1,'message'=>$artistArray['message']]);
+          }
     }
 
     public function about()
