@@ -13,6 +13,7 @@ use App\Models\Artist_profiles;
 use App\Models\Eventbooking;
 use App\Models\Favourite;
 use App\Models\timezone;
+use App\Models\timezone_change;
 use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
 use DateTime;
@@ -210,6 +211,27 @@ class ArtistController extends Controller
                 $user->verified_profile = 1;
                 $user->save();
                 Session::put('user_timezone', $input['timezone']);
+                // update day light time change
+                if($request['timezone'] != null){
+                    $timezone_date = timezone_change::where('user_id',Auth::user()->id)->first();
+                    $effectiveDate = date('Y-m-d');
+                    if($timezone_date){
+                        $timezone_date->modify_date = date('Y-m-d', strtotime("+3 months", strtotime($effectiveDate)));
+                        $timezone_date->status = 1;
+                        $timezone_date->save();
+                        Session::put('timezonechange', "yes");
+                    }else{
+                        $inputsss = [
+                            'status' => 1,
+                            'modify_date' => date('Y-m-d', strtotime("+3 months", strtotime($effectiveDate))),
+                            'user_id' => auth()->user()->id
+                        ];
+                        timezone_change::create($inputsss);
+                        Session::put('timezonechange', "yes");
+                    }
+                    
+                }
+                // update day light time change
             }
             return response()->json([
                 'success' => true,
@@ -223,6 +245,35 @@ class ArtistController extends Controller
         }
        
     }
+    public function timezone_no(Request $request){
+        $timezone_date = timezone_change::where('user_id',Auth::user()->id)->first();
+        $effectiveDate = date('Y-m-d');
+        if($timezone_date){
+            $timezone_date->modify_date = date('Y-m-d', strtotime("+1 months", strtotime($effectiveDate)));
+            $timezone_date->status = 0;
+            $timezone_date->save();
+            Session::put('timezonechange', true);
+            return response()->json([
+                'status'    =>200,
+                'success' => true,
+                'message' => 'timezone change successfully',
+            ]);
+
+        }else{
+            $inputsss = [
+                'status' => 0,
+                'modify_date' => date('Y-m-d', strtotime("+1 months", strtotime($effectiveDate))),
+                'user_id' => auth()->user()->id
+            ];
+            timezone_change::create($inputsss);
+            Session::put('timezonechange', true);
+            return response()->json([
+                'status'    =>200,
+                'success' => true,
+                'message' => 'timezone change successfully',
+            ]);
+        }
+}
     public function allArtist(Request $request){
         $artistDetail = Artist_profiles::with('userArtist')->get();
 

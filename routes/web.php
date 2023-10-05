@@ -249,6 +249,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
             Route::get('contact', [App\Http\Controllers\Web\ContactController::class, 'contactView'])->name('contact');
             Route::post('contactcreate', [App\Http\Controllers\Web\ContactController::class, 'contactSave'])->name('contactcreates');
             //contact
+
+            //Time zone change
+            Route::post('timezone_no', [App\Http\Controllers\Web\ArtistController::class, 'timezone_no'])->name('timezone_no');
+            //Time zone change
                 });
             // Artist about
             Route::get('aboutus', [App\Http\Controllers\Web\MainController::class, 'about'])->name('aboutus');

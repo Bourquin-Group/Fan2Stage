@@ -89,6 +89,16 @@ class ArtistController extends Controller
             return Redirect::back()->withInput();
         }
     }
+    public function timezone_no(Request $request)
+    {
+        $artist = app('App\Http\Controllers\API\ArtistController')->timezone_no($request);
+        $artistArray = json_decode ($artist->content(), true);
+        $va = $artistArray['success'];
+        if($va == 'true'){
+            return response()->json(['status' => 1,'message'=>$artistArray['message']]);
+          }
+    }
+
     public function changepassword(Request $request){
         $validator = $this->validate($request,[
             'current_password' => 'required|string',

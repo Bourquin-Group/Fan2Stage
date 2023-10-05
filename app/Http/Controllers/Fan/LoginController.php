@@ -27,7 +27,7 @@ class LoginController extends Controller
 
         $timezone_date = timezone_change::where('user_id',Auth::user()->id)->first();
         $timezone_getdate = timezone_notify::where('id',1)->first();
-        
+        if(isset($timezone_date['status'])){
         if($timezone_date['status'] == 0){ //no
           if($timezone_getdate['date'] == date('Y-m-d') && $timezone_date['modify_date'] == date('Y-m-d')){
             Session::put('timezonechange', "no");
@@ -50,6 +50,9 @@ class LoginController extends Controller
               Session::put('timezonechange', "yes");
             }
           }
+        }
+      }else{
+        Session::put('timezonechange', "no");
         }
         
         return redirect('/fan/fanhome');
