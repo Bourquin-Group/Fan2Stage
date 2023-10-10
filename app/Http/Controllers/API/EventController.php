@@ -514,6 +514,13 @@ class EventController extends Controller
                 }else {
                     $contains1 = $request['link_to_event_stream'];
                 }
+                // youtube
+                $contains3 = Str::contains($myString, 'watch?v=');
+                if($contains3){
+                    $badUrl = $request['link_to_event_stream'];
+                    $contains1 = str_replace('watch?v=', 'embed/', $badUrl);
+                }
+                // youtube
                 // url twitch and youtube
 
                     // dd(date("g:i:s", strtotime($input['event_time']." GMT")));
