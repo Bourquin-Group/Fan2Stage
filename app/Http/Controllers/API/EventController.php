@@ -167,7 +167,7 @@ class EventController extends Controller
                 
                 $contains = Str::contains($myString, 'player.twitch.tv');
                 if($contains){
-                    $contains1 = str_replace("www.example.com", "staging.f2s.live", $myString);
+                    $contains1 = str_replace("www.example.com", "fan2stage.colanapps.in", $myString);
                 }else{
                     $contains1 = $request['link_to_event_stream'];
                 }
@@ -194,7 +194,7 @@ class EventController extends Controller
                         ];
                         return response()->json($response);
                     }else{
-                        $contains1 = "https://player.twitch.tv/?channel=".$username."&parent=staging.f2s.live";
+                        $contains1 = "https://player.twitch.tv/?channel=".$username."&parent=fan2stage.colanapps.in";
                     }
                     
                     
@@ -204,7 +204,14 @@ class EventController extends Controller
                 }else {
                     $contains1 = $request['link_to_event_stream'];
                 }
-                // url twitch and youtube
+
+                // youtube
+                $contains3 = Str::contains($myString, 'watch?v=');
+                if($contains3){
+                    $badUrl = $request['link_to_event_stream'];
+                    $contains1 = str_replace('watch?v=', 'embed/', $badUrl);
+                }
+                // youtube
                 // url twitch and youtube
                     
                 $inputs = [ 
@@ -470,7 +477,7 @@ class EventController extends Controller
                 
                 $contains = Str::contains($myString, 'player.twitch.tv');
                 if($contains){
-                    $contains1 = str_replace("www.example.com", "staging.f2s.live", $myString);
+                    $contains1 = str_replace("www.example.com", "fan2stage.colanapps.in", $myString);
                 }else{
                     $contains1 = $request['link_to_event_stream'];
                 }
@@ -498,7 +505,7 @@ class EventController extends Controller
                         ];
                         return response()->json($response);
                     }else{
-                        $contains1 = "https://player.twitch.tv/?channel=".$username."&parent=staging.f2s.live";
+                        $contains1 = "https://player.twitch.tv/?channel=".$username."&parent=fan2stage.colanapps.in";
                     }
                     
                 }else{
