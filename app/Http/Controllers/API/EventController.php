@@ -211,6 +211,24 @@ class EventController extends Controller
                     $badUrl = $request['link_to_event_stream'];
                     $contains1 = str_replace('watch?v=', 'embed/', $badUrl);
                 }
+                $contains4 = Str::contains($myString, '?si=');
+                // https://youtu.be/EQ783EHQkng?si=jTV8piWnHfWTQMRL
+                if($contains4){
+                    $url = $request['link_to_event_stream'];
+                // Parse the URL
+                $urlParts = parse_url($url);
+                if (isset($urlParts['path'])) {
+                    // Remove leading slash if present
+                    $path = ltrim($urlParts['path'], '/');
+                    
+                    // Split the path by '/' and get the username (which is the last part)
+                    $pathParts = explode('/', $path);
+                    $youtubename = end($pathParts);
+                    $contains1 = "https://www.youtube.com/embed/".$youtubename;
+                }
+                }
+
+
                 // youtube
                 // url twitch and youtube
                     
@@ -519,6 +537,23 @@ class EventController extends Controller
                 if($contains3){
                     $badUrl = $request['link_to_event_stream'];
                     $contains1 = str_replace('watch?v=', 'embed/', $badUrl);
+                }
+
+                $contains4 = Str::contains($myString, '?si=');
+                // https://youtu.be/EQ783EHQkng?si=jTV8piWnHfWTQMRL
+                if($contains4){
+                    $url = $request['link_to_event_stream'];
+                // Parse the URL
+                $urlParts = parse_url($url);
+                if (isset($urlParts['path'])) {
+                    // Remove leading slash if present
+                    $path = ltrim($urlParts['path'], '/');
+                    
+                    // Split the path by '/' and get the username (which is the last part)
+                    $pathParts = explode('/', $path);
+                    $youtubename = end($pathParts);
+                    $contains1 = "https://www.youtube.com/embed/".$youtubename;
+                }
                 }
                 // youtube
                 // url twitch and youtube
