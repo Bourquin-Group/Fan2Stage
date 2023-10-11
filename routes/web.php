@@ -349,6 +349,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
             
             Route::get('live-event/{id}', [App\Http\Controllers\Fan\HomeController::class, 'liveEvent'])->name('live-event');
             Route::get('scheduled-event/{id}', [App\Http\Controllers\Fan\HomeController::class, 'scheduledEvent'])->name('scheduled-event');
+            Route::get('past-event/{id}', [App\Http\Controllers\Fan\HomeController::class, 'pastEvent'])->name('past-event');
 
             // News Letter
             Route::post('newsletter', [App\Http\Controllers\Fan\HomeController::class, 'newsletter'])->name('newsletter');

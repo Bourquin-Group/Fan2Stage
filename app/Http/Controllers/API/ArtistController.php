@@ -432,6 +432,7 @@ class ArtistController extends Controller
             $aProfile['instagram_link']=$artistprofile->instagram_link;
             $aProfile['facebook_link']=$artistprofile->facebook_link;
             $aProfile['bio']=$artistprofile->bio;
+            $aProfile['d_stagename']=(isset($artistprofile->d_stagename)) ? $artistprofile->d_stagename : 'off';
             $aProfile['profile_image']=url('').'/artist_profile_images/'.$artistprofile->profile_image;
             $aProfile['landing_page_image']=$artistprofile->landingPage();
             $aProfile['name']= optional($artistprofile->userArtist)->name ? optional($artistprofile->userArtist)->name : '';

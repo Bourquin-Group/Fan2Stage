@@ -92,6 +92,14 @@ class HomeController extends Controller
 
         return view('fanweb.scheduled-event',compact('event','shareButton'));
     }
+    public function pastEvent($id)
+    {
+        $id = base64_decode($id);
+        $liveevent = app('App\Http\Controllers\API\EventController')->eventshow($id);
+        $liveeventArray = json_decode ($liveevent->content(), true);
+         $event = $liveeventArray['data'];
+        return view('fanweb.past-event',compact('event'));
+    }
 
     public function editProfile(Request $request)
     {

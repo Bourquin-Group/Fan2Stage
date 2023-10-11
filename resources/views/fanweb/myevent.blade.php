@@ -92,6 +92,7 @@
               <div class="event_tabe_section pastevent-tab">
                 @if(count($pastevent) > 0)
                 @foreach($pastevent as $paevent)
+                <a href="{{route('past-event',base64_encode($paevent['event_id']))}}">
                 <div class="event_card">
                   <img src="{{$paevent['image']}}" alt="card" />
                   <div class="today_btn"></div>
@@ -112,6 +113,7 @@
                     </div>
                   </div>
                 </div>
+                </a>
                 
                 <div class="modal fade rating-pop-up" id="exampleModal{{$paevent['event_id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog">

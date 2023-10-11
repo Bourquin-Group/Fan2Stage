@@ -318,6 +318,7 @@ class EventController extends Controller
                 // check billing information
                 $billdetail = billinginformation::where('user_id',auth()->user()->id)->first();
                 // check billing information
+                $followers = Favourite::where('artist_id',optional($a_profile->userArtist)->id ? optional($a_profile->userArtist)->id : '')->pluck('id')->toArray();
                 
                 $eventimage = explode(',',$event->event_image);
             $data=[
@@ -340,8 +341,10 @@ class EventController extends Controller
                 'artist_id' => $event->user_id,
                 'artist_name' => $event->userDetail['name'],
                 'artist_stagename' => (isset($a_profile['stage_name'])) ? $a_profile['stage_name'] : '',
+                'd_stagename' => (isset($a_profile['d_stagename'])) ? $a_profile['d_stagename'] : 'off',
                 'artist_image' =>(isset($a_profile['profile_image'])) ? url('').'/artist_profile_images/'.$a_profile['profile_image']: '',      
                 'is_completed' => ($event->event_status == 0) ? 0 : 1,
+                'followers'=> count($followers),
             ];
             return response()->json([
                 'status'   => 200,
@@ -694,7 +697,7 @@ class EventController extends Controller
         return response()->json($response, 200);
     }
     public function scheduledEventList(){
-        $scheduleEvents = Event::where('event_status',1)->where('event_date','>=',Carbon::today())->where('golivestatus', 0)->get();
+        $scheduleEvents = Event::where('event_status',1)->where('event_date','>=',Carbon::today())->where('golivestatus', 0)->where('starteventflag',0)->get();
         $data = [];
         $totData = [];
         foreach($scheduleEvents as $value){
