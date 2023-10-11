@@ -578,6 +578,7 @@ class AuthController extends BaseController
                     $user->preferred_genre    = (count($genre) > 0 ) ? implode(',',$request['preferred_genre']) : NULL;
                     $user->timezone         = $request['timezone'];
                     $user->save();
+                    Session::put('user_timezone', $request['timezone']);
 
                     // update day light time change
                     if($request['timezone'] != null){
