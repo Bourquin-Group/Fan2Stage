@@ -87,6 +87,7 @@
                                         <h4 class="font-20">{{$event['artist_name']}}</h4>
                                         <p class="font-14">{{$event['artist_stagename']}}</p>
                                     @endif
+                                    <p class="Followers_part">@if($event['followers'] != 0){{ $event['followers']}} Followers @else 0 Followers @endif</p>
                                 </div>
                                 <a href="{{url('/fan/artistprofile/'.base64_encode($event['artist_id']))}}" class="font-16 view-btn"><button type="text" >View Profile</button></a>
                             </div>
