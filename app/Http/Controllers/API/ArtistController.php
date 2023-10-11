@@ -338,6 +338,13 @@ class ArtistController extends Controller
             $aProfile['timezone']=($artistDetail['userArtist']['timezone'] != NULL)? $timezone : '-';
             $followers = Favourite::where('artist_id',$artistDetail['userArtist']['id'])->pluck('id')->toArray();
             $aProfile['followers']=count($followers);
+            $review =Event_joined_by_fans::where('user_id',$artistDetail['userArtist']['id'])->get();
+                $raiting = 0;
+                if($review->isNotEmpty())
+                {
+                    $raiting = ceil($review->sum('ratings')/$review->count());
+                }
+            $aProfile['raiting']=$raiting;
         }
         // $artistName = $artistDetail->name;
         $artistEventDetails = Event::where('user_id',$authid)->where('deleted_at',Null)->get();
@@ -442,6 +449,13 @@ class ArtistController extends Controller
             $aProfile['followers']=count($followers);
             $aProfile['favourite_status']=$favourite?1:0;
             $aProfile['artist_id']=$artistprofile->user_id;
+            $review =Event_joined_by_fans::where('user_id',$artistprofile->user_id)->get();
+                $raiting = 0;
+                if($review->isNotEmpty())
+                {
+                    $raiting = ceil($review->sum('ratings')/$review->count());
+                }
+                $aProfile['raiting']=$raiting;
             
         }
         // $artistName = $artistDetail->name;

@@ -319,6 +319,13 @@ class EventController extends Controller
                 $billdetail = billinginformation::where('user_id',auth()->user()->id)->first();
                 // check billing information
                 $followers = Favourite::where('artist_id',optional($a_profile->userArtist)->id ? optional($a_profile->userArtist)->id : '')->pluck('id')->toArray();
+
+                $review =Event_joined_by_fans::where('user_id',$event->userDetail['id'])->get();
+                $raiting = 0;
+                if($review->isNotEmpty())
+                {
+                    $raiting = ceil($review->sum('ratings')/$review->count());
+                }
                 
                 $eventimage = explode(',',$event->event_image);
             $data=[
@@ -345,6 +352,7 @@ class EventController extends Controller
                 'artist_image' =>(isset($a_profile['profile_image'])) ? url('').'/artist_profile_images/'.$a_profile['profile_image']: '',      
                 'is_completed' => ($event->event_status == 0) ? 0 : 1,
                 'followers'=> count($followers),
+                'raiting'=> $raiting,
             ];
             return response()->json([
                 'status'   => 200,
