@@ -2543,7 +2543,7 @@ popup mainsection css end
     padding: 10px;
 }
 
-.user-img img {
+.profile-pic {
     width: 72px;
     height: 72px;
     border-radius: 100%;
@@ -4828,4 +4828,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 #exampleModalToggle button.btn-close {
     margin-left: auto;
+}
+.f-rating {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

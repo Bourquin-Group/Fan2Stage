@@ -78,8 +78,8 @@
                     <div class="fan-event-detalis">
                         <div class="user-text">
                             <div class="user-img view-sec"> 
-                                <img src="{{($event['artist_image'])? $event['artist_image'] : asset('artist_profile_images/profile1.jpeg')}}" alt="">
-                                <div class="user-name">
+                                <img class ="profile-pic" src="{{($event['artist_image'])? $event['artist_image'] : asset('artist_profile_images/profile1.jpeg')}}" alt="">
+                                <div class="user-name artists-detalis">
                                     @if($event['d_stagename'] == 'on')
                                         <p class="font-14">{{$event['artist_stagename']}}</p>
                                         <h4 class="font-20">{{$event['artist_name']}}</h4>
@@ -87,7 +87,10 @@
                                         <h4 class="font-20">{{$event['artist_name']}}</h4>
                                         <p class="font-14">{{$event['artist_stagename']}}</p>
                                     @endif
-                                    <p class="Followers_part">@if($event['followers'] != 0){{ $event['followers']}} Followers @else 0 Followers @endif</p>
+                                    <div class="f-rating">
+                                        <p class="Followers_part">@if($event['followers'] != 0){{ $event['followers']}} Followers @else 0 Followers @endif</p>
+                                    <span>{{$event['raiting']}} <img src="{{asset('/assets/fan/images/artists_card_star.svg')}}" alt="" srcset=""></span>
+                                    </div>                                  
                                 </div>
                                 <a href="{{url('/fan/artistprofile/'.base64_encode($event['artist_id']))}}" class="font-16 view-btn"><button type="text" >View Profile</button></a>
                             </div>
