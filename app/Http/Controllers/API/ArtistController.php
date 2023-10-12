@@ -463,7 +463,7 @@ class ArtistController extends Controller
         $liveEvent = [];$toliveEvent = [];
         $sceduleEvent = [];$toSceduleEvent = [];
         foreach ($artistEventDetails as $value) {
-            if($value->event_status == 1 && $value->event_date >= Carbon::today()){
+            if($value->event_status == 1 && $value->event_date == Carbon::today() && $value->golivestatus == 1){
                 $liveEvent['event_id'] = $value->id;
                 $liveEvent['event_title'] = $value->event_title;
                 $liveEvent['date'] = $value->event_date;
@@ -480,7 +480,7 @@ class ArtistController extends Controller
                 $liveEvent['count'] = $value->event_count;
                 $toliveEvent[]=$liveEvent; 
             }
-            if($value->event_status == 0 && $value->event_date <= Carbon::today()){
+            if($value->event_status == 1 && $value->event_date >= Carbon::today() && $value->golivestatus == 0){
                 $sceduleEvent['event_id'] = $value->id;
                 $sceduleEvent['event_title'] = $value->event_title;
                 $sceduleEvent['date'] = $value->event_date;

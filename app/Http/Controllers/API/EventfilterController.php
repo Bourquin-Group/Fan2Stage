@@ -19,7 +19,7 @@ class EventfilterController extends Controller
         {
             $eventName = $request["name"];
             $genre = $request["genre"];
-            $artistrating = $request["rating"];
+            $eventrating = $request["rating"];
             
             $fromdate1 = $request["from_date"];
             $yesterday_date = date("Y-m-d", strtotime("yesterday"));
@@ -57,8 +57,8 @@ class EventfilterController extends Controller
                     }
                 }
                 $ratingvalue = [];
-            if($artistrating != null){
-                foreach($artistrating as $value){
+            if($eventrating != null){
+                foreach($eventrating as $value){
                     if($value !== NULL && $value !== FALSE && $value !== ""){
                         $ratingvalue[]=$value;
                     }
