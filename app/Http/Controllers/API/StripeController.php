@@ -437,8 +437,22 @@ class StripeController extends Controller
     }
     public function tipspost(Request $request)
     {
-       
-        $event_id =$request->event_id;
+        $event_id = openssl_decrypt(
+            $request->event_id,
+            $this->encryptMethod,
+            $this->key,
+            0,
+            $this->iv
+        );
+        $artist_id = openssl_decrypt(
+            $request->artist_id,
+            $this->encryptMethod,
+            $this->key,
+            0,
+            $this->iv
+        );
+
+        // $event_id =$request->event_id;
         $type = $request->type;
         //type =0 is free plan, 1 is cost plan
         $events = Event::find($event_id);
@@ -465,30 +479,73 @@ class StripeController extends Controller
           
         }elseif($type ==1){
 
-            $validator = $this->validate($request,[
-                'card' => 'required',
-                'account_holder_name' => 'required',
-                'month' => 'required',
-                'year' => 'required',
-                'cvv' => 'required'
-            ],[
-                'card.required' => 'Please Enter Card number',
-                'account_holder_name.required' => 'Please Enter Account holder Name',
-                'month.required' => 'Please Enter a Month',
-                'year.required' => 'Please Enter a Year',
-                'cvv.required' => 'Please Enter a CVV',
-            ]);
+            // $validator = $this->validate($request,[
+            //     'card' => 'required',
+            //     'account_holder_name' => 'required',
+            //     'month' => 'required',
+            //     'year' => 'required',
+            //     'cvv' => 'required'
+            // ],[
+            //     'card.required' => 'Please Enter Card number',
+            //     'account_holder_name.required' => 'Please Enter Account holder Name',
+            //     'month.required' => 'Please Enter a Month',
+            //     'year.required' => 'Please Enter a Year',
+            //     'cvv.required' => 'Please Enter a CVV',
+            // ]);
+            
+            $card = openssl_decrypt(
+                $request->card,
+                $this->encryptMethod,
+                $this->key,
+                0,
+                $this->iv
+            );
+            $month = openssl_decrypt(
+                $request->month,
+                $this->encryptMethod,
+                $this->key,
+                0,
+                $this->iv
+            );
+            $year = openssl_decrypt(
+                $request->year,
+                $this->encryptMethod,
+                $this->key,
+                0,
+                $this->iv
+            );
+            $cvv = openssl_decrypt(
+                $request->cvv,
+                $this->encryptMethod,
+                $this->key,
+                0,
+                $this->iv
+            );
+            $name = openssl_decrypt(
+                $request->account_holder_name,
+                $this->encryptMethod,
+                $this->key,
+                0,
+                $this->iv
+            );
+            $tips = openssl_decrypt(
+                $request->tips,
+                $this->encryptMethod,
+                $this->key,
+                0,
+                $this->iv
+            );
             try {
                 $fan = User::find(auth()->user()->id);
                 $stripe = new Stripe\StripeClient(env('STRIPE_SECRET'));
                 Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
                 $card_details = array(
                     "card" => array(
-                    "name" => $request->name,
-                    "number" => $request->card,
-                    "exp_month" => $request->month,
-                    "exp_year" => $request->year,
-                    "cvc" => $request->cvv
+                    "name" => $name,
+                    "number" => $card,
+                    "exp_month" => $month,
+                    "exp_year" => $year,
+                    "cvc" => $cvv
                 )
                     );
                 $stripeToken = $stripe->tokens->create($card_details);
@@ -520,7 +577,7 @@ class StripeController extends Controller
                                     
 
                                     $charge =Stripe\Charge::create ([
-                                        "amount" => 100 * ($request->tips),
+                                        "amount" => 100 * ($tips),
                                         "currency" => "usd",
                                         "source" => $stripeToken,
                                         "description" => "Making tips payment." 
@@ -534,8 +591,8 @@ class StripeController extends Controller
                                             'payment_date' =>Carbon::now(),
                                             'type'  => 0,
                                             'payment_status' => 1,
-                                            'amount'  =>$request->tips,
-                                            'total'=> $request->tips,
+                                            'amount'  =>$tips,
+                                            'total'=> $tips,
                                             'stripe_customer_id' => $customer->id,
                                             'stripe_charge_id' => $charge->id,
                                         ];
@@ -559,11 +616,12 @@ class StripeController extends Controller
                 }
 
               
-            }catch (Exception $e) {
+            }catch (\Exception $e) {
                 $response = [
                     'status' => 404,
                     'success'   => false,
-                    'message' => 'Payment has been failed. Try again later..',
+                    'message' => $e->getMessage(),
+                    // 'message' => 'Payment has been failed. Try again later..',
                 ];
                 return response()->json($response, 404);
             }   

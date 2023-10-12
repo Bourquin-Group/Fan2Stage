@@ -21,18 +21,19 @@ class EventfilterController extends Controller
             $genre = $request["genre"];
             $eventrating = $request["rating"];
             
-            $fromdate1 = $request["from_date"];
-            $yesterday_date = date("Y-m-d", strtotime("yesterday"));
-            $from_date = date("Y-m-d", strtotime($fromdate1));
-            if($fromdate1 != NULL){
-                if($from_date < $yesterday_date){
-                    $fromdate = $yesterday_date;
-                }else{
-                    $fromdate = $request["from_date"];
-                }
-            }else{
-                $fromdate = NULL;
-            }
+            $fromdate = $request["from_date"];
+            // $fromdate1 = $request["from_date"];
+            // $yesterday_date = date("Y-m-d", strtotime("yesterday"));
+            // $from_date = date("Y-m-d", strtotime($fromdate1));
+            // if($fromdate1 != NULL){
+            //     if($from_date < $yesterday_date){
+            //         $fromdate = $yesterday_date;
+            //     }else{
+            //         $fromdate = $request["from_date"];
+            //     }
+            // }else{
+            //     $fromdate = NULL;
+            // }
             
             $todate1 = $request["to_date"];
             $to_date = date("Y-m-d", strtotime($todate1));
