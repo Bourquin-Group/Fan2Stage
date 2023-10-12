@@ -99,28 +99,6 @@ class StripeController extends Controller
         
         // $event_id =$event_id;
         $type = $request->type;
-        // $input = $request->all();
-        // $validator = Validator::make($input, [
-        //     'card' => 'required',
-        //     'month' => 'required',
-        //     'year' => 'required',
-        //     'cvv' => 'required',
-        //     'account_holder_name' => 'required',
-        // ],[
-        //     'card' => 'Please enter a Card number',
-        //     'month' => 'Please enter a Month',
-        //     'year' => 'Please enter a Year',
-        //     'cvv' => 'Please enter a CVV',
-        //     'account_holder_name' => 'Please enter a Account Holder Name',
-        // ]);
-
-        // if($validator->fails()){
-        //     return response()->json([
-        //         'message' => 'Invalid params passed',
-        //         'errors' => $validator->errors()
-        //     ], 400);       
-        // }
-
         //type =0 is free plan, 1 is cost plan
         $events = Event::where('id',$event_id)->where('event_status',1)->first();
         // $renewal_date = Carbon::now()->addMonth($events->events_per_month);
@@ -244,13 +222,14 @@ class StripeController extends Controller
                                     }  
                     }
                 }
-            }catch (Exception $e) {
+            }catch (\Exception $e) {
                 $response = [
-                    'status' => 404,
+                    'status' => 406,
                     'success'   => false,
-                    'message' => 'Payment has been failed. Try again later..',
+                    'message' => $e->getMessage(),
+                    // 'message' => 'Payment has been failed. Try again later..',
                 ];
-                return response()->json($response, 404);
+                return response()->json($response, 406);
             }   
         }
     }
