@@ -338,6 +338,7 @@ class EventController extends Controller
                 'eventamount' => ($event->eventamount > 0)? (int)$event->eventamount: 0,
                 'booking_status' => ($eventStatus) ? true : false,
                 'billinginfo_status' => ($billdetail) ? true : false,
+                'verified_profile' => (Auth::user()->verified_profile == 1) ? true : false,
                 'event_duration' => $event->event_duration,
                 'event_image' => url('').'/eventimages/'.$eventimage[0],
                 'event_genre' => $event->genre,

@@ -577,6 +577,7 @@ class AuthController extends BaseController
                     $user->newsletter         = $newsletter;
                     $user->preferred_genre    = (count($genre) > 0 ) ? implode(',',$request['preferred_genre']) : NULL;
                     $user->timezone         = $request['timezone'];
+                    $user->verified_profile = 1;
                     $user->save();
                     Session::put('user_timezone', $request['timezone']);
 
@@ -824,7 +825,7 @@ class AuthController extends BaseController
                     'city' => 'required|alpha',
                     'state' => 'required|alpha',
                     'country' => 'required|alpha',
-                    'postalcode' => ['required','numeric','digits:6'],
+                    'postalcode' => ['required', 'numeric', 'digits_between:5,6'],
                 ];
                 $user = billinginformation::where('user_id',Auth::user()->id)->first();
                 $validator = $this->validate($request,$validation,
@@ -838,6 +839,7 @@ class AuthController extends BaseController
                                 'country.regex' => 'Please enter the string',
                                 'postalcode.required' => 'Please enter the postalcode',
                                 'postalcode.numeric' => 'Please enter the digits',
+                                'postalcode.digits_between' => 'please enter the postalcode 5 or 6 digits ',
                             ]);
                 if($user){
                     $user->address    = $request['address'];
