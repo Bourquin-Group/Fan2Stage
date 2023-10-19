@@ -10,6 +10,9 @@ use App\Models\Event;
 use App\Models\User;
 use App\Models\Event_joined_by_fans;
 use App\Models\Eventbooking;
+use App\Models\timezone;
+use DateTime;
+use Carbon\Carbon;
 
 class Fans_eventController extends Controller
 {
@@ -26,7 +29,7 @@ class Fans_eventController extends Controller
         $fanpastEvent = [];
         if(count($fansevent) > 0){
         foreach($fansevent as $value){
-            if($value->event_status == 1){
+            if($value->event_status == 1 && $value->event_date >=Carbon::today()){
                 $upcomingEvent['event_id'] = $value->id;
                 $upcomingEvent['event_title'] = $value->event_title;
                 $upcomingEvent['date'] = $value->event_date;
@@ -47,6 +50,92 @@ class Fans_eventController extends Controller
                 $pastEvent['event_title'] = $value->event_title;
                 $pastEvent['date'] = $value->event_date;
                 $pastEvent['time'] = $value->event_time;
+                $pastEvent['link_to_event_stream'] = $value->link_to_event_stream;
+                $pastEvent['duration'] = $value->event_duration;
+                $eventimage = explode(',',$value->event_image);
+                $pastEvent['image'] = asset('/eventimages/'.$eventimage[0]);
+                $pastEvent['genre'] = $value->genre;
+                $pastEvent['description'] = $value->event_description;
+                $pastEvent['event_plan_type'] = $value->event_plan_type;
+                $pastEvent['count'] = $value->event_count;
+                $pastEvent['event_status'] = $value->eventBooking->status;
+                $eventreview = Eventbooking::where('user_id',$authid)->where('event_id',$value->id)->first();
+                $pastEvent['eventreviewstatus'] = $eventreview->eventreviewstatus;
+                $fanpastEvent[] = $pastEvent;
+            }
+        }
+        $response = [
+            'status'    =>200,
+            'success'        => true,
+            'message'           => 'Fans Event Retrived Successfully',
+            'past_event'     => $fanpastEvent,
+            'upcoming_event' => $fanupcomingEvent,
+        ];
+        return response()->json($response, 200);   
+    }else{
+        $response = [
+            'status'  => 200,
+            'success' => true,
+            'message' => 'No Fans Event Found',
+            'past_event'     => $fanpastEvent,
+            'upcoming_event' => $fanupcomingEvent,
+        ];
+        return response()->json($response, 200);
+    } 
+
+    }
+    public function fansEventApi(Request $request){
+        $authid = Auth::user()->id;
+        $user = User::where('id',$authid)->where('user_type','users')->first();
+        $event_id = Eventbooking::where('user_id',$authid)->where('status',1)->pluck('event_id')->toArray();
+        $fansevent = Event::whereIn('id',$event_id)->get();
+        $upcomingEvent=[];
+        $fanupcomingEvent = [];
+        $pastEvent=[];
+        $fanpastEvent = [];
+        if(count($fansevent) > 0){
+        foreach($fansevent as $value){
+            if($value->event_status == 1 && $value->event_date >=Carbon::today()){
+                $upcomingEvent['event_id'] = $value->id;
+                $upcomingEvent['event_title'] = $value->event_title;
+                $upcomingEvent['date'] = $value->event_date;
+                $date = date('Y-m-d', strtotime($value->event_date)); // Format the date part
+            $time = $value->event_time; // Get the time part
+
+            $datetimeString = $date . ' ' . $time; // Combine date and time into a string
+            $originalDateTime = Carbon::create($datetimeString); // Create a Carbon instance with the original datetime and timezone.
+            // dd(Auth::user()->timezone)
+            $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+            $convertedDateTime = $originalDateTime->setTimezone($timezone_region->region); // Convert the timezone.
+            
+            $dateTime = $convertedDateTime->format('h:i:s A');
+                $upcomingEvent['time'] = $dateTime;
+                $upcomingEvent['link_to_event_stream'] = $value->link_to_event_stream;
+                $upcomingEvent['duration'] = $value->event_duration;
+                $eventimage = explode(',',$value->event_image);
+                $upcomingEvent['image'] = asset('/eventimages/'.$eventimage[0]);
+                $upcomingEvent['genre'] = $value->genre;
+                $upcomingEvent['description'] = $value->event_description;
+                $upcomingEvent['event_plan_type'] = $value->event_plan_type;
+                $upcomingEvent['count'] = $value->event_count;
+                $upcomingEvent['event_status'] = $value->eventBooking->status;
+                $fanupcomingEvent[] = $upcomingEvent;
+            }
+            if($value->event_status == 0){
+                $pastEvent['event_id'] = $value->id;
+                $pastEvent['event_title'] = $value->event_title;
+                $pastEvent['date'] = $value->event_date;
+                $date = date('Y-m-d', strtotime($value->event_date)); // Format the date part
+                $time = $value->event_time; // Get the time part
+
+                $datetimeString = $date . ' ' . $time; // Combine date and time into a string
+                $originalDateTime = Carbon::create($datetimeString); // Create a Carbon instance with the original datetime and timezone.
+                // dd(Auth::user()->timezone)
+                $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+                $convertedDateTime = $originalDateTime->setTimezone($timezone_region->region); // Convert the timezone.
+                
+                $dateTime = $convertedDateTime->format('h:i:s A');
+                $pastEvent['time'] = $dateTime;
                 $pastEvent['link_to_event_stream'] = $value->link_to_event_stream;
                 $pastEvent['duration'] = $value->event_duration;
                 $eventimage = explode(',',$value->event_image);

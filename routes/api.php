@@ -45,7 +45,9 @@ Route::delete('deleteaccount/{id}', 'App\Http\Controllers\API\AuthController@del
 Route::middleware('auth:api')->group( function () {
 
 	Route::get('live-event','App\Http\Controllers\API\EventController@liveEventList');
+	Route::get('live-eventapi','App\Http\Controllers\API\EventController@liveEventListApi');
 	Route::get('scheduled-event','App\Http\Controllers\API\EventController@scheduledEventList');
+	Route::get('scheduledEventListApi','App\Http\Controllers\API\EventController@scheduledEventListApi');
 	Route::post('view-event','App\Http\Controllers\API\EventController@viewEventDetails');
 
 	// Artist
@@ -70,6 +72,7 @@ Route::middleware('auth:api')->group( function () {
 
 	// FansEvent
 	Route::get('fansEvent','App\Http\Controllers\API\Fans_eventController@fansEvent')->name('fansEvent');
+	Route::get('fansEventApi','App\Http\Controllers\API\Fans_eventController@fansEventApi')->name('fansEventApi');
 	Route::post('pastEvent','App\Http\Controllers\API\Fans_eventController@pastEvent')->name('pastEvent');
 	Route::post('upcomingEvent','App\Http\Controllers\API\Fans_eventController@upcomingEvent')->name('upcomingEvent');
 	Route::post('filterpastEvent','App\Http\Controllers\API\Fans_eventController@filterpastEvent')->name('filterpastEvent');
@@ -140,6 +143,7 @@ Route::middleware('auth:api')->group( function () {
 
 	// Event Filter
 	Route::post('eventFilter','App\Http\Controllers\API\EventfilterController@eventFilter')->name('eventFilter');
+	Route::post('eventFilterApi','App\Http\Controllers\API\EventfilterController@eventFilterApi')->name('eventFilterApi');
 	// Event Filter
 
 	// subscription plan

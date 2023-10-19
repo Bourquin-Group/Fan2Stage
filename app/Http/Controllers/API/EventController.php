@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Mail;
+use App\Models\timezone;
 use App\Http\Controllers\API\BaseController as BaseController;
 
 class EventController extends Controller
@@ -705,6 +706,52 @@ class EventController extends Controller
         ];
         return response()->json($response, 200);
     }
+    public function liveEventListApi(){
+        // $allLiveEvents = Event::where('event_status',1)->where('event_date', Carbon::today())->get();
+        $allLiveEvents = Event::where('event_status',1)->where('golivestatus', 1)->where('event_date', Carbon::today())->get();
+        $data = [];
+        $totData = [];
+        foreach($allLiveEvents as $value){
+
+            $date = DateTime::createFromFormat('H:i:s',$value->event_time);
+            $date->modify('+'.$value->event_duration.' minutes');
+            $event_web_start_time = date("g:i A", strtotime($value->event_time." UTC"));
+            $event_web_end_time = $date->format('h:i A');
+
+            $data['event_id']=$value->id;
+            $data['event_title']=$value->event_title;
+            $data['event_date']=$value->event_date;
+            $eventStatus = Eventbooking::where(['event_id' => $value->id,'artist_id' => $value->user_id,'status' => 1,'user_id' => auth()->user()->id])->first();
+            $data['booking_status']=($eventStatus) ? true : false;
+            $data['event_duration']=$value->event_duration;
+            $data['event_amount']=($value->eventamount > 0)? (int)$value->eventamount: 0;
+            $date = date('Y-m-d', strtotime($value->event_date)); // Format the date part
+            $time = $value->event_time; // Get the time part
+
+            $datetimeString = $date . ' ' . $time; // Combine date and time into a string
+            $originalDateTime = Carbon::create($datetimeString); // Create a Carbon instance with the original datetime and timezone.
+            // dd(Auth::user()->timezone)
+            $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+            $convertedDateTime = $originalDateTime->setTimezone($timezone_region->region); // Convert the timezone.
+            
+            $dateTime = $convertedDateTime->format('h:i:s A');
+            // dd($dateTime);
+            $data['event_time']=$value->dateTime;
+            $data['event_web_start_time']=$event_web_start_time;
+            $data['event_web_end_time']=$event_web_end_time;
+            $data['event_plan_type']=(int)$value->event_plan_type;
+            $eventimage = explode(',',$value->event_image);
+            $data['event_image']=asset('/eventimages/'.$eventimage[0]);
+            $totData[]=$data;
+        }
+        $response = [
+            'status'  => 200,
+            'success' => true,
+            'message' => "Live Event Data Retrived Successfully",
+            'data'    => $totData,
+        ];
+        return response()->json($response, 200);
+    }
     public function scheduledEventList(){
         $scheduleEvents = Event::where('event_status',1)->where('event_date','>=',Carbon::today())->where('golivestatus', 0)->get();
         $data = [];
@@ -718,6 +765,47 @@ class EventController extends Controller
             $data['event_duration']=$value->event_duration;
             $data['event_amount']=($value->eventamount > 0)? (int)$value->eventamount: 0;
             $data['event_time']=$value->event_time;
+            $data['event_description']=$value->event_description;
+            $data['event_plan_type']=(int)$value->event_plan_type;
+            $eventimage = explode(',',$value->event_image);
+            $data['event_image']=asset('/eventimages/'.$eventimage[0]);
+            
+
+            $totData[]=$data;
+        }
+        $response = [
+            'status' => 200,
+            'success' => true,
+            'message' => "Scheduled Event Data Retrived Successfully",
+            'data'    => $totData,
+        ];
+        // dd($totData);
+        return response()->json($response, 200);    
+    }
+    public function scheduledEventListApi(){
+        $scheduleEvents = Event::where('event_status',1)->where('event_date','>=',Carbon::today())->where('golivestatus', 0)->get();
+        $data = [];
+        $totData = [];
+        foreach($scheduleEvents as $value){
+            $data['event_id']=$value->id;
+            $data['event_title']=$value->event_title;
+            $data['event_date']=$value->event_date;
+            $eventStatus = Eventbooking::where(['event_id' => $value->id,'artist_id' => $value->user_id,'status' => 1,'user_id' => auth()->user()->id])->first();
+            $data['booking_status']=($eventStatus) ? true : false;
+            $data['event_duration']=$value->event_duration;
+            $data['event_amount']=($value->eventamount > 0)? (int)$value->eventamount: 0;
+            $date = date('Y-m-d', strtotime($value->event_date)); // Format the date part
+            $time = $value->event_time; // Get the time part
+
+            $datetimeString = $date . ' ' . $time; // Combine date and time into a string
+            $originalDateTime = Carbon::create($datetimeString); // Create a Carbon instance with the original datetime and timezone.
+            // dd(Auth::user()->timezone)
+            $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+            $convertedDateTime = $originalDateTime->setTimezone($timezone_region->region); // Convert the timezone.
+            
+            $dateTime = $convertedDateTime->format('h:i:s A');
+            // dd($dateTime);
+            $data['event_time']=$dateTime;
             $data['event_description']=$value->event_description;
             $data['event_plan_type']=(int)$value->event_plan_type;
             $eventimage = explode(',',$value->event_image);

@@ -233,6 +233,7 @@
  });
  
  function stripeResponseHandler(status, response) {
+  console.log(response.error);
           var ctips =  $('#tips').val();
           var cvv  =  $('#cvv').val();
           var account_holder_name  =  $('#account_holder_name').val();
@@ -258,6 +259,11 @@
                       $('#year-error').html(response.error.message);
                     }else{
                       $('#year-error').html("");
+                    }
+                    if(response.error.param == "cvc"){
+                      $('#cvv_error').html(response.error.message);
+                    }else{
+                      $('#cvv_error').html('');
                     }
               } else {
                     var token = response['id'];
