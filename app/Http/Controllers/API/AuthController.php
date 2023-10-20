@@ -448,6 +448,7 @@ class AuthController extends BaseController
                     $data['newsletter']   = $user->newsletter;
                     $data['socialimage']   = $user->image;
                     $data['profile_image']   = url('').'/fans_profile_images/'.$user->image;
+                    $data['verified_profile']   = ($user->verified_profile == 1) ? true : false;
                     $response = [
                         'status'    =>200,
                         'success'   => true,
