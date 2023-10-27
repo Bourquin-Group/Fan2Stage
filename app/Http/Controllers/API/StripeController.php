@@ -425,32 +425,25 @@ class StripeController extends Controller
         }else{
             return redirect()->back();
         }
-    
-        // }
-        // $liveevent = app('App\Http\Controllers\API\EventbookingController')->cancelbookingweb($request);
-        // $liveeventArray = json_decode ($liveevent->content(), true);
-        // $event = $liveeventArray['booking-status'];
-        //  if($event == 'true'){
-        //     return redirect()->back();
-        //  }
         
     }
     public function tipspost(Request $request)
     {
+
         $event_id = openssl_decrypt(
-            $request->event_id,
-            $this->encryptMethod,
-            $this->key,
-            0,
-            $this->iv
-        );
-        $artist_id = openssl_decrypt(
-            $request->artist_id,
-            $this->encryptMethod,
-            $this->key,
-            0,
-            $this->iv
-        );
+                $request->event_id,
+                $this->encryptMethod,
+                $this->key,
+                0,
+                $this->iv
+            );
+            $artist_id = openssl_decrypt(
+                $request->artist_id,
+                $this->encryptMethod,
+                $this->key,
+                0,
+                $this->iv
+            );
 
         // $event_id =$request->event_id;
         $type = $request->type;

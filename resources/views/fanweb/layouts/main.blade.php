@@ -114,21 +114,6 @@ $(document).ready(function(){
    
 </script>
 <script>
-// var hasSeenPopupToday = localStorage.getItem('hasSeenPopupToday');
-
-// if (hasSeenPopupToday == true) {
-//   alert(hasSeenPopupToday);
-//   var trigger = document.querySelector('.footer_newsletter');
-//   var el = document.querySelector('.Maybe');
-
-//   el.addEventListener('click', function () {
-//     alert('hi');
-//     trigger.style.display = 'none';
-//     localStorage.setItem('hasSeenPopupToday', 'true');
-//   });
-// }else{
-//   alert('no');
-// }
 
 $(document).ready(function(){
   var hasSeenPopupToday = localStorage.getItem('hasSeenPopupToday');
@@ -158,6 +143,128 @@ if(hasSeenPopupToday != null ){
   });
 
 });
+</script>
+<script>
+  $(document).ready(function() {
+    $('.notify').on('click', function() {
+      $('#exampleModalTogglenotify').modal('show');
+    });
+      $.ajax({
+        headers: {
+             'X-CSRF-Token': '{{ csrf_token() }}',
+         },
+         url: "{{route('notify') }}",
+          type: 'GET',
+          dataType: 'json',
+          success: function(data) {
+            // console.log();
+            if(data.notify){
+              if (data.notify.length > 0) {
+                  var notificationsHtml = '';
+                  data.notify.forEach(function(notification) {
+                      notificationsHtml += '<div class="list_notification_innre not_open" id="yes">';
+                      notificationsHtml += '<div class="close_notification">';
+                      notificationsHtml += '<div class="img_noti"><img src="' + notification.profile_image + '" alt=""></div>';
+                      notificationsHtml += '<div class="notification_text">';
+                      notificationsHtml += '<h4 id="yes">' + notification.description + '</h4>';
+                      notificationsHtml += '<p>' + notification.date + '</p>';
+                      notificationsHtml += '</div>';
+                      notificationsHtml += '</div>';
+                      notificationsHtml += '<i class="fa-solid fa-xmark close_icon  yes" data-id="'+notification.id+'"></i>';
+                      notificationsHtml += '</div>';
+                  });
+
+                  $(notificationsHtml).insertAfter('#notifications-inner-container');
+              } else {
+                  $('#notifications-inner-container').html('<p style="text-align:center;">Notifications not available.</p>');
+              }
+            }else{
+              $('#notifications-inner-container').html('<p style="text-align:center;">Notifications not available.</p>');
+            }
+          },
+          error: function() {
+              $('#notifications-inner-container').html('<p>Error loading notifications.</p>');
+          }
+      });
+      $(document).on("click", ".yes" , function() {    
+
+        var dataId = $(this).data('id');
+            var notificationItem = $(this);
+            var notificationId = notificationItem.data('id');
+            var url = "{{ route('notifyread', ':notificationId') }}";
+            url = url.replace(':notificationId', notificationId);
+            var closestDiv = $(this).closest('.list_notification_innre');
+
+      $.ajax({
+        headers: {
+             'X-CSRF-Token': '{{ csrf_token() }}',
+         },
+         url: url,
+          type: 'GET',
+          dataType: 'json',
+          success: function(data) {
+        closestDiv.addClass('new-class');
+        setTimeout(() => {
+          closestDiv.remove();
+        }, 1000);
+            if(!data.notify){
+              $('#notifications-inner-container').html('<p style="text-align:center;">Notifications not available!!!.</p>');
+            }
+          },
+          error: function(data) {
+            closestDiv.addClass('new-class');
+            setTimeout(() => {
+          closestDiv.remove();
+        }, 1000);
+            if(!data.notify){
+              $('#notifications-inner-container').html('<p style="text-align:center;">Notifications not available!!!.</p>');
+            }
+           
+          }
+      });
+    });
+    $('.markallread').on('click', function() {
+            var $divs = $('.list_notification_innre').get().reverse();
+
+      $.ajax({
+        headers: {
+             'X-CSRF-Token': '{{ csrf_token() }}',
+         },
+         url: "{{ route('notifyreadall') }}",
+          type: 'GET',
+          dataType: 'json',
+          success: function(data) {
+
+             var $divs = $('.list_notification_innre');
+        var delayDuration = 300; 
+
+        $($divs.get().reverse()).each(function(index, element) {
+            setTimeout(function() {
+                $(element).addClass('new-class');
+            }, delayDuration * index);
+        });
+            if(!data.notify){
+              $('#notifications-inner-container').html('<p style="text-align:center;">Notifications not available!!!.</p>');
+            }
+              
+          },
+          error: function(data) {
+
+            var $divs = $('.list_notification_innre');
+            var delayDuration = 300; 
+
+            $($divs.get().reverse()).each(function(index, element) {
+                setTimeout(function() {
+                    $(element).addClass('new-class');
+                }, delayDuration * index);
+            });
+                if(!data.notify){
+              $('#notifications-inner-container').html('<p style="text-align:center;">Notifications not available!!!.</p>');
+            }
+          }
+      });
+    });
+  });
 </script>
 @yield('timer')
 @yield('footer')

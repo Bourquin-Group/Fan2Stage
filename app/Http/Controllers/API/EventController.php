@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Mail;
 use App\Models\timezone;
+use App\Models\Notificationdetail;
 use App\Http\Controllers\API\BaseController as BaseController;
 
 class EventController extends Controller
@@ -263,7 +264,22 @@ class EventController extends Controller
 
                     $favouriteuserid = Favourite::where('artist_id',Auth::user()->id)->pluck('user_id')->toArray();
                     $favouriteuseremail = User::whereIn('id',$favouriteuserid)->pluck('email')->toArray();
+                    $favouriteuser = User::whereIn('id',$favouriteuserid)->get();
                    
+                    foreach($favouriteuser as $value){
+                        // dd($value);
+                        $notification_detail = [
+                            'type_name' => 'Event Create',
+                            'description' => Auth::user()->name.' created a Event',
+                            'event_id' => $Event->id,
+                            'artist_id' => Auth::user()->id,
+                            'status' => 1,
+                            'type' => 1,
+                            'user_id' =>$value->id 
+                    ];
+                        Notificationdetail::create($notification_detail);
+                    }
+                    
 
                       Mail::send('mail.eventcreate',$data,function($message) use($email,$favouriteuseremail){
                         $message->to($email);
@@ -271,6 +287,7 @@ class EventController extends Controller
                         $message->subject('Congratulations');
                         });
                         // mail notification
+
                     $response = [
                         'status_code'   => 200,
                         'success'   => true,
@@ -595,6 +612,21 @@ class EventController extends Controller
                     $bookeduserid = Eventbooking::where('event_id',$id)->where('status',1)->pluck('user_id')->toArray();
                     $bookeduseremail = User::whereIn('id',$bookeduserid)->pluck('email')->toArray();
 
+                    $bookeduser = User::whereIn('id',$bookeduserid)->get();
+                   
+                    foreach($bookeduser as $value){
+                        $notification_detail = [
+                            'type_name' => 'Event Update',
+                            'description' => Auth::user()->name.' modify a Event',
+                            'event_id' => $event->id,
+                            'artist_id' => Auth::user()->id,
+                            'status' => 1,
+                            'type' => 5, //5->Event update
+                            'user_id' =>$value->id 
+                    ];
+                        Notificationdetail::create($notification_detail);
+                    }
+
                     // dd($bookeduseremail);
 
                       Mail::send('mail.eventupdate',$data,function($message) use($email,$bookeduseremail){
@@ -640,6 +672,21 @@ class EventController extends Controller
     {
         $authid = Auth::User()->id;
         $usertype = User::where('id',$authid)->first();
+        $bookeduserid = Eventbooking::where('event_id',$id)->where('status',1)->pluck('user_id')->toArray();
+        $bookeduser = User::whereIn('id',$bookeduserid)->get();
+                   
+                    foreach($bookeduser as $value){
+                        $notification_detail = [
+                            'type_name' => 'Event Update',
+                            'description' => Auth::user()->name.' delete a Event',
+                            'event_id' => $event->id,
+                            'artist_id' => Auth::user()->id,
+                            'status' => 1,
+                            'type' => 5, //5->Event update
+                            'user_id' =>$value->id 
+                    ];
+                        Notificationdetail::create($notification_detail);
+                    }
         //dd($usertype->user_type);
         if($usertype->user_type=='artists')
         {

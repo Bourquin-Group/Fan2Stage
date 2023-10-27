@@ -2336,7 +2336,7 @@ popup mainsection css end
 }
 
 .list_notification {
-
+    overflow-x: hidden;
     padding: 20px;
 }
 .modal.right .modal-content{
@@ -2367,6 +2367,7 @@ popup mainsection css end
     text-align: right;
     color: #A6C2E9;
     margin: 0;
+    cursor:pointer;
 }
 
 .img_noti {
@@ -2383,14 +2384,17 @@ popup mainsection css end
     font-weight: 500;
     font-size: 16px;
     line-height: 23px;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     margin-bottom: 3px;
+    max-width: 240px;
 }
 .list_notification_innre {
     display: flex;
     align-items: self-start;
     padding: 20px 0px;
     border-bottom: 1px solid #2b3d59;
+    cursor:pointer;
+    justify-content: space-between;
 }
 .notification_text p {
     font-weight: 600;
@@ -2399,7 +2403,7 @@ popup mainsection css end
     color: #A6C2E9;
     margin: 0;
 }
-.list_notification_innre.not_open:after {
+/* .list_notification_innre.not_open:after {
     width: 8px;
     min-width: 8px;
     height: 8px;
@@ -2408,7 +2412,7 @@ popup mainsection css end
     content: "";
     border-radius: 50%;
     margin: 6px 0 0 6px;
-}
+} */
 
 
 .seach_field input {
@@ -4833,4 +4837,22 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+.img_noti img {
+    width: 100%;
+}
+.close_notification{
+    display: flex;
+}
+.close_icon {
+    display: none !important;
+}
+.list_notification_innre:hover .close_icon{
+    display: block !important;
+}
+
+.list_notification_innre.not_open.new-class {
+    visibility: hidden;
+    transform: translateX(130%);
+    transition: 0.5s;
 }

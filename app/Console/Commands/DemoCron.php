@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\Eventbooking;
 use App\Models\User;
 use App\Models\basic_setting;
+use App\Models\Notificationdetail;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DB;
@@ -55,21 +56,21 @@ class DemoCron extends Command
        
         $starttime = date("H:i:s", strtotime("+".$buffertime->funval1." minutes"));
         
-        // $starttime = "11:15:00";
+        // $starttime = "20:10:00";
 
         // $event = Event::where('event_time',$starttime)->where('event_status',1)->pluck('id')->toArray();
         // $userid = Eventbooking::whereIn('event_id',$event)->pluck('user_id')->toArray();
         // $useremail = User::whereIn('id',$userid)->pluck('email')->toArray();
         
  $event = DB::table('events')
-         ->select('events.id','events.event_title','events.event_date','events.event_time','users.name','users.email')
+         ->select('events.id','events.event_title','events.event_date','events.event_time','events.user_id as artistid','users.name','users.email','users.id as userid')
          ->leftJoin('eventbookings', 'eventbookings.event_id', '=', 'events.id')
          ->leftJoin('users', 'users.id', '=', 'eventbookings.user_id')
          ->where('events.event_time',$starttime)
          ->get()->toArray();
         
+        //  \Log::info($event);
    $values =$event;
-//  Log::info($values);
 foreach($values as $value){
     // \Log::info($value->id);
     $data = array(
@@ -80,6 +81,17 @@ foreach($values as $value){
                 );
                 // $email = Auth::user()->email;
                 $useremail = $value->email;
+                
+                        $notification_detail = [
+                            'type_name' => 'Event Start',
+                            'description' => $value->event_title.' going to start in few minutes.',
+                            'event_id' => $value->id,
+                            'artist_id' => $value->artistid,
+                            'status' => 1,
+                            'type' => 6, //6->Event start remainder
+                            'user_id' =>$value->userid 
+                    ];
+                        Notificationdetail::create($notification_detail);
                 // \Log::info($useremail);
                 Mail::send('mail.eventremainder',$data,function($message) use($useremail){
                             // $message->to($email);

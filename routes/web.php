@@ -359,6 +359,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
             Route::get('myevent', [App\Http\Controllers\Fan\EventController::class, 'myevent'])->name('myevent');
             // My Event
 
+            // Notification
+            Route::get('notify', [App\Http\Controllers\Fan\NotificationController::class, 'notify'])->name('notify');
+            Route::get('notifyread/{id}', [App\Http\Controllers\Fan\NotificationController::class, 'notifyread'])->name('notifyread');
+            Route::get('notifyreadall', [App\Http\Controllers\Fan\NotificationController::class, 'notifyreadall'])->name('notifyreadall');
+            // Notification
+
+
             //Profile
             Route::get('edit-profile', [App\Http\Controllers\Fan\HomeController::class, 'editProfile'])->name('editProfile');
             Route::post('profile-store', [App\Http\Controllers\Fan\HomeController::class, 'profileStore'])->name('profileStore');

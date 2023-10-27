@@ -116,7 +116,7 @@
             </div>
 </div>
 
-<div class="modal right  fade" id="exampleModalToggle" aria-hidden="true"
+<div class="modal right  fade" id="exampleModalTogglenotify" aria-hidden="true"
         aria-labelledby="exampleModalToggleLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered ">
             <div class="modal-content">
@@ -127,30 +127,13 @@
                 </div>
                 <div class="list_notification">
 
-                    <div class="today_mgs">
+                    <div class="today_mgs" id="notifications-inner-container">
                         <div class="day_list">
                             <h6>Today</h6>
-                            <p>Mark all as read</p>
-                        </div>
-                        <div class="list_notification_innre not_open">  
-                            <div class="img_noti"><img src="{{asset('/assets/fan/images/notification-img1.png')}}" alt="">
-                            </div>
-                            <div class="notification_text">
-                                <h4>Justin Biber created a Event</h4>
-                                <p> 2 Hours ago</p>
-                            </div>
-                        </div>
-                        <div class="list_notification_innre not_open"> 
-                            <div class="img_noti"><img src="{{asset('/assets/fan/images/notification-img2.png')}}" alt="">
-                            </div>
-                            <div class="notification_text">
-                                <h4>Right wing tree event is going to
-                                    start in few mins, Get ready !!</h4>
-                                <p> 5 Hours ago</p>
-                            </div>
+                            <p id="yes" class="markallread">Mark all as read</p>
                         </div>
                     </div>
-                    <div class="old_mgs">
+                    {{-- <div class="old_mgs">
                         <div class="day_list">
                             <h6>Today</h6>
 
@@ -203,7 +186,7 @@
                                 <p> 24 jan</p>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
 
 

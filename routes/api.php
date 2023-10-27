@@ -158,6 +158,9 @@ Route::middleware('auth:api')->group( function () {
 	// Notication
 	Route::get('list-favourite-event','App\Http\Controllers\API\NotificationController@listFavouriteEvent')->name('favourite-event');
 	Route::get('event-booking-cancel','App\Http\Controllers\API\NotificationController@eventBookingCancel')->name('event-booking-cancel');
+	Route::get('notification_history','App\Http\Controllers\API\NotificationController@notification_history')->name('notification_history');
+	Route::get('notifyread/{id}','App\Http\Controllers\API\NotificationController@notifyread')->name('notifyread');
+	Route::get('notifyreadall','App\Http\Controllers\API\NotificationController@notifyreadall')->name('notifyreadall');
 	// Notication
 	
     // Route::resource('products', 'App\Http\Controllers\API\ProductController');
