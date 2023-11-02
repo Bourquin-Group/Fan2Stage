@@ -18,10 +18,26 @@
                     <div class="event_card_bottom_left">
                       <h3>{{ $list['event_title']}}  </h3>
                       <?php
-                                $date = DateTime::createFromFormat('H:i:s',$list['event_time']);
-                                $date->modify('+'.$list['event_duration'].' minutes');
+                                // $date = DateTime::createFromFormat('H:i:s',$list['event_time']);
+                                // $date->modify('+'.$list['event_duration'].' minutes');
+                                $eventdate = date('Y-m-d',strtotime($list['event_time']));
+                                $eventtime = $list['event_time'] ;
+                                $eventdatetime = $eventdate.' '.$eventtime;       
+
+                                $date = new DateTime($eventdatetime, new DateTimeZone($list['event_timezone']));
+
+                                $date->setTimezone(new DateTimeZone($timezone_region->region));
+                                $resultdatefrom = $date->format('h:i A');
+
+                                $minutesToAdd = $list['event_duration']; // Change this to your desired duration
+
+                                // Add the minutes to the DateTime object
+                                $date->modify("+{$minutesToAdd} minutes");
+
+                                // Format the modified DateTime to the desired output
+                                $resultdateto = $date->format('h:i A');
                           ?>
-                          <p>{{date("g:i A", strtotime($list['event_time']." UTC"))}} - {{date("g:i A", strtotime($date->format('h:i A')." UTC"))}}</p>
+                          <p>{{$resultdatefrom}} - {{$resultdateto}}</p>
                     </div>
                     <div class="event_card_bottom_right">
                       <button>View</button>

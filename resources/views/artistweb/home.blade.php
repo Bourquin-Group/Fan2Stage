@@ -171,10 +171,24 @@
                       <div class="event_card_bottom_left">
                         <h3>{{$scevent['event_title']}}</h3>
                         <?php
-                                $date = DateTime::createFromFormat('H:i:s',$scevent['event_time']);
-                                $date->modify('+'.$scevent['duration'].' minutes');
+                                $eventdate = date('Y-m-d',strtotime($scevent['event_time']));
+                                $eventtime = $scevent['event_time'] ;
+                                $eventdatetime = $eventdate.' '.$eventtime;       
+
+                                $date = new DateTime($eventdatetime, new DateTimeZone($scevent['event_timezone']));
+
+                                $date->setTimezone(new DateTimeZone($timezone_region->region));
+                                $resultdatefrom = $date->format('h:i A');
+
+                                $minutesToAdd = $scevent['duration']; // Change this to your desired duration
+
+                                // Add the minutes to the DateTime object
+                                $date->modify("+{$minutesToAdd} minutes");
+
+                                // Format the modified DateTime to the desired output
+                                $resultdateto = $date->format('h:i A');
                           ?>
-                          <p>{{date("g:i A", strtotime($scevent['event_time']." UTC"))}} - {{date("g:i A", strtotime($date->format('h:i A')." UTC"))}}</p>
+                          <p>{{$resultdatefrom}} - {{$resultdateto}}</p>
                       </div>
                       <div class="event_card_bottom_right">
                        <a href="{{ url('web/eventDetail/'.Crypt::encryptString($scevent['id'])) }}"><button>View</button></a> 
@@ -207,10 +221,24 @@
                       <div class="event_card_bottom_left">
                         <h3>{{$psevent['event_title']}}</h3>
                         <?php
-                                $date = DateTime::createFromFormat('H:i:s',$psevent['event_time']);
-                                $date->modify('+'.$psevent['duration'].' minutes');
+                                $eventdate = date('Y-m-d',strtotime($psevent['event_time']));
+                                $eventtime = $psevent['event_time'] ;
+                                $eventdatetime = $eventdate.' '.$eventtime;       
+
+                                $date = new DateTime($eventdatetime, new DateTimeZone($psevent['event_timezone']));
+
+                                $date->setTimezone(new DateTimeZone($timezone_region->region));
+                                $resultdatefrom = $date->format('h:i A');
+
+                                $minutesToAdd = $psevent['duration']; // Change this to your desired duration
+
+                                // Add the minutes to the DateTime object
+                                $date->modify("+{$minutesToAdd} minutes");
+
+                                // Format the modified DateTime to the desired output
+                                $resultdateto = $date->format('h:i A');
                           ?>
-                          <p>{{date("g:i A", strtotime($psevent['event_time']." UTC"))}} - {{date("g:i A", strtotime($date->format('h:i A')." UTC"))}}</p>
+                          <p>{{$resultdatefrom}} - {{$resultdateto}}</p>
                       </div>
                       <div class="event_card_bottom_right">
                        <a href="{{ route('eventHistoryDetails',$psevent['id']) }}"><button>View</button></a> 

@@ -355,6 +355,9 @@ class ArtistController extends Controller
                 $pastEvent['id'] = $value->id;
                 $pastEvent['event_title'] = $value->event_title;
                 $pastEvent['event_time'] = $value->event_time;
+                $timezone_region = timezone::where('timezone',$value->event_timezone)->first();
+                $pastEvent['event_timezone']=$timezone_region->region;
+                $pastEvent['event_time'] = $value->event_time;
                 $pastEvent['date'] = $value->event_date;
                 $pastEvent['time'] = $value->event_time;
                 $pastEvent['link_to_event_stream'] = $value->link_to_event_stream;
@@ -369,6 +372,8 @@ class ArtistController extends Controller
                 $sceduleEvent['id'] = $value->id;
                 $sceduleEvent['event_title'] = $value->event_title;
                 $sceduleEvent['event_time'] = $value->event_time;
+                $timezone_region = timezone::where('timezone',$value->event_timezone)->first();
+                $sceduleEvent['event_timezone']=$timezone_region->region;
                 $sceduleEvent['date'] = $value->event_date;
                 // $sceduleEvent['event_time'] = $eventDateTime;
                 $sceduleEvent['link_to_event_stream'] = $value->link_to_event_stream;
@@ -525,6 +530,8 @@ class ArtistController extends Controller
             $data['event_duration']=$value->event_duration;
             $data['event_amount']=($value->eventamount > 0)? $value->eventamount: 0;
             $data['event_time']=$value->event_time;
+            $timezone_region = timezone::where('timezone',$value->event_timezone)->first();
+            $data['event_timezone']=$timezone_region->region;
             $data['event_web_start_time']=$event_web_start_time;
             $data['event_web_end_time']=$event_web_end_time;
             $data['event_plan_type']=(int)$value->event_plan_type;

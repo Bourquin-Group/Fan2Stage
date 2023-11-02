@@ -12,6 +12,7 @@ use App\Models\Event_joined_by_fans;
 use App\Models\Eventbooking;
 use App\Models\timezone;
 use DateTime;
+use DateTimeZone;
 use Carbon\Carbon;
 
 class Fans_eventController extends Controller
@@ -34,6 +35,8 @@ class Fans_eventController extends Controller
                 $upcomingEvent['event_title'] = $value->event_title;
                 $upcomingEvent['date'] = $value->event_date;
                 $upcomingEvent['time'] = $value->event_time;
+                $timezone_region = timezone::where('timezone',$value->event_timezone)->first();
+                $upcomingEvent['event_timezone']=$timezone_region->region;
                 $upcomingEvent['link_to_event_stream'] = $value->link_to_event_stream;
                 $upcomingEvent['duration'] = $value->event_duration;
                 $eventimage = explode(',',$value->event_image);
@@ -50,6 +53,8 @@ class Fans_eventController extends Controller
                 $pastEvent['event_title'] = $value->event_title;
                 $pastEvent['date'] = $value->event_date;
                 $pastEvent['time'] = $value->event_time;
+                $timezone_region = timezone::where('timezone',$value->event_timezone)->first();
+                $pastEvent['event_timezone']=$timezone_region->region;
                 $pastEvent['link_to_event_stream'] = $value->link_to_event_stream;
                 $pastEvent['duration'] = $value->event_duration;
                 $eventimage = explode(',',$value->event_image);
@@ -99,17 +104,26 @@ class Fans_eventController extends Controller
                 $upcomingEvent['event_id'] = $value->id;
                 $upcomingEvent['event_title'] = $value->event_title;
                 $upcomingEvent['date'] = $value->event_date;
-                $date = date('Y-m-d', strtotime($value->event_date)); // Format the date part
-            $time = $value->event_time; // Get the time part
+                $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+                $eventdate = date('Y-m-d',strtotime($value->event_date));
+                $eventtime = $value->event_time ;
+                $eventdatetime = $eventdate.' '.$eventtime;       
+                
+                $timezone_region1 = timezone::where('timezone',$value->event_timezone)->first();
+                
+                $date = new DateTime($eventdatetime, new DateTimeZone($timezone_region1->region));
 
-            $datetimeString = $date . ' ' . $time; // Combine date and time into a string
-            $originalDateTime = Carbon::create($datetimeString); // Create a Carbon instance with the original datetime and timezone.
-            // dd(Auth::user()->timezone)
-            $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
-            $convertedDateTime = $originalDateTime->setTimezone($timezone_region->region); // Convert the timezone.
-            
-            $dateTime = $convertedDateTime->format('h:i:s A');
-                $upcomingEvent['time'] = $dateTime;
+                $date->setTimezone(new DateTimeZone($timezone_region->region));
+                $resultdatefrom = $date->format('h:i A');
+
+                $minutesToAdd = $value->event_duration; // Change this to your desired duration
+
+                // Add the minutes to the DateTime object
+                $date->modify("+{$minutesToAdd} minutes");
+
+                // Format the modified DateTime to the desired output
+                $resultdateto = $date->format('h:i A');
+                $upcomingEvent['time'] = $resultdatefrom;
                 $upcomingEvent['link_to_event_stream'] = $value->link_to_event_stream;
                 $upcomingEvent['duration'] = $value->event_duration;
                 $eventimage = explode(',',$value->event_image);
@@ -125,17 +139,26 @@ class Fans_eventController extends Controller
                 $pastEvent['event_id'] = $value->id;
                 $pastEvent['event_title'] = $value->event_title;
                 $pastEvent['date'] = $value->event_date;
-                $date = date('Y-m-d', strtotime($value->event_date)); // Format the date part
-                $time = $value->event_time; // Get the time part
-
-                $datetimeString = $date . ' ' . $time; // Combine date and time into a string
-                $originalDateTime = Carbon::create($datetimeString); // Create a Carbon instance with the original datetime and timezone.
-                // dd(Auth::user()->timezone)
                 $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
-                $convertedDateTime = $originalDateTime->setTimezone($timezone_region->region); // Convert the timezone.
+                $eventdate = date('Y-m-d',strtotime($value->event_date));
+                $eventtime = $value->event_time ;
+                $eventdatetime = $eventdate.' '.$eventtime;       
                 
-                $dateTime = $convertedDateTime->format('h:i:s A');
-                $pastEvent['time'] = $dateTime;
+                $timezone_region1 = timezone::where('timezone',$value->event_timezone)->first();
+                
+                $date = new DateTime($eventdatetime, new DateTimeZone($timezone_region1->region));
+
+                $date->setTimezone(new DateTimeZone($timezone_region->region));
+                $resultdatefrom = $date->format('h:i A');
+
+                $minutesToAdd = $value->event_duration; // Change this to your desired duration
+
+                // Add the minutes to the DateTime object
+                $date->modify("+{$minutesToAdd} minutes");
+
+                // Format the modified DateTime to the desired output
+                $resultdateto = $date->format('h:i A');
+                $pastEvent['time'] = $resultdatefrom;
                 $pastEvent['link_to_event_stream'] = $value->link_to_event_stream;
                 $pastEvent['duration'] = $value->event_duration;
                 $eventimage = explode(',',$value->event_image);

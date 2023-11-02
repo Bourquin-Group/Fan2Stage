@@ -37,7 +37,7 @@ class HomepageController extends Controller
         $pastEvent = $sc_eventArray['past_event'];
         $scheduleEvent = $sc_eventArray['sceduled_event'];
         $liveEvent = $sc_eventArray['live_event'];
-        return view('artistweb.home',compact('a_profile','pastEvent','scheduleEvent','liveEvent'));
+        return view('artistweb.home',compact('a_profile','pastEvent','scheduleEvent','liveEvent','timezone_region'));
     
     }
 }

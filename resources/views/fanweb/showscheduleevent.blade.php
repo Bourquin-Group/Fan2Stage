@@ -29,7 +29,15 @@
                             <p>{{date("g A", strtotime($sdata['event_time']." UTC"))}} - {{$date->format('h:i A')}}</p>
                           </div>
                           <div class="event_card_bottom_right">
-                            <button>Book Now</button>
+                            @if($sdata['booking_status'] == 'true')
+                                
+                                <a href="{{route('scheduled-event',base64_encode($sdata['event_id']))}}"><button>Booked</button></a>
+                                
+                                @else
+                                
+                                <a href="{{route('scheduled-event',base64_encode($sdata['event_id']))}}"><button> Book Now</button></a> 
+                                
+                                @endif
                           </div>
                         </div>
                       </div>

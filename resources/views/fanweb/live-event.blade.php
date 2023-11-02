@@ -65,7 +65,7 @@
                     <div class="fan-event-detalis">
                         <div class="user-text">
                             <div class="user-img view-sec"> 
-                                <img src="{{$event['artist_image']}}" alt="">
+                                <img class ="user-img-sec profile-pic" src="{{$event['artist_image']}}" alt="">
                                 <div class="user-name">
                                     <h4 class="font-20">{{$event['artist_name']}}</h4>
                                     <p class="font-14">{{$event['artist_stagename']}}</p>

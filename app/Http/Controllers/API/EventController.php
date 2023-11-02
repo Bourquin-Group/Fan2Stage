@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use DateTime;
+use DateTimeZone;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
@@ -233,7 +234,6 @@ class EventController extends Controller
 
                 // youtube
                 // url twitch and youtube
-                    
                 $inputs = [ 
                     'event_title' => $request['event_title'],
                     'event_duration' => $request['event_duration'],
@@ -677,12 +677,12 @@ class EventController extends Controller
                    
                     foreach($bookeduser as $value){
                         $notification_detail = [
-                            'type_name' => 'Event Update',
+                            'type_name' => 'Event Delete',
                             'description' => Auth::user()->name.' delete a Event',
-                            'event_id' => $event->id,
+                            'event_id' => $id,
                             'artist_id' => Auth::user()->id,
                             'status' => 1,
-                            'type' => 5, //5->Event update
+                            'type' => 6, //5->Event delete
                             'user_id' =>$value->id 
                     ];
                         Notificationdetail::create($notification_detail);
@@ -738,6 +738,8 @@ class EventController extends Controller
             $data['event_duration']=$value->event_duration;
             $data['event_amount']=($value->eventamount > 0)? (int)$value->eventamount: 0;
             $data['event_time']=$value->event_time;
+            $timezone_region = timezone::where('timezone',$value->event_timezone)->first();
+            $data['event_timezone']=$timezone_region->region;
             $data['event_web_start_time']=$event_web_start_time;
             $data['event_web_end_time']=$event_web_end_time;
             $data['event_plan_type']=(int)$value->event_plan_type;
@@ -759,11 +761,25 @@ class EventController extends Controller
         $data = [];
         $totData = [];
         foreach($allLiveEvents as $value){
+            $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+            $eventdate = date('Y-m-d',strtotime($value->event_date));
+            $eventtime = $value->event_time ;
+            $eventdatetime = $eventdate.' '.$eventtime;       
+            
+            $date = new DateTime($eventdatetime, new DateTimeZone($value->event_timezone));
 
-            $date = DateTime::createFromFormat('H:i:s',$value->event_time);
-            $date->modify('+'.$value->event_duration.' minutes');
-            $event_web_start_time = date("g:i A", strtotime($value->event_time." UTC"));
-            $event_web_end_time = $date->format('h:i A');
+            $date->setTimezone(new DateTimeZone($timezone_region->region));
+            $resultdatefrom = $date->format('h:i A');
+
+            $minutesToAdd = $value->event_duration; // Change this to your desired duration
+
+            // Add the minutes to the DateTime object
+            $date->modify("+{$minutesToAdd} minutes");
+
+            // Format the modified DateTime to the desired output
+            $resultdateto = $date->format('h:i A');
+            $event_web_start_time = $resultdatefrom;
+            $event_web_end_time = $resultdateto;
 
             $data['event_id']=$value->id;
             $data['event_title']=$value->event_title;
@@ -772,18 +788,8 @@ class EventController extends Controller
             $data['booking_status']=($eventStatus) ? true : false;
             $data['event_duration']=$value->event_duration;
             $data['event_amount']=($value->eventamount > 0)? (int)$value->eventamount: 0;
-            $date = date('Y-m-d', strtotime($value->event_date)); // Format the date part
-            $time = $value->event_time; // Get the time part
-
-            $datetimeString = $date . ' ' . $time; // Combine date and time into a string
-            $originalDateTime = Carbon::create($datetimeString); // Create a Carbon instance with the original datetime and timezone.
-            // dd(Auth::user()->timezone)
-            $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
-            $convertedDateTime = $originalDateTime->setTimezone($timezone_region->region); // Convert the timezone.
             
-            $dateTime = $convertedDateTime->format('h:i:s A');
-            // dd($dateTime);
-            $data['event_time']=$value->dateTime;
+            $data['event_time']=$resultdatefrom;
             $data['event_web_start_time']=$event_web_start_time;
             $data['event_web_end_time']=$event_web_end_time;
             $data['event_plan_type']=(int)$value->event_plan_type;
@@ -814,6 +820,9 @@ class EventController extends Controller
             $data['event_time']=$value->event_time;
             $data['event_description']=$value->event_description;
             $data['event_plan_type']=(int)$value->event_plan_type;
+            $timezone_region = timezone::where('timezone',$value->event_timezone)->first();
+            $data['event_timezone']=$timezone_region->region;
+
             $eventimage = explode(',',$value->event_image);
             $data['event_image']=asset('/eventimages/'.$eventimage[0]);
             
@@ -841,18 +850,27 @@ class EventController extends Controller
             $data['booking_status']=($eventStatus) ? true : false;
             $data['event_duration']=$value->event_duration;
             $data['event_amount']=($value->eventamount > 0)? (int)$value->eventamount: 0;
-            $date = date('Y-m-d', strtotime($value->event_date)); // Format the date part
-            $time = $value->event_time; // Get the time part
-
-            $datetimeString = $date . ' ' . $time; // Combine date and time into a string
-            $originalDateTime = Carbon::create($datetimeString); // Create a Carbon instance with the original datetime and timezone.
-            // dd(Auth::user()->timezone)
             $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
-            $convertedDateTime = $originalDateTime->setTimezone($timezone_region->region); // Convert the timezone.
+            $eventdate = date('Y-m-d',strtotime($value->event_date));
+            $eventtime = $value->event_time ;
+            $eventdatetime = $eventdate.' '.$eventtime;       
             
-            $dateTime = $convertedDateTime->format('h:i:s A');
+            $timezone_region1 = timezone::where('timezone',$value->event_timezone)->first();
+            
+            $date = new DateTime($eventdatetime, new DateTimeZone($timezone_region1->region));
+
+            $date->setTimezone(new DateTimeZone($timezone_region->region));
+            $resultdatefrom = $date->format('h:i A');
+
+            $minutesToAdd = $value->event_duration; // Change this to your desired duration
+
+            // Add the minutes to the DateTime object
+            $date->modify("+{$minutesToAdd} minutes");
+
+            // Format the modified DateTime to the desired output
+            $resultdateto = $date->format('h:i A');
             // dd($dateTime);
-            $data['event_time']=$dateTime;
+            $data['event_time']=$resultdatefrom ;
             $data['event_description']=$value->event_description;
             $data['event_plan_type']=(int)$value->event_plan_type;
             $eventimage = explode(',',$value->event_image);

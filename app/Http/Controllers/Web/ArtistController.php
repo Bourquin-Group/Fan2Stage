@@ -150,17 +150,22 @@ class ArtistController extends Controller
     
     public function billinginformation(Request $request){
         $validator = $this->validate($request,[
-            'address' => 'required|string',
-            'city' => 'required|string',
-            'state' => ['required'],
-            'country' => 'required',
-            'postalcode' => 'required',
+            'address' => 'required',
+            'city' => 'required|regex:/^[A-Za-z\s]+$/',
+            'state' => 'required|regex:/^[A-Za-z\s]+$/',
+            'country' => 'required|regex:/^[A-Za-z\s]+$/',
+            'postalcode' => ['required', 'numeric', 'digits_between:5,6'],
         ],[
-            'address.required' => 'Please enter address',
-            'city.required' => 'Please enter city',
-            'state.required' => 'Please enter state',
-            'country.required' => 'Please enter country',
-            'postalcode.required' => 'Please enter postalcode',
+            'address.required' => 'Please enter the address',
+                                'city.required' => 'Please enter the city',
+                                'city.regex' => 'Please enter the string',
+                                'state.required' => 'Please enter the state',
+                                'state.regex' => 'Please enter the string',
+                                'country.required' => 'Please enter the country',
+                                'country.regex' => 'Please enter the string',
+                                'postalcode.required' => 'Please enter the postalcode',
+                                'postalcode.numeric' => 'Please enter the digits',
+                                'postalcode.digits_between' => 'please enter the postalcode 5 or 6 digits '
         ]);
         $user = billinginformation::where('user_id',Auth::user()->id)->first();
         $userbilling = User::where('id',Auth::user()->id)->first();

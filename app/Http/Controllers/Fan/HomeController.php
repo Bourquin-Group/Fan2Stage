@@ -35,7 +35,7 @@ class HomeController extends Controller
         $scheduleeventArray = json_decode ($scheduleevent->content(), true);
         $scheduleevent_data = $scheduleeventArray['data'];
 
-        return view('fanweb.dashboard',compact('artist_profile','liveevent_data','scheduleevent_data'));
+        return view('fanweb.dashboard',compact('artist_profile','liveevent_data','scheduleevent_data','timezone_region'));
         
     }
 

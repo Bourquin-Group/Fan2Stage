@@ -4856,3 +4856,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     transform: translateX(130%);
     transition: 0.5s;
 }
+
+/* .user-img.view-sec img {
+    width: 72px;
+    height: 72px;
+    border-radius: 100%;
+    object-fit: cover;
+} */

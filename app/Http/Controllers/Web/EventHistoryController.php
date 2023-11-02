@@ -10,15 +10,22 @@ use App\Http\Controllers\Controller;
 use App\Models\Event_joined_by_fans;
 use App\Models\fansactivitygraph;
 use App\Models\fanpayment;
+use App\Models\timezone;
 use DB;
+use Session;
 class EventHistoryController extends Controller
 {
     public function eventHistory(Request $request){
+
+      $timezone_region = timezone::where('id',Session::get('user_timezone'))->first();
+        if(Session::get('user_timezone')){
+        date_default_timezone_set($timezone_region['region']);
+        }
            $event_history_data = app('App\Http\Controllers\API\ArtistController')->eventhistory($request);
             $event_history_data = json_decode ($event_history_data->content(), true);
              $event_history = $event_history_data['data'];
 
-        return view('artistweb.eventhistory',compact('event_history'));
+        return view('artistweb.eventhistory',compact('event_history','timezone_region'));
     }
 
     public function eventHistoryDetails($id)

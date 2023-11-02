@@ -63,10 +63,24 @@
                             <div class="event-card-date">
                             <p>{{date('d F Y', strtotime($ucevent['date']))}}</p>
                             <?php
-                                $date = DateTime::createFromFormat('H:i:s',$ucevent['time']);
-                                $date->modify('+'.$ucevent['duration'].' minutes');
+                                $eventdate = date('Y-m-d',strtotime($ucevent['time']));
+                                $eventtime = $ucevent['time'] ;
+                                $eventdatetime = $eventdate.' '.$eventtime;       
+
+                                $date = new DateTime($eventdatetime, new DateTimeZone($ucevent['event_timezone']));
+
+                                $date->setTimezone(new DateTimeZone($timezone_region->region));
+                                $resultdatefrom = $date->format('h:i A');
+
+                                $minutesToAdd = $ucevent['duration']; // Change this to your desired duration
+
+                                // Add the minutes to the DateTime object
+                                $date->modify("+{$minutesToAdd} minutes");
+
+                                // Format the modified DateTime to the desired output
+                                $resultdateto = $date->format('h:i A');
                             ?>
-                            <li>{{date("g:i A", strtotime($ucevent['time']." UTC"))}} - {{$date->format('h:i A')}}</li>
+                            <li>{{$resultdatefrom}} - {{$resultdateto}}</li>
                             </div>
                         
                         </div>
@@ -98,11 +112,26 @@
                   <div class="today_btn"></div>
                   <div class="event_card_bottom">
                     <div class="event_card_bottom_left">
-                      <h3>{{$paevent['event_title']}}</h3><?php
-                      $date = DateTime::createFromFormat('H:i:s',$paevent['time']);
-                      $date->modify('+'.$paevent['duration'].' minutes');
+                      <h3>{{$paevent['event_title']}}</h3>
+                      <?php
+                      $eventdate = date('Y-m-d',strtotime($paevent['time']));
+                                $eventtime = $paevent['time'] ;
+                                $eventdatetime = $eventdate.' '.$eventtime;       
+
+                                $date = new DateTime($eventdatetime, new DateTimeZone($paevent['event_timezone']));
+
+                                $date->setTimezone(new DateTimeZone($timezone_region->region));
+                                $resultdatefrom = $date->format('h:i A');
+
+                                $minutesToAdd = $paevent['duration']; // Change this to your desired duration
+
+                                // Add the minutes to the DateTime object
+                                $date->modify("+{$minutesToAdd} minutes");
+
+                                // Format the modified DateTime to the desired output
+                                $resultdateto = $date->format('h:i A');
                         ?>
-                        <p>{{date("g:i A", strtotime($paevent['time']." UTC"))}} - {{$date->format('h:i A')}}</p>
+                        <p>{{$resultdatefrom}} - {{$resultdateto}}</p>
                     </div>
                     <div class="event_card_bottom_right">
                       @if($paevent['eventreviewstatus'] == 0)
