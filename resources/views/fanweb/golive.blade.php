@@ -67,7 +67,7 @@
                         <div class="user-img view-sec">
                             <input type="hidden" name="event_id" id="event_id" value="{{$event['event_id']}}">
                             <input type="hidden" name="user_id" id="user_id" value="{{isset(auth()->user()->id) ? auth()->user()->id : ''}}">
-                            <img src="{{$event['artist_image']}}" alt="">
+                            <img class="profile-pic" src="{{$event['artist_image']}}" alt="">
                             <div class="user-name">
                                 <h4 class="font-20">{{$event['artist_name']}}</h4>
                                 <p class="font-14">{{$event['artist_stagename']}}</p>
@@ -698,7 +698,8 @@ var testclass = 0;
             };
 
             // socket script
-                    var socket = io.connect("https://live-stream.f2s.live");
+                // var socket = io.connect("https://live-stream.f2s.live");
+                var socket = io.connect("https://fan2stage-live.colanapps.in");
                     
                 signIn();
                     

@@ -11,6 +11,7 @@ use App\Http\Resources\FavouriteNotificationResource;
 use App\Http\Resources\EventBookingCancelNotificationResource;
 use App\Models\Artist_profiles;
 use App\Models\Notificationdetail;
+use App\Models\User;
 use Carbon\Carbon;
 use DB;
 
@@ -139,7 +140,7 @@ class NotificationController extends Controller
             return response()->json($response, 200);
         }
     }
-    public function notifyreadall($id)
+    public function notifyreadall()
     {
         $updatedRows = DB::table('notificationdetails')
                         ->where('user_id', Auth::user()->id)
@@ -150,7 +151,6 @@ class NotificationController extends Controller
         // dd($notify);
 
         $data = [];
-            if($data){
                 $response = [
                     'status' => 200,
                     'success' => true,
@@ -158,17 +158,22 @@ class NotificationController extends Controller
                     'data'    => $data,
                 ];
                 return response()->json($response, 200);
-            }else{
-                $response = [
-                    'status' => 200,
-                    'success' => true,
-                    'message' => 'Notifications not cleared',
-                    'data'    => $data,
-                ];
-                return response()->json($response, 200);
-            }
 
        
+    }
+
+    public function updateDeviceToken(Request $request)
+    {
+        Auth::user()->device_token =  $request->token;
+
+        
+        Auth::user()->save();
+        $response = [
+            'status' => 200,
+            'success' => true,
+            'message' => 'Token successfully stored.',
+        ];
+        return response()->json($response, 200);
     }
 
 }

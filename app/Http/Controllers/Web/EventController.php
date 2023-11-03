@@ -110,7 +110,12 @@ public function eventUpdate(Request $request,$ids){
     
   }
   public function startevent(Request $request){
-    
+
+    $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
+        if($timezone_region){
+        date_default_timezone_set($timezone_region['region']);
+        }
+        
       $id = $request->event_id;
 
       $event = Event::where('id',$id)->where('event_status',1)->first();

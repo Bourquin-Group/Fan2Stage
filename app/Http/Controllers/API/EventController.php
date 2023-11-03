@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Mail;
+use Session;
 use App\Models\timezone;
 use App\Models\Notificationdetail;
 use App\Http\Controllers\API\BaseController as BaseController;
@@ -73,6 +74,10 @@ class EventController extends Controller
      */
     public function eventcreate(Request $request)
     {
+        $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
+        if($timezone_region){
+        date_default_timezone_set($timezone_region['region']);
+        }
         $authid = Auth::User()->id;
         $usertype = User::where('id',$authid)->first();
         $planid = $usertype->subscription_plan_id;
@@ -279,6 +284,18 @@ class EventController extends Controller
                     ];
                         Notificationdetail::create($notification_detail);
                     }
+
+                    // Push notification
+                    $FcmToken = User::whereIn('id',$favouriteuserid)->whereNotNull('device_token')->pluck('device_token')->all();
+                    
+                    $title = "Event Create";
+                    $body = Auth::user()->name.' created a Event';
+                    $event_id = $Event->id;
+                    $status = ($Event->golivestatus == 1) ? true : false;
+                    $type = "CREATED";
+                    send_notification_FCM($FcmToken,$title, $body, $event_id, $status, $type);
+                    // Push notification
+ 
                     
 
                       Mail::send('mail.eventcreate',$data,function($message) use($email,$favouriteuseremail){
@@ -627,6 +644,17 @@ class EventController extends Controller
                         Notificationdetail::create($notification_detail);
                     }
 
+                    // Push notification
+                    $FcmToken = User::whereIn('id',$bookeduserid)->whereNotNull('device_token')->pluck('device_token')->all();
+                    
+                    $title = "Event Update";
+                    $body = Auth::user()->name.' modify a Event';
+                    $event_id = $event->id;
+                    $status = ($event->golivestatus == 1) ? true : false;
+                    $type = "MODIFY";
+                    send_notification_FCM($FcmToken,$title, $body, $event_id, $status, $type);
+                    // Push notification
+
                     // dd($bookeduseremail);
 
                       Mail::send('mail.eventupdate',$data,function($message) use($email,$bookeduseremail){
@@ -687,6 +715,16 @@ class EventController extends Controller
                     ];
                         Notificationdetail::create($notification_detail);
                     }
+                    // Push notification
+                    $FcmToken = User::whereIn('id',$bookeduserid)->whereNotNull('device_token')->pluck('device_token')->all();
+                    
+                    $title = "Event Delete";
+                    $body = Auth::user()->name.' delete a Event';
+                    $event_id = $id;
+                    $status = false;
+                    $type = "DELETED";
+                    send_notification_FCM($FcmToken,$title, $body, $event_id, $status, $type);
+                    // Push notification
         //dd($usertype->user_type);
         if($usertype->user_type=='artists')
         {

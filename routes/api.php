@@ -161,6 +161,7 @@ Route::middleware('auth:api')->group( function () {
 	Route::get('notification_history','App\Http\Controllers\API\NotificationController@notification_history')->name('notification_history');
 	Route::get('notifyread/{id}','App\Http\Controllers\API\NotificationController@notifyread')->name('notifyread');
 	Route::get('notifyreadall','App\Http\Controllers\API\NotificationController@notifyreadall')->name('notifyreadall');
+	Route::post('updateDeviceToken','App\Http\Controllers\API\NotificationController@updateDeviceToken')->name('updateDeviceToken');
 	// Notication
 	
     // Route::resource('products', 'App\Http\Controllers\API\ProductController');
