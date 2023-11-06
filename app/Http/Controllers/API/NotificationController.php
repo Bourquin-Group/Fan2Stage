@@ -74,12 +74,54 @@ class NotificationController extends Controller
                 return response()->json($response, 200);
             }else{
                 $response = [
-                    'status' => 404,
+                    'status' => 200,
                     'success' => false,
                     'message' => 'Notifications not Found',
                     'data'    => $data,
                 ];
-                return response()->json($response, 404);
+                return response()->json($response, 200);
+            }
+    }
+    public function notification_historyapi(Request $request)
+    {
+        $notify = Notificationdetail::where('user_id',Auth::user()->id)->where('read',0)->orderBy('created_at', 'desc')->get();
+        // dd($notify);
+
+        $data = [];
+            foreach($notify as $i => $value){
+                $data[$i]['id'] = $value->id;
+                $data[$i]['artist_id'] = $value->artist_id;
+                $data[$i]['description'] = $value->description;
+                $data[$i]['read'] = $value->read;
+                $data[$i]['status'] = $value->status;
+                $data[$i]['event_id'] = $value->event_id;
+                $timestamp = $value->created_at;
+
+                // Create a Carbon instance from the timestamp
+                $carbonTimestamp = Carbon::parse($timestamp);
+
+                // Get the human-readable relative time
+                $relativeTime = $carbonTimestamp->diffForHumans();
+                $data[$i]['date'] = $relativeTime;
+                $artistDetail = Artist_profiles::whereHas('userArtist')->where('user_id',$value->artist_id)->first();
+                $data[$i]['profile_image']=url('').'/artist_profile_images/'.$artistDetail['profile_image'];
+            }
+            if($data){
+                $response = [
+                    'status' => 200,
+                    'success' => true,
+                    'message' => 'Notification Retrived Successfully',
+                    'data'    => $data,
+                ];
+                return response()->json($response, 200);
+            }else{
+                $response = [
+                    'status' => 200,
+                    'success' => false,
+                    'message' => 'Notifications not Found',
+                    'data'    => $data,
+                ];
+                return response()->json($response, 200);
             }
     }
     public function notifyread($id)
@@ -111,6 +153,64 @@ class NotificationController extends Controller
                 $data['notify'][$i]['date'] = $relativeTime;
                 $artistDetail = Artist_profiles::whereHas('userArtist')->where('user_id',$value->artist_id)->first();
                 $data['notify'][$i]['profile_image']=url('').'/artist_profile_images/'.$artistDetail['profile_image'];
+            }
+            if($data){
+                $response = [
+                    'status' => 200,
+                    'success' => true,
+                    'message' => 'Notification Retrived Successfully',
+                    'data'    => $data,
+                ];
+                return response()->json($response, 200);
+            }else{
+                $response = [
+                    'status' => 200,
+                    'success' => true,
+                    'message' => 'Notifications not Found',
+                    'data'    => $data,
+                ];
+                return response()->json($response, 200);
+            }
+
+        }else{
+            $response = [
+                'status' => 200,
+                'success' => true,
+                'message' => 'Notifications not Found',
+                'data'    => $data,
+            ];
+            return response()->json($response, 200);
+        }
+    }
+    public function notifyreadapi($id)
+    {
+        $notify = Notificationdetail::where('id',$id)->where('read',0)->first();
+
+        if($notify){
+            $notify->read = 1;
+            $notify->save();
+
+            $notify = Notificationdetail::where('user_id',Auth::user()->id)->where('read',0)->orderBy('created_at', 'desc')->get();
+        // dd($notify);
+
+        $data = [];
+            foreach($notify as $i => $value){
+                $data[$i]['id'] = $value->id;
+                $data[$i]['artist_id'] = $value->artist_id;
+                $data[$i]['description'] = $value->description;
+                $data[$i]['read'] = $value->read;
+                $data[$i]['status'] = $value->status;
+                $data[$i]['event_id'] = $value->event_id;
+                $timestamp = $value->created_at;
+
+                // Create a Carbon instance from the timestamp
+                $carbonTimestamp = Carbon::parse($timestamp);
+
+                // Get the human-readable relative time
+                $relativeTime = $carbonTimestamp->diffForHumans();
+                $data[$i]['date'] = $relativeTime;
+                $artistDetail = Artist_profiles::whereHas('userArtist')->where('user_id',$value->artist_id)->first();
+                $data[$i]['profile_image']=url('').'/artist_profile_images/'.$artistDetail['profile_image'];
             }
             if($data){
                 $response = [

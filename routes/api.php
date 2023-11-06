@@ -160,7 +160,9 @@ Route::middleware('auth:api')->group( function () {
 	Route::get('event-booking-cancel','App\Http\Controllers\API\NotificationController@eventBookingCancel')->name('event-booking-cancel');
 	Route::get('notification_history','App\Http\Controllers\API\NotificationController@notification_history')->name('notification_history');
 	Route::get('notifyread/{id}','App\Http\Controllers\API\NotificationController@notifyread')->name('notifyread');
+	Route::get('notifyreadapi/{id}','App\Http\Controllers\API\NotificationController@notifyreadapi')->name('notifyreadapi');
 	Route::get('notifyreadall','App\Http\Controllers\API\NotificationController@notifyreadall')->name('notifyreadall');
+	Route::get('notification_historyapi','App\Http\Controllers\API\NotificationController@notification_historyapi')->name('notification_historyapi');
 	Route::post('updateDeviceToken','App\Http\Controllers\API\NotificationController@updateDeviceToken')->name('updateDeviceToken');
 	// Notication
 	
