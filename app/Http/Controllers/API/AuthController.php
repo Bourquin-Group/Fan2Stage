@@ -441,7 +441,7 @@ class AuthController extends BaseController
                     $data['name']     = $user->name;
                     $data['email']          = $user->email;
                     $data['phone_number']   = $user->phone_number;
-                    $data['timezone']   = ($user->timezone != NULL) ? $user->timezone : '-';
+                    $data['timezone']   = ($user->timezone != NULL) ? $user->timezone : null;
                     $data['countrycode']   = ($user->country_code != NULL) ? $user->country_code : null;
                     $data['preferred_genre']   =($user->preferred_genre != NULL) ? explode(',',$user->preferred_genre) : null;
                     $data['dob']   = $user->dob;
@@ -823,9 +823,9 @@ class AuthController extends BaseController
             {
                 $validation = [
                     'address' => 'required',
-                    'city' => 'required|alpha',
-                    'state' => 'required|alpha',
-                    'country' => 'required|alpha',
+                    'city' => 'required|regex:/^[A-Za-z\s]+$/',
+                    'state' => 'required|regex:/^[A-Za-z\s]+$/',
+                    'country' => 'required|regex:/^[A-Za-z\s]+$/',
                     'postalcode' => ['required', 'numeric', 'digits_between:5,6'],
                 ];
                 $user = billinginformation::where('user_id',Auth::user()->id)->first();
