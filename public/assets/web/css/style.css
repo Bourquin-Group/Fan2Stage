@@ -3830,3 +3830,9 @@ label#year_error {
     /* width: 173px; */
     margin-left: 15px;
 }
+
+span.modify_timezone_text {
+    font-size: 13px !important;
+    color: #A6C2E9;
+    font-weight: bold !important;
+}

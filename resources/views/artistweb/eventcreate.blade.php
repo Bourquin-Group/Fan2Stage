@@ -107,7 +107,8 @@
             
             <div class="form-section">
               <label for="">Time Zone*</label>
-              <input type="text" name="event_timezone" id="event_timezone" value="{{$a_profile['timezone']['timezone']}}" readonly>
+              <input type="text" name="event_timezone" id="event_timezone" style="background-color: #80808099" value="{{$a_profile['timezone']['timezone']}}" readonly>
+              <span class="modify_timezone_text">Please change Timezone in profile for a different Timezone event.</span>
               {{-- <select name="event_timezone" id="event_timezone">
                 <option value="">Select Time Zone</option>
                 @forEach($timezone as $value)
