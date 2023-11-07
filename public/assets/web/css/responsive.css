@@ -223,6 +223,7 @@
     
         .header_profile_section button img {
             /* padding-left: 8px; */
+                margin-left: 6px;
         }
     
         /* event page  */
@@ -306,15 +307,15 @@
     
         #v-pills-terms{display: none;}
     
-        #v-pills-settings{display: none;}
+        #v-pills-settings{display: block;}
     
         #v-pills-disabled{display: none;}
     
-        .tab-navbar .nav-tab-btn span {display: none;}
+        .tab-navbar .nav-tab-btn span {display: block;}
     
-        #v-pills-profile {display: none;}
+        #v-pills-profile {display: block;}
     
-        #v-pills-home {display: none;}
+        #v-pills-home {display: block;}
     
         .font-22 {font-size: 20px;}
     
@@ -324,7 +325,9 @@
     
     
      }
-    
+     .tab-navbar {
+        position:unset;
+    }
     
     
     @media only screen and (max-width:992px){
@@ -341,6 +344,7 @@
         }
         .header_profile_section button img{
             padding-left: 0px;
+            margin-left: 0px;
         }
         .header_profile_name,.header_profile_icon {
             display: none;

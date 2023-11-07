@@ -16,6 +16,7 @@ use App\Models\Eventbooking;
 use App\Models\genre;
 use App\Models\timezone;
 use App\Models\eventduration;
+use App\Models\Notificationdetail;
 use Carbon\Carbon;
 use Session;
 class EventController extends Controller
@@ -153,6 +154,37 @@ public function eventUpdate(Request $request,$ids){
             $event->eventstarttime = Carbon::now();
             $event->starteventflag = 1;
               $event->save();
+
+              $bookeduserid = Eventbooking::where('event_id',$id)->where('status',1)->pluck('user_id')->toArray();
+                    $bookeduseremail = User::whereIn('id',$bookeduserid)->pluck('email')->toArray();
+
+                    $bookeduser = User::whereIn('id',$bookeduserid)->get();
+                   
+                    foreach($bookeduser as $value){
+                        $notification_detail = [
+                            'type_name' => 'Event Start',
+                            'description' => Auth::user()->name.' started a Event',
+                            'event_id' => $eventcheck->id,
+                            'artist_id' => Auth::user()->id,
+                            'status' => 1,
+                            'type' => 5, //5->Event Start
+                            'user_id' =>$value->id 
+                    ];
+                        Notificationdetail::create($notification_detail);
+                    }
+
+                    // Push notification
+                    $FcmToken = User::whereIn('id',$bookeduserid)->whereNotNull('device_token')->pluck('device_token')->all();
+                    
+                    $title = "Event Start";
+                    $body = Auth::user()->name.' started a Event';
+                    $event_id = $eventcheck->id;
+                    $status = ($eventcheck->golivestatus == 1) ? true : false;
+                    $type = "START";
+                    send_notification_FCM($FcmToken,$title, $body, $event_id, $status, $type);
+
+
+
             return response()->json([
               'success' => true,
               'event_id' => $id,
