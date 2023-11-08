@@ -4863,3 +4863,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-radius: 100%;
     object-fit: cover;
 } */
+.followers_section_card.bg_layout a {
+    width: 100%;
+}

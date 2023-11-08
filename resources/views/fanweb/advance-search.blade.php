@@ -43,8 +43,8 @@
     <div class="followers_section artis-follower">
     @if(count($advanceSearch))
         @foreach($advanceSearch as $list)
-        <a href="{{url('/fan/artistprofile/'.base64_encode($list['artist_id']))}}">
-          <div class="followers_section_card bg_layout">
+        <div class="followers_section_card bg_layout">
+              <a href="{{url('/fan/artistprofile/'.base64_encode($list['artist_id']))}}">
                 {{--<img src="{{$list['profile_image']}}" alt="flow_profile">--}}
                 @if(file_exists(public_path('/artist_profile_images/'.$list['profile_image_web'])) && isset($list['profile_image_web']))
                     <img src="{{asset('/artist_profile_images/'.$list['profile_image_web'])}}" alt="flow_profile" />
@@ -53,12 +53,12 @@
                 @endif
                 <h4 class="followers_name">{{$list['artist_name']}} <button class="font-16">{{$list['rating']}} <img src="{{asset('assets/fan/images/star 1.svg')}}" alt="" srcset=""></button></h4>
                 <span class="font-14">{{$list['genre']}}</span>
+            </a>
                 <div class="follow-heart @if($list['favourite_status']) searchheartactive @endif " onclick="favOption({{$list['artist_id']}},@if($list['favourite_status'])'remove'@else 'add'@endif)">
                     <img class="img-active" src="{{ asset('assets/fan/images/follow-heart.svg')}}" alt="">
                     <img class="img-inactive" src="{{ asset('assets/fan/images/follow-heart-hov.svg')}}" alt="">
                 </div>
           </div>
-        </a>
         @endforeach
         @else
            <p class="no-fav mt-3"> No Results Found </p>
