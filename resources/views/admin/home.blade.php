@@ -203,7 +203,7 @@
                                <td><?php echo $value->userArtist->name; ?></td>
                                <td><?php echo $value->stage_name; ?></td>
                                <td><img src="<?php echo $url; ?>"  width="50" height="50"></td> 
-                               <td>{{$value->eventBooking->where('event_id', $value->id)->count()}}</td>
+                               <!-- <td><//?php echo $artist_event->count('user_id'); ?></td> -->
                         </tr>
   
                         <?php }?>
@@ -301,7 +301,7 @@
                           <td><?php echo $value->event_title; ?></td>
                           <td><?php echo date('Y-m-d',strtotime($value->event_date)); ?></td>
                           <td><img src="<?php echo $url; ?>"  width="50" height="50"></td> 
-                          <td><?php echo $value->event_count; ?></td>
+                          <td>{{$value->eventBooking->where('event_id', $value->id)->count()}}</td>
                         </tr>
   
                         <?php }?>
