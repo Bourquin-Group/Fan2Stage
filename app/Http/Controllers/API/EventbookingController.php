@@ -331,14 +331,14 @@ class EventbookingController extends Controller
             
         // ]
         // );
-        if($request->rating < 3 || $request->rating == NULL){
+        if($request->rating < 0 || $request->rating == NULL){
             $validator =Validator::make($request->all(),[
-                'rating' => 'required|min:3',
+                'rating' => 'required|min:1',
             'event_review'=>'required',
         ],
         [
             'rating.required'=> 'Please give your ratings',
-            'rating.min'=> 'Please provide above 2 ratings',
+            'rating.min'=> 'Please provide minimum one ratings',
             'event_review.required'=> 'Please give your reviews',
             ]
         );  
