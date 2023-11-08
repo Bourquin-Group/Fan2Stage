@@ -794,6 +794,10 @@ class EventController extends Controller
         return response()->json($response, 200);
     }
     public function liveEventListApi(){
+        $timezone_region = timezone::where('id',Session::get('user_timezone'))->first();
+        if(Session::get('user_timezone')){
+        date_default_timezone_set($timezone_region['region']);
+        }
         // $allLiveEvents = Event::where('event_status',1)->where('event_date', Carbon::today())->get();
         $allLiveEvents = Event::where('event_status',1)->where('golivestatus', 1)->where('event_date', Carbon::today())->get();
         $data = [];
@@ -877,6 +881,11 @@ class EventController extends Controller
         return response()->json($response, 200);    
     }
     public function scheduledEventListApi(){
+        $timezone_region = timezone::where('id',Session::get('user_timezone'))->first();
+        if(Session::get('user_timezone')){
+        date_default_timezone_set($timezone_region['region']);
+        }
+        
         $scheduleEvents = Event::where('event_status',1)->where('event_date','>=',Carbon::today())->where('golivestatus', 0)->get();
         $data = [];
         $totData = [];
