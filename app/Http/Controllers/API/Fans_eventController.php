@@ -90,6 +90,10 @@ class Fans_eventController extends Controller
 
     }
     public function fansEventApi(Request $request){
+        $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+        if($timezone_region){
+        date_default_timezone_set($timezone_region['region']);
+        }
         $authid = Auth::user()->id;
         $user = User::where('id',$authid)->where('user_type','users')->first();
         $event_id = Eventbooking::where('user_id',$authid)->where('status',1)->pluck('event_id')->toArray();

@@ -194,6 +194,10 @@ class EventfilterController extends Controller
     }
     public function eventFilterApi(Request $request)
     {
+        $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+        if($timezone_region){
+        date_default_timezone_set($timezone_region['region']);
+        }
         if($request["type"] == 'events')
         {
             $eventName = $request["name"];
