@@ -40,18 +40,28 @@ class HomeController extends Controller
     }
 
     public function showliveevent(Request $request){
+        $timezone_region = timezone::where('timezone',Session::get('user_timezone'))->first();
+        // dd(Session::get('user_timezone'));
+        if(Session::get('user_timezone')){
+        date_default_timezone_set($timezone_region['region']);
+        }
         $liveevent = app('App\Http\Controllers\API\EventController')->liveEventList($request);
         $liveeventArray = json_decode ($liveevent->content(), true);
         $liveevent_data = $liveeventArray['data'];
 
-        return view('fanweb.showliveevent',compact('liveevent_data'));
+        return view('fanweb.showliveevent',compact('liveevent_data','timezone_region'));
     }
     public function showscheduleevent(Request $request){
+        $timezone_region = timezone::where('timezone',Session::get('user_timezone'))->first();
+        // dd(Session::get('user_timezone'));
+        if(Session::get('user_timezone')){
+        date_default_timezone_set($timezone_region['region']);
+        }
         $scheduleevent = app('App\Http\Controllers\API\EventController')->scheduledEventList($request);
         $scheduleeventArray = json_decode ($scheduleevent->content(), true);
         $scheduleevent_data = $scheduleeventArray['data'];
 
-        return view('fanweb.showscheduleevent',compact('scheduleevent_data'));
+        return view('fanweb.showscheduleevent',compact('scheduleevent_data','timezone_region'));
     }
     public function newsletter(Request $request){
         $newsletter = app('App\Http\Controllers\API\NewsletterController')->newscreate($request);

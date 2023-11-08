@@ -448,6 +448,10 @@ class EventController extends Controller
 
     public function eventupdate(Request $request, $id)
     {
+        $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
+        if($timezone_region){
+        date_default_timezone_set($timezone_region['region']);
+        }
         // dd($request);
         $authid = Auth::User()->id;
         $usertype = User::where('id',$authid)->first();
@@ -885,7 +889,6 @@ class EventController extends Controller
         if($timezone_region){
         date_default_timezone_set($timezone_region['region']);
         }
-        
         $scheduleEvents = Event::where('event_status',1)->where('event_date','>=',Carbon::today())->where('golivestatus', 0)->get();
         $data = [];
         $totData = [];

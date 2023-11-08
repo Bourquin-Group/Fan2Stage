@@ -23,10 +23,24 @@
                           <div class="event_card_bottom_left">
                             <h3>{{$sdata['event_title']}}</h3>
                             <?php
-                                $date = DateTime::createFromFormat('H:i:s',$sdata['event_time']);
-                                $date->modify('+'.$sdata['event_duration'].' minutes');
+                                $eventdate = date('Y-m-d',strtotime($sdata['event_date']));
+                                $eventtime = $sdata['event_time'] ;
+                                $eventdatetime = $eventdate.' '.$eventtime;       
+
+                                $date = new DateTime($eventdatetime, new DateTimeZone($sdata['event_timezone']));
+
+                                $date->setTimezone(new DateTimeZone($timezone_region->region));
+                                $resultdatefrom = $date->format('h:i A');
+
+                                $minutesToAdd = $sdata['event_duration']; // Change this to your desired duration
+
+                                // Add the minutes to the DateTime object
+                                $date->modify("+{$minutesToAdd} minutes");
+
+                                // Format the modified DateTime to the desired output
+                                $resultdateto = $date->format('h:i A');
                             ?>
-                            <p>{{date("g A", strtotime($sdata['event_time']." UTC"))}} - {{$date->format('h:i A')}}</p>
+                            <p>{{$resultdatefrom}} - {{$resultdateto}}</p>
                           </div>
                           <div class="event_card_bottom_right">
                             @if($sdata['booking_status'] == 'true')
