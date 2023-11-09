@@ -66,7 +66,7 @@ button.btn.btn-primary {
                       	<?php foreach ($payment as $value) {
                           ?>
                       	<tr>
-                          <td>{{$value->artistDetail->name}}</td>
+                          <td>{{($value->artistDetail->name ?? '-')}}</td>
                           <td>{{$value->subscriptionPlan->f2s_plan}}</td>
                           <td>{{$value->subscriptionPlan->cost}}</td>
                           <td>{{$value->payment_date->format('d-m-Y')}}</td>
