@@ -140,7 +140,7 @@ input:checked + .slider:before {
                           class="form-control @error('slug') is-invalid @enderror"
                           id="slug"
                           placeholder="Enter Your Title"
-                        />
+                        readonly/>
                         @error('slug')
                           <span class="invalid-feedback">{{$message }}</span>
                         @enderror

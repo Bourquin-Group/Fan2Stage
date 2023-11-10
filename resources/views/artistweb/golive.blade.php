@@ -68,7 +68,7 @@
               <div class="emog_section"><img src="{{asset('/assets/web/images/party-svg.svg')}}" alt=""></div></div>
       
               <div class="main_live"> 
-              <div class="range-slider" data-slider-value="70">
+              <div class="range-slider">
                   <input type="range" orient="vertical" min="0" max="100" value="20" />
                   <div class="range-slider__bar theme3"></div>
                   <div class="range-slider__thumb"></div>
@@ -177,40 +177,40 @@
     // });
   </script>
   <script>
-    let app = (() => {
+//     let app = (() => {
 
-function updateSlider(element) {
-    if (element) {
-        let parent = element.parentElement,
-            lastValue = parent.getAttribute('data-slider-value');
+// function updateSlider(element) {
+//     if (element) {
+//         let parent = element.parentElement,
+//             lastValue = parent.getAttribute('data-slider-value');
 
-        if (lastValue === element.value) {
-            return; // No value change, no need to update then
-        }
+//         if (lastValue === element.value) {
+//             return; // No value change, no need to update then
+//         }
 
-        parent.setAttribute('data-slider-value', element.value);
-        let $thumb = parent.querySelector('.range-slider__thumb'),
-            $bar = parent.querySelector('.range-slider__bar'),
-            pct = element.value * ((parent.clientHeight - $thumb.clientHeight) / parent.clientHeight);
+//         parent.setAttribute('data-slider-value', element.value);
+//         let $thumb = parent.querySelector('.range-slider__thumb'),
+//             $bar = parent.querySelector('.range-slider__bar'),
+//             pct = element.value * ((parent.clientHeight - $thumb.clientHeight) / parent.clientHeight);
 
-        $thumb.style.bottom = `${pct}%`;
-        $bar.style.height = `calc(${pct}% + ${$thumb.clientHeight / 2}px)`;
-        $thumb.textContent = `${element.value}%`;
-    }
-}
-return {
-    updateSlider: updateSlider
-};
+//         $thumb.style.bottom = `${pct}%`;
+//         $bar.style.height = `calc(${pct}% + ${$thumb.clientHeight / 2}px)`;
+//         $thumb.textContent = `${element.value}%`;
+//     }
+// }
+// return {
+//     updateSlider: updateSlider
+// };
 
-})();
+// })();
 
-(function initAndSetupTheSliders() {
-const inputs = [].slice.call(document.querySelectorAll('.range-slider input'));
-  inputs.forEach(input => input.setAttribute('value', '0'));
-inputs.forEach(input => app.updateSlider(input));
-// Cross-browser support where value changes instantly as you drag the handle, therefore two event types.
-inputs.forEach(input => input.addEventListener('input', element => app.updateSlider(input)));
-inputs.forEach(input => input.addEventListener('change', element => app.updateSlider(input)));
-})();
+// (function initAndSetupTheSliders() {
+// const inputs = [].slice.call(document.querySelectorAll('.range-slider input'));
+//   inputs.forEach(input => input.setAttribute('value', '0'));
+// inputs.forEach(input => app.updateSlider(input));
+// // Cross-browser support where value changes instantly as you drag the handle, therefore two event types.
+// inputs.forEach(input => input.addEventListener('input', element => app.updateSlider(input)));
+// inputs.forEach(input => input.addEventListener('change', element => app.updateSlider(input)));
+// })();
   </script>
   @endsection

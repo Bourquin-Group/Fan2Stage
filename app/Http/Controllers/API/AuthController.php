@@ -36,7 +36,7 @@ class AuthController extends BaseController
                 'phone_number' => ['required'],
                 // 'phone_number' => ['required','numeric','digits:10'],
                 //'email' => 'required|email|unique:users',
-                'email' => ['required','regex:/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/','unique:users'],
+                'email' => ['required', 'regex:/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/i', 'unique:users'],
                 'password' => ['required','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/'],
                 'c_password' => 'required|same:password',
                 'accept'=>'required',

@@ -87,7 +87,9 @@
             
             <div class="form-section">
               <label for="">Event Time*</label>
+              <div class="input-icon">
               <input type="time" name="event_time" id="event_time">
+            </div>
               <span class="error_msg" id="event_time1"></span>
             </div>
             

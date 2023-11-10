@@ -3764,14 +3764,18 @@ span.first_name,
 /* 13-06-2023 */
 
 /* 19-06-2023 */
-input[type="time"]::after{
+.input-icon{
+    position: relative;
+}
+.input-icon::after{
     content: "";
     width: 20px;
     height: 20px;
     background: url(../images/calendar_icon.svg) no-repeat center,#041B10;
     position: absolute;
-    right: 18px;
     pointer-events: none;
+    right: 18px;
+    top: 10px;
   
   } 
 /* 19-06-2023 */
