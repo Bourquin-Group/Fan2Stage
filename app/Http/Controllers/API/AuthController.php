@@ -169,7 +169,7 @@ class AuthController extends BaseController
     public function login(Request $request)
             {
                 $validator =$this->validate($request,[
-                    'email' => ['required','regex:/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'],
+                    'email' => ['required', 'regex:/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/i'],
                     'password' => 'required',
                     
                 ],
