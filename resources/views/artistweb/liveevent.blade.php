@@ -244,26 +244,26 @@
                         
                         $.clapsss = function(count) {
                                 if(msg['act1'] <= 10 && msg['act1'] > 0){
-                                if(count >= 1 && count <= 50 && msg['act1'] >= 1 && msg['act1'] <= 2){
+                                if(count >= 1 && count <= 2 && msg['act1'] >= 1 && msg['act1'] <= 5){
                                     $.stopAudio(clap2);
                                     $.stopAudio(clap3);
                                     $.stopAudio(clap4);
                                     $.stopAudio(clap5);
                                     // var clap = 'clap1';
                                     $.playAudio(clap1);
-                                }else if(count >= 1 && count <= 50 && msg['act1'] >= 3 && msg['act1'] <= 4){
+                                }else if(count >= 1 && count <= 2 && msg['act1'] >= 5 && msg['act1'] <= 10){
                                     $.stopAudio(clap1);
                                     $.stopAudio(clap3);
                                     $.stopAudio(clap4);
                                     $.stopAudio(clap5);
                                     $.playAudio(clap2);
-                                }else if(count >= 1 && count <= 50 && msg['act1'] >= 5 && msg['act1'] <= 6){
+                                }else if(count >= 3 && count <= 6 && msg['act1'] >= 1 && msg['act1'] <= 5){
                                     $.stopAudio(clap2);
                                     $.stopAudio(clap1);
                                     $.stopAudio(clap4);
                                     $.stopAudio(clap5);
                                     $.playAudio(clap3);
-                                }else if(count >= 1 && count <= 50 && msg['act1'] >= 7 && msg['act1'] <= 8){
+                                }else if(count >= 3 && count <= 6 && msg['act1'] >= 5 && msg['act1'] <= 10){
                                     $.stopAudio(clap2);
                                     $.stopAudio(clap3);
                                     $.stopAudio(clap1);
@@ -283,26 +283,26 @@
 
                     }
                     if(msg['act2'] <= 10 && msg['act2'] > 0){
-                                if(count >= 1 && count <= 50 && msg['act2'] >= 1 && msg['act2'] <= 2){
+                                if(count >= 1 && count <= 2 && msg['act2'] >= 1 && msg['act2'] <= 5){
                                     $.stopAudio(boo2);
                                     $.stopAudio(boo3);
                                     $.stopAudio(boo4);
                                     $.stopAudio(boo5);
                                     // var boo = 'boo1';
                                     $.playAudio(boo1);
-                                }else if(count >= 1 && count <= 50 && msg['act2'] >= 3 && msg['act2'] <= 4){
+                                }else if(count >= 1 && count <= 2 && msg['act2'] >= 6 && msg['act2'] <= 10){
                                     $.stopAudio(boo1);
                                     $.stopAudio(boo3);
                                     $.stopAudio(boo4);
                                     $.stopAudio(boo5);
                                     $.playAudio(boo2);
-                                }else if(count >= 1 && count <= 50 && msg['act2'] >= 5 && msg['act2'] <= 6){
+                                }else if(count >= 3 && count <= 6 && msg['act2'] >= 1 && msg['act2'] <= 5){
                                     $.stopAudio(boo2);
                                     $.stopAudio(boo1);
                                     $.stopAudio(boo4);
                                     $.stopAudio(boo5);
                                     $.playAudio(boo3);
-                                }else if(count >= 1 && count <= 50 && msg['act2'] >= 7 && msg['act2'] <= 8){
+                                }else if(count >= 3 && count <= 6 && msg['act2'] >= 6 && msg['act2'] <= 10){
                                     $.stopAudio(boo2);
                                     $.stopAudio(boo3);
                                     $.stopAudio(boo1);
@@ -320,26 +320,26 @@
                         document.getElementById("aact2").style.cssText = `height: calc(0% + 0px)`;
                     }
                     if(msg['act3'] <= 10 && msg['act3'] > 0){
-                                if(count >= 1 && count <= 50 && msg['act3'] >= 1 && msg['act3'] <= 2){
+                                if(count >= 1 && count <= 2 && msg['act3'] >= 1 && msg['act3'] <= 5){
                                     $.stopAudio(whistle2);
                                     $.stopAudio(whistle3);
                                     $.stopAudio(whistle4);
                                     $.stopAudio(whistle5);
                                     // var whistle = 'whistle1';
                                     $.playAudio(whistle1);
-                                }else if(count >= 1 && count <= 50 && msg['act3'] >= 3 && msg['act3'] <= 4){
+                                }else if(count >= 1 && count <= 2 && msg['act3'] >= 6 && msg['act3'] <= 10){
                                     $.stopAudio(whistle1);
                                     $.stopAudio(whistle3);
                                     $.stopAudio(whistle4);
                                     $.stopAudio(whistle5);
                                     $.playAudio(whistle2);
-                                }else if(count >= 1 && count <= 50 && msg['act3'] >= 5 && msg['act3'] <= 6){
+                                }else if(count >= 3 && count <= 6 && msg['act3'] >= 1 && msg['act3'] <= 5){
                                     $.stopAudio(whistle2);
                                     $.stopAudio(whistle1);
                                     $.stopAudio(whistle4);
                                     $.stopAudio(whistle5);
                                     $.playAudio(whistle3);
-                                }else if(count >= 1 && count <= 50 && msg['act3'] >= 7 && msg['act3'] <= 8){
+                                }else if(count >= 3 && count <= 6 && msg['act3'] >= 6 && msg['act3'] <= 10){
                                     $.stopAudio(whistle2);
                                     $.stopAudio(whistle3);
                                     $.stopAudio(whistle1);
@@ -436,26 +436,26 @@
 
                     }
                     if(msg['act6'] <= 10 && msg['act6'] > 0){
-                                if(count >= 1 && count <= 50 && msg['act6'] >= 1 && msg['act6'] <= 2){
+                                if(count >= 1 && count <= 2 && msg['act6'] >= 1 && msg['act6'] <= 5){
                                     $.stopAudio(laugh2);
                                     $.stopAudio(laugh3);
                                     $.stopAudio(laugh4);
                                     $.stopAudio(laugh5);
                                     // var laugh = 'laugh1';
                                     $.playAudio(laugh1);
-                                }else if(count >= 1 && count <= 50 && msg['act6'] >= 3 && msg['act6'] <= 4){
+                                }else if(count >= 1 && count <= 2 && msg['act6'] >= 6 && msg['act6'] <= 10){
                                     $.stopAudio(laugh1);
                                     $.stopAudio(laugh3);
                                     $.stopAudio(laugh4);
                                     $.stopAudio(laugh5);
                                     $.playAudio(laugh2);
-                                }else if(count >= 1 && count <= 50 && msg['act6'] >= 5 && msg['act6'] <= 6){
+                                }else if(count >= 3 && count <= 6 && msg['act6'] >= 1 && msg['act6'] <= 5){
                                     $.stopAudio(laugh2);
                                     $.stopAudio(laugh1);
                                     $.stopAudio(laugh4);
                                     $.stopAudio(laugh5);
                                     $.playAudio(laugh3);
-                                }else if(count >= 1 && count <= 50 && msg['act6'] >= 7 && msg['act6'] <= 8){
+                                }else if(count >= 3 && count <= 6 && msg['act6'] >= 6 && msg['act6'] <= 10){
                                     $.stopAudio(laugh2);
                                     $.stopAudio(laugh3);
                                     $.stopAudio(laugh1);
