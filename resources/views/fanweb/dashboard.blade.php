@@ -79,9 +79,18 @@
                             <p>{{$resultdatefrom}} - {{$resultdateto}}</p>
                         </div>
                         <div class="event_card_bottom_right">
+                            @if($ldata['event_amount'] == 0)
+                                
+                            <a href="{{route('golive',$ldata['event_id'])}}"><button>Join Now</button></a>
+                            
+                            @else
+                            
                             <a href="{{route('live-event',base64_encode($ldata['event_id']))}}">
-                            <button>Join Now</button>
-                            </a>
+                                <button>Join Now</button>
+                                </a>
+                            
+                            @endif
+                            
                         </div>
                         </div>
                     </div>
