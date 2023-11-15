@@ -2809,6 +2809,8 @@ input[type=date]:not(:valid)::-webkit-datetime-edit-year-field {
     text-align: center;
     height: 100%;
     max-height: 100%;
+    overflow: hidden;
+    border-radius: 50px;
 }
 
 .range-slider:before {

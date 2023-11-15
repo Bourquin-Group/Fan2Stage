@@ -205,8 +205,6 @@
                     function signIn() {
                         var event_id = $('#event_id').val();
                         var userid = $('#user_id').val();
-                        // const event_id = 160;
-                        // const userid = 43;
 
                         socket.emit('join-event', { event: event_id, user_id: userid });
                     }
@@ -241,7 +239,12 @@
                     });
 
                     socket.on('artist_action_graph_count', (msg) => {
-                        
+                        document.getElementById("aact1").style.cssText = `height: calc(${msg['act1'] * 10}% + 0px)`;
+                        document.getElementById("aact2").style.cssText = `height: calc(${msg['act2'] * 10}% + 0px)`;
+                        document.getElementById("aact3").style.cssText = `height: calc(${msg['act3'] * 10}% + 0px)`;
+                        document.getElementById("aact4").style.cssText = `height: calc(${msg['act4'] * 10}% + 0px)`;
+                        document.getElementById("aact5").style.cssText = `height: calc(${msg['act5'] * 10}% + 0px)`;
+                        document.getElementById("aact6").style.cssText = `height: calc(${msg['act6'] * 10}% + 0px)`;
                         $.clapsss = function(count) {
                                 if(msg['act1'] <= 10 && msg['act1'] > 0){
                                 if(count >= 1 && count <= 2 && msg['act1'] >= 1 && msg['act1'] <= 5){
@@ -276,12 +279,13 @@
                                     $.stopAudio(clap1);
                                     $.playAudio(clap5);
                                 }
-                                       
-                        document.getElementById("aact1").style.cssText = `height: calc(${msg['act1'] * 10}% + 0px)`;
+                                // document.getElementById("aact1").style.cssText = `height: calc(${msg['act1'] * 10}% + 0px)`;
+                        
                     }else{
                         document.getElementById("aact1").style.cssText = `height: calc(0% + 0px)`;
 
                     }
+                    
                     if(msg['act2'] <= 10 && msg['act2'] > 0){
                                 if(count >= 1 && count <= 2 && msg['act2'] >= 1 && msg['act2'] <= 5){
                                     $.stopAudio(boo2);
@@ -315,7 +319,7 @@
                                     $.stopAudio(boo1);
                                     $.playAudio(boo5);
                                 }
-                        document.getElementById("aact2").style.cssText = `height: calc(${msg['act2'] * 10}% + 0px)`;
+                                // document.getElementById("aact2").style.cssText = `height: calc(${msg['act2'] * 10}% + 0px)`;
                     }else{
                         document.getElementById("aact2").style.cssText = `height: calc(0% + 0px)`;
                     }
@@ -352,7 +356,7 @@
                                     $.stopAudio(whistle1);
                                     $.playAudio(whistle5);
                                 }
-                        document.getElementById("aact3").style.cssText = `height: calc(${msg['act3'] * 10}% + 0px)`;
+                        // document.getElementById("aact3").style.cssText = `height: calc(${msg['act3'] * 10}% + 0px)`;
                     }else{
                         document.getElementById("aact3").style.cssText = `height: calc(0% + 0px)`;
 
@@ -391,7 +395,7 @@
                                 //     $.stopAudio(aww1);
                                 //     $.playAudio(aww5);
                                 // }
-                        document.getElementById("aact4").style.cssText = `height: calc(${msg['act4'] * 10}% + 0px)`;
+                        // document.getElementById("aact4").style.cssText = `height: calc(${msg['act4'] * 10}% + 0px)`;
                     }else{
                         document.getElementById("aact4").style.cssText = `height: calc(0% + 0px)`;
 
@@ -430,7 +434,7 @@
                                 //     $.stopAudio(cheer1);
                                 //     $.playAudio(cheer5);
                                 // }
-                        document.getElementById("aact5").style.cssText = `height: calc(${msg['act5'] * 10}% + 0px)`;
+                        // document.getElementById("aact5").style.cssText = `height: calc(${msg['act5'] * 10}% + 0px)`;
                     }else{
                         document.getElementById("aact5").style.cssText = `height: calc(0% + 0px)`;
 
@@ -468,7 +472,7 @@
                                     $.stopAudio(laugh1);
                                     $.playAudio(laugh5);
                                 }
-                        document.getElementById("aact6").style.cssText = `height: calc(${msg['act6'] * 10}% + 0px)`;
+                        // document.getElementById("aact6").style.cssText = `height: calc(${msg['act6'] * 10}% + 0px)`;
                     }else{
                         document.getElementById("aact6").style.cssText = `height: calc(0% + 0px)`;
 

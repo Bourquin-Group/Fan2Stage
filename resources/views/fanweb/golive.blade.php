@@ -599,10 +599,10 @@ var testclass = 0;
                     //     stopAudio(laugh);
                     // }
                     }
-                if(totalcountfunction1 <= 10){
+                // if(totalcountfunction1 <= 10){
                     document.getElementById(ids).style.cssText = `height:${totalcountfunction1 * 10}%`;
                     document.getElementById(ids1).textContent = totalcountfunction1;
-                }
+                // }
                 $.actionbutton_call(v, btn.click_counter);
                     testclass = 1;
                 
@@ -698,8 +698,8 @@ var testclass = 0;
             };
 
             // socket script
-                // var socket = io.connect("https://live-stream.f2s.live");
-                var socket = io.connect("https://fan2stage-live.colanapps.in");
+                var socket = io.connect("https://live-stream.f2s.live");
+                // var socket = io.connect("https://fan2stage-live.colanapps.in");
                     
                 signIn();
                     
