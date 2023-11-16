@@ -244,7 +244,7 @@ audio2.addEventListener('ended', function() {
     
                     socket.on('live_fan_count', (msg) => {
                         $('#livecount').html(msg['livecount']);
-                    	if (msg['livecount'] < 2) {
+                    	if (msg['livecount'] == 1) {
                             isPlaying = true;
                             audio1.play(); // Start playing audio1
                         } else if (msg['livecount'] >= 2 && msg['livecount'] < 4) {
