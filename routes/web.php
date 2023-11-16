@@ -420,6 +420,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
                 Route::post('subscription', [App\Http\Controllers\Fan\EventbookingController::class, 'subscriptionPost'])->name('subscription.posts');
                 Route::get('subscriptions-payment/{id}', [App\Http\Controllers\Fan\EventbookingController::class, 'bookevent'])->name('bookevent');
                 Route::get('freebookevent/{id}', [App\Http\Controllers\Fan\EventbookingController::class, 'freebookevent'])->name('freebookevent');
+                Route::post('checkprebooking', [App\Http\Controllers\Fan\EventbookingController::class, 'checkprebooking'])->name('checkprebooking');
                 // Fan Subscription
                 
                 // golive

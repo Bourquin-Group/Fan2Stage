@@ -86,6 +86,11 @@ class HomeController extends Controller
     }
     public function scheduledEvent($id)
     {
+        $timezone_region = timezone::where('timezone',Session::get('user_timezone'))->first();
+        // dd(Session::get('user_timezone'));
+        if(Session::get('user_timezone')){
+        date_default_timezone_set($timezone_region['region']);
+        }
         $id = base64_decode($id);
         $liveevent = app('App\Http\Controllers\API\EventController')->eventshow($id);
         $liveeventArray = json_decode ($liveevent->content(), true);
@@ -100,7 +105,7 @@ class HomeController extends Controller
             ->whatsapp()
             ->linkedin();
 
-        return view('fanweb.scheduled-event',compact('event','shareButton'));
+        return view('fanweb.scheduled-event',compact('event','shareButton','timezone_region'));
     }
     public function pastEvent($id)
     {

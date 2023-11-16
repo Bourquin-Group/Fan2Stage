@@ -145,8 +145,10 @@
                                 <a href="{{route('scheduled-event',base64_encode($sdata['event_id']))}}"><button>Booked</button></a>
                                 
                                 @else
+                                <input type="hidden" name="event_id" value="{{$sdata['event_id']}}">
                                 
-                                <a href="{{route('scheduled-event',base64_encode($sdata['event_id']))}}"><button> Book Now</button></a> 
+                                <button class="bookingevent"> Book Now</button>
+                                {{-- <a href="{{route('scheduled-event',base64_encode($sdata['event_id']))}}"><button> Book Now</button></a>  --}}
                                 
                                 @endif
                             
@@ -188,6 +190,34 @@
    
 @endsection
 @section('footer')
+<script>
+     $(document).ready(function(){
+      $(document).on("click", ".bookingevent", function (e) {
+        var event_id = $("input[name=event_id]").val();
+            e.preventDefault();
+            $.ajax({
+                headers: {
+                    'X-CSRF-Token': '{{ csrf_token() }}',
+                },
+                url: "{{route('checkprebooking') }}",
+             
+                type: 'POST',
+                data: {'id':event_id},
+                success: function (data) {
+                    console.log(data);
+                  if (data.success === false) {
+                    if(data.flag == 0){
+                        swal.fire(data.message,"error");
+                    }
+                  }else{
+                    window.location.href = "{{ url('/fan/scheduled-event/') }}"+"/"+data.event_id;
+                  }
+                }
+            });
+        });
+
+    });
+</script>
 <script>
     var val = document.getElementById("timemsg").value;
 

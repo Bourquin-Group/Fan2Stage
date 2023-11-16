@@ -245,6 +245,8 @@ class EventController extends Controller
 
                 // youtube
                 // url twitch and youtube
+                $duration = $request['event_duration'] * 60;
+                $newTime = strtotime($request['event_time']) + $duration;
                 $inputs = [ 
                     'event_title' => $request['event_title'],
                     'event_duration' => $request['event_duration'],
@@ -258,6 +260,7 @@ class EventController extends Controller
                     'event_date' => $request ['event_date'],
                     'event_plan_type' => ($events_cost == 'free') ? 0 : 1,
                     'event_time' => date("H:i:s", strtotime($request['event_time'])),
+                    'event_closetime' => date("H:i:s", $newTime),
                     'event_timezone' => $request ['event_timezone'],
                     'user_id' => auth()->user()->id
                 ];
@@ -625,6 +628,9 @@ class EventController extends Controller
                     $event->event_timezone = $input['event_timezone'];
                     $event->event_date = $input['event_date'];
                     $event->event_time =date("H:i:s", strtotime($input['event_time']));
+                    $duration = $input['event_duration'] * 60;
+                    $newTime = strtotime($input['event_time']) + $duration;
+                    $event->event_closetime =date("H:i:s", $newTime);
                     $event->event_description = $input['event_description'];
                     $event->event_status = 1;
                     $event->save();

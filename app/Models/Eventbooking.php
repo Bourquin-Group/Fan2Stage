@@ -17,7 +17,7 @@ class Eventbooking extends Model
         return $this->hasMany(User::class,'id','user_id');
     }
     public function eventDetail(){
-        return $this->hasMany(Event::class,'id','user_id');
+        return $this->belongsTo(Event::class,'event_id','id');
     }
     public function artist(){
         return $this->belongsTo(User::class,'artist_id');

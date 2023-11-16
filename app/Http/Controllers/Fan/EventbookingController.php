@@ -177,7 +177,6 @@ class EventbookingController extends Controller
                                     }  
                 }
                 Session::flash('paymentsuccess', "Payment has been success");
-
               
             }catch (Exception $e) {
                 Session::flash('error', "Payment has been failed. Try again later..");
@@ -310,6 +309,41 @@ class EventbookingController extends Controller
         $Event = Eventbooking::create($inputs);
         Session::flash('paymentsuccess', "Event Booked Successfully");
         return redirect('fan/scheduled-event/'.base64_encode($id));
+    }
+    public function checkprebooking(Request $request){
+        $id = $request->id;
+        
+        $event = Event::where('id', $id)->where('event_status', 1)->first();
+
+        $eventStartTime = $event->event_time;
+        $eventEndTime = $event->event_closetime;
+        $eventDate = $event->event_date;
+        
+        $bookings = Eventbooking::whereHas('eventDetail', function ($query) use ($eventStartTime, $eventEndTime, $eventDate) {
+            $query->where('event_date', $eventDate)
+                ->where(function ($subQuery) use ($eventStartTime, $eventEndTime) {
+                    $subQuery->whereBetween('event_time', [$eventStartTime, $eventEndTime])
+                        ->orWhereBetween('event_closetime', [$eventStartTime, $eventEndTime]);
+                });
+        })
+        ->where('user_id', Auth::user()->id)
+        ->get();
+       
+        if ($bookings->isEmpty()) {
+            return response()->json([
+                'success' => true,
+                'flag' => 1,
+                'event_id'=>base64_encode($request->id),
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'flag' => 0,
+                'message' => 'You have already booked the event with this time.',
+            ]);
+            // Session::flash('paymentsuccess', "You have already booked the event with this time.");
+            // return redirect('fan/scheduled-event/'.base64_encode($id));
+        }
     }
     
     public function cancelbooking(Request $request)

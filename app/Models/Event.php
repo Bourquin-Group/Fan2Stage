@@ -11,7 +11,7 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id','event_title','event_date','event_time','eventstarttime','eventendtime','event_timezone','link_to_event_stream','eventamount','event_duration','ratings','event_status','event_count','event_plan_type','event_image','genre','event_description','golivestatus',
+        'user_id','event_title','event_date','event_time','event_closetime','eventstarttime','eventendtime','event_timezone','link_to_event_stream','eventamount','event_duration','ratings','event_status','event_count','event_plan_type','event_image','genre','event_description','golivestatus',
     ];
     protected $dates =  ['event_date'];
     public function userDetail(){

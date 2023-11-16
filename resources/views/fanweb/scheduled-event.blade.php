@@ -109,7 +109,18 @@
                                     <img src="{{asset('/assets/fan/images/fan-time.svg')}}" alt="" srcset="">
                                    <div class="label-del">
                                        <label for="">Time & Duration</label>
-                                       <span>{{date("g:i A", strtotime($event['event_time']." UTC"))}} . {{$event['event_duration']}} mins     </span>
+                                       <?php
+                                $eventdate = date('Y-m-d',strtotime($event['event_date']));
+                                $eventtime = $event['event_time'] ;
+                                $eventdatetime = $eventdate.' '.$eventtime;       
+
+                                $date = new DateTime($eventdatetime, new DateTimeZone($event['event_timezone']));
+
+                                $date->setTimezone(new DateTimeZone($timezone_region->region));
+                                $resultdatefrom = $date->format('h:i A');
+                               
+                            ?>
+                                       <span>{{$resultdatefrom}} . {{$event['event_duration']}} mins     </span>
                                    </div>                                   
                               </div>
                             </div>
