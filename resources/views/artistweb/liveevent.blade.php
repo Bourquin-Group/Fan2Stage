@@ -48,7 +48,7 @@
                 <div id="actt1">0</div>
               <div class="range-slider">
                 <audio id="crowd" src="{{ asset('assets/audio/RoomNoice_B1.mp3') }}"></audio>
-                <audio id="crowd1" src="{{ asset('assets/audio/RoomNoice_B1.mp3') }}"></audio>
+                <audio id="crowd1" src="{{ asset('assets/audio/RoomNoice_B2.mp3') }}"></audio>
                 <input type="hidden" name="event_id" id="event_id" value="{{$sc_event['event_id']}}">
                 <input type="hidden" name="user_id" id="user_id" value="{{isset(auth()->user()->id) ? auth()->user()->id : ''}}">
                   <input type="range" orient="vertical" min="0" max="100" />
