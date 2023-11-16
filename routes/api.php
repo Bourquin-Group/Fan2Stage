@@ -100,6 +100,7 @@ Route::middleware('auth:api')->group( function () {
 	Route::get('bookingevents/{id}','App\Http\Controllers\API\EventbookingController@bookingevents')->name('bookingevents');
 	Route::get('cancelbooking/{id}','App\Http\Controllers\API\EventbookingController@cancelbooking')->name('cancelbooking');
 	Route::get('freebookevent/{id}', 'App\Http\Controllers\API\EventbookingController@freebookevent')->name('freebookevent');
+	Route::post('checkprebooking', 'App\Http\Controllers\API\EventbookingController@checkprebooking')->name('checkprebooking');
     // Event Booking
 
 	// Booking Event Filter

@@ -176,7 +176,7 @@ class EventbookingController extends Controller
                                         return redirect()->back();
                                     }  
                 }
-                Session::flash('paymentsuccess', "Payment has been success");
+                Session::flash('paymentsuccess', "Event Booked Successfully");
               
             }catch (Exception $e) {
                 Session::flash('error', "Payment has been failed. Try again later..");

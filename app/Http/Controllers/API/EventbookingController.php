@@ -501,5 +501,43 @@ class EventbookingController extends Controller
             return response()->json($response, 400);
         }
     }
+
+    public function checkprebooking(Request $request){
+        $id = $request->id;
+        
+        $event = Event::where('id', $id)->where('event_status', 1)->first();
+
+        $eventStartTime = $event->event_time;
+        $eventEndTime = $event->event_closetime;
+        $eventDate = $event->event_date;
+        
+        $bookings = Eventbooking::whereHas('eventDetail', function ($query) use ($eventStartTime, $eventEndTime, $eventDate) {
+            $query->where('event_date', $eventDate)
+                ->where(function ($subQuery) use ($eventStartTime, $eventEndTime) {
+                    $subQuery->whereBetween('event_time', [$eventStartTime, $eventEndTime])
+                        ->orWhereBetween('event_closetime', [$eventStartTime, $eventEndTime]);
+                });
+        })
+        ->where('user_id', Auth::user()->id)
+        ->get();
+       
+        if ($bookings->isEmpty()) {
+            $response = [
+                'status' => 200,
+                'success' => true,
+                'flag' => 1,
+                'event_id'=>$request->id,
+            ];
+            return response()->json($response, 200);
+        } else {
+            $response = [
+                'status' => 200,
+                'success'   => true,
+                'flag' => 0,
+                'message' => 'You have already booked the event with this time.',
+            ];
+            return response()->json($response, 200);
+        }
+    }
        
 }
