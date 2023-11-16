@@ -169,8 +169,19 @@
   </script>
 
 <script>
-    var crowd = document.getElementById('crowd');
-    var crowd1 = document.getElementById('crowd1');
+  const audio1 = document.getElementById('crowd');
+const audio2 = document.getElementById('crowd1');
+let isPlaying = false;
+
+audio1.addEventListener('ended', function() {
+    audio1.currentTime = 0; // Reset audio1 to the beginning
+    audio1.play();
+});
+
+audio2.addEventListener('ended', function() {
+    audio2.currentTime = 0; // Reset audio2 to the beginning
+    audio2.play();
+});
 </script>
 <script>
     // var clap = document.getElementById('clap');
@@ -233,6 +244,17 @@
     
                     socket.on('live_fan_count', (msg) => {
                         $('#livecount').html(msg['livecount']);
+                    	if (msg['livecount'] < 2) {
+                            isPlaying = true;
+                            audio1.play(); // Start playing audio1
+                        } else if (msg['livecount'] >= 2 && msg['livecount'] < 4) {
+                            isPlaying = true;
+                            audio2.play(); // Start playing audio2
+                        }else {
+                            isPlaying = false;
+                            audio1.pause();
+                            audio2.pause();
+                        }
                         $('#bookedcount').html(msg['bookedcount']);
                         $.clapsss(msg['livecount']);
                         console.log('live_fan_count response: ', msg)
