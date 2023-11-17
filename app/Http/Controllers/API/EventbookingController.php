@@ -465,6 +465,11 @@ class EventbookingController extends Controller
         // $id = base64_decode($id);
         $event = Event::where('id',$id)->where('event_status',1)->first();
         if($event){
+            $Event = Eventbooking::where('event_id',$id)->first();
+        if($Event){
+            $Event->status = 1;
+            $Event->save();
+        }else{
             $inputs = [ 
                 'artist_id' => $event->user_id,
                 'event_id' => $id,
@@ -474,6 +479,7 @@ class EventbookingController extends Controller
                 'user_id' => auth()->user()->id
             ];
             $Event = Eventbooking::create($inputs);
+        }
             if($Event){
                 $response = [
                     'status' => 200,
@@ -519,6 +525,7 @@ class EventbookingController extends Controller
                 });
         })
         ->where('user_id', Auth::user()->id)
+         ->where('status', 1)
         ->get();
        
         if ($bookings->isEmpty()) {
