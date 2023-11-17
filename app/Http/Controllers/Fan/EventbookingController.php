@@ -298,15 +298,22 @@ class EventbookingController extends Controller
     public function freebookevent($id){
         $id = base64_decode($id);
         $event = Event::where('id',$id)->where('event_status',1)->first();
-        $inputs = [ 
-            'artist_id' => $event->user_id,
-            'event_id' => $id,
-            'amount' => 0,
-            'payment_status' => 1,
-            'status' => 1,
-            'user_id' => auth()->user()->id
-        ];
-        $Event = Eventbooking::create($inputs);
+        $Event = Eventbooking::where('event_id',$id)->first();
+        if($Event){
+            $Event->status = 1;
+            $Event->save();
+        }else{
+            $inputs = [ 
+                'artist_id' => $event->user_id,
+                'event_id' => $id,
+                'amount' => 0,
+                'payment_status' => 1,
+                'status' => 1,
+                'user_id' => auth()->user()->id
+            ];
+            $Event = Eventbooking::create($inputs);
+        }
+        
         Session::flash('paymentsuccess', "Event Booked Successfully");
         return redirect('fan/scheduled-event/'.base64_encode($id));
     }
@@ -327,6 +334,7 @@ class EventbookingController extends Controller
                 });
         })
         ->where('user_id', Auth::user()->id)
+        ->where('status', 1)
         ->get();
        
         if ($bookings->isEmpty()) {
