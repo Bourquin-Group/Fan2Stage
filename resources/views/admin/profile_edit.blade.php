@@ -36,10 +36,10 @@
               <div class="card">
                 
                    @if($editprofile)
-                    <form class="form-horizontal" method="post" action="{{ url('/admin/updateprofile',$editprofile->id) }}" enctype="multipart/form-data">
+                    <form class="form-horizontal" method="post" action="{{ url('/admin/updateprofile',$editprofile->id) }}" enctype="multipart/form-data" onsubmit="return validateForm()">
                   @method("POST")
                   @else
-                    <form class="form-horizontal" method="post" action="{{ url('/admin/profilestore') }}">
+                    <form class="form-horizontal" method="post" action="{{ url('/admin/profilestore') }}" onsubmit="return validateForm()">
                       @method("POST")
                   @endif
                   @csrf
@@ -143,17 +143,12 @@
                       >
                       <div class="col-sm-5">
                       @if($editprofile)
-                      <input type="file" name="image" class="form-control" id="image">
+                      <input type="file" name="image" class="form-control" id="image" accept=".svg, .jpg, .jpeg, .png" onchange="checkFile()">
                       <img src="{{asset('assets/images/profile/thumbnail/'.$editprofile->image)}}" name="old_upload_image" id="old_upload_image" style="margin-top: 10px;">
                      @else
-                     <input type="file" name="image" class="form-control" id="image">
+                     <input type="file" name="image" class="form-control" id="image" accept=".svg, .jpg, .jpeg, .png" onchange="checkFile()">
                     @endif
-                        <!-- <input name="image" value=""
-                          type="file"
-                          class="form-control @error('image') is-invalid @enderror"
-                          id="fname"
-                          placeholder="Enter Your Link"
-                        /> -->
+                    <span id="fileError" class="invalid-feedback" style="display: none;"></span>
                         @error('image')
                           <span class="invalid-feedback">{{$message }}</span>
                         @enderror
@@ -189,5 +184,34 @@
       }
   });
   });
+
+  function checkFile() {
+    var fileInput = document.getElementById('image');
+    var errorContainer = document.getElementById('fileError');
+
+    if (fileInput.files.length === 0) {
+        errorContainer.style.display = 'none';
+    }
+}
+
+function validateForm() {
+    var fileInput = document.getElementById('image');
+    var allowedExtensions = /(\.svg|\.jpg|\.jpeg|\.png)$/i;
+    var errorContainer = document.getElementById('fileError');
+
+    if (fileInput.files.length > 0) {
+        var filePath = fileInput.value;
+        if (!allowedExtensions.exec(filePath)) {
+            errorContainer.style.display = 'block';
+            errorContainer.innerHTML = 'Please upload files having extensions .svg, .jpg, .jpeg, .png only.';
+            return false;
+        } else {
+            errorContainer.style.display = 'none';
+            return true;
+        }
+    }
+    return true; // If no file is uploaded, skip validation
+}
+
 </script>
 @endsection

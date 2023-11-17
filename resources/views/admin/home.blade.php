@@ -27,6 +27,11 @@
         <!-- Bread crumb and right sidebar toggle -->
         <!-- ============================================================== -->
         <div class="page-breadcrumb">
+          @if(session()->has('Successs'))
+          <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+            <i class="fas fa-check-circle"></i><strong class="px-2">{{ session('Successs') }}</strong>
+        </div>
+                                        @endif
           <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
               <h4 class="page-title">Dashboard</h4>
@@ -45,12 +50,9 @@
         </div>
         <div class="container-fluid" style="min-height: 0px;">
            @if(session()->has('Success'))
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                            <i class="fas fa-check-circle"></i><strong class="px-2">{{ session('Success') }}</strong>
-                                            <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button> -->
-                                        </div>
+           <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+            <i class="fas fa-check-circle"></i><strong class="px-2">{{ session('Success') }}</strong>
+        </div>
                                         @endif
           <!-- ============================================================== -->
         <!-- Cards -->
@@ -158,12 +160,9 @@
 
                   <!-- <h5 class="card-title">Artist List</h5> -->
                       @if(session()->has('Success'))
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                            <i class="fas fa-check-circle"></i><strong class="px-2">{{ session('Success') }}</strong>
-                                            <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button> -->
-                                        </div>
+                      <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+                        <i class="fas fa-check-circle"></i><strong class="px-2">{{ session('Success') }}</strong>
+                    </div>
                                         @endif
                   <div class="table-responsive">
                     <table class="table table-striped table-bordered" >
@@ -266,9 +265,9 @@
 
                   <!-- <h5 class="card-title">Event List</h5> -->
                       @if(session()->has('Success'))
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                            <i class="fas fa-check-circle"></i><strong class="px-2">{{ session('Success') }}</strong>
-                                        </div>
+                      <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+                        <i class="fas fa-check-circle"></i><strong class="px-2">{{ session('Success') }}</strong>
+                    </div>
                                         @endif
                   <!-- <div class="table-responsive"> -->
                     <table  class="table">
@@ -301,7 +300,7 @@
                           <td><?php echo $value->event_title; ?></td>
                           <td><?php echo date('Y-m-d',strtotime($value->event_date)); ?></td>
                           <td><img src="<?php echo $url; ?>"  width="50" height="50"></td> 
-                          <td>{{$value->eventBooking->where('event_id', $value->id)->count()}}</td>
+                          <td>{{($value->eventBooking) ? $value->eventBooking->where('event_id', $value->id)->count() : "-"}}</td>
                         </tr>
   
                         <?php }?>

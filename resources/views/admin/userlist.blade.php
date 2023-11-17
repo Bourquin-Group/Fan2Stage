@@ -52,12 +52,9 @@ button.btn.btn-primary {
 
                   <!-- <h5 class="card-title">Fan User List</h5> -->
                       @if(session()->has('Success'))
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                            <i class="fas fa-check-circle"></i><strong class="px-2">{{ session('Success') }}</strong>
-                                            <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button> -->
-                                        </div>
+                      <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+                        <i class="fas fa-check-circle"></i><strong class="px-2">{{ session('Success') }}</strong>
+                    </div>
                                         @endif
                   <div class="table-responsive">
                     <table

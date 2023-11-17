@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\country;
 use Session;
 use Hash;
-use Image;
+use Intervention\Image\Facades\Image as Image;
 use Auth;
 class ProfileManageController extends Controller
 {
@@ -68,7 +68,7 @@ class ProfileManageController extends Controller
         {
             return redirect('/admin/dashboard')->with('Error','Profile not updated');
         }
-        return redirect('/admin/dashboard')->with('Success','Profile Details Updated Sucessfully');
+        return redirect('/admin/dashboard')->with('Successs','Profile Details Updated Sucessfully');
     }
 
 

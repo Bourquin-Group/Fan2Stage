@@ -116,7 +116,7 @@
                     <div class="form-group row">
                       <label for="theDate" class="col-sm-2 text-end control-label col-form-label">Event Dates</label>
                       <div class="col-sm-5">
-                        <input name="event_date" value="{{\Illuminate\Support\Carbon::parse($edit_event['event_date'])->format("d-m-Y")}}" type="date" class="form-control" @error('event_date') is-invalid @enderror
+                        <input name="event_date" value="{{ date_format(date_create($edit_event['event_date']), 'Y-m-d') }}" type="date" class="form-control" @error('event_date') is-invalid @enderror
                           id="theDate1"
                         />
                         <span class="invalid-feedback" id="event_date1"></span>
@@ -126,11 +126,7 @@
                     <div class="form-group row">
                       <label for="time" class="col-sm-2 text-end control-label col-form-label">Event Time</label>
                       <div class="col-sm-5">
-                        <select class="form-control" name="event_time" id="event_time">
-                            <option value="11 AM"{{(isset($edit_event['event_time'])  == '11 AM') ? 'Selected' : ''}}>11 AM</option>
-                            <option value="12 AM" {{(isset($edit_event['event_time'])  == '12 AM') ? 'Selected' : ''}}>12 AM</option>
-                            <option value="10 PM" {{(isset($edit_event['event_time'])  == '10 PM') ? 'Selected' : ''}}>10 PM</option>
-                        </select>
+                        <input type="time" class="form-control" name="event_time" id="event_time" value="{{date('H:i', strtotime($edit_event['event_time']))}}">
                         <span class="invalid-feedback" id="event_time1"></span>
                       </div>
                     </div>
@@ -138,8 +134,12 @@
                       <label for="duration" class="col-sm-2 text-end control-label col-form-label">Event Duration</label>
                       <div class="col-sm-5">
                         <select class="form-control" name="event_duration" id="event_duration">
-                            <option value="120 Mins" {{($edit_event['event_duration'] == '120 Mins') ? 'Selected' : ''}}>120 Mins</option>
-                            <option value="60 Mins" {{($edit_event['event_duration'] == '60 Mins') ? 'Selected' : ''}}>60 Mins</option>
+                          <?php 
+                $timer = "60,120,180";
+                        $durations = explode(',',$timer);?>
+                        @forEach($eventduration as $value)
+                          <option value="{{$value->duration}}" {{($edit_event['event_duration'] == $value->duration) ? 'Selected' : ''}}>{{($value->duration)}} {{(in_array($value->duration, $durations)) ? 'Hour' : 'Mins'}}</option>
+                        @endforeach
                         </select>
                         <span class="invalid-feedback" id="event_duration1"></span>
                       </div>
@@ -163,6 +163,16 @@
                             placeholder="Enter Your Event Link"
                           />
                           <span class="invalid-feedback" id="link_to_event_stream1"></span>
+                        </div>
+                      </div>
+                    <div class="form-group row">
+                        <label for="event_link" class="col-sm-2 text-end control-label col-form-label">Amount</label>
+                        <div class="col-sm-5">
+                          <input name="eventamount" value="{{ ($edit_event)? (old('eventamount')? old('eventamount') : $edit_event['eventamount']) : old('eventamount') }}" type="text" class="form-control @error('eventamount') is-invalid @enderror"
+                            id="event_link"
+                            placeholder="Enter Your Event Link"
+                          />
+                          <span class="invalid-feedback" id="eventamount1"></span>
                         </div>
                       </div>
 
@@ -321,6 +331,8 @@ var form_data = new FormData();
         form_data.append('genre', genres);
         var link = $("input[name=link_to_event_stream]").val();
         form_data.append('link_to_event_stream', link);
+        var link = $("input[name=eventamount]").val();
+        form_data.append('eventamount', link);
         var description = $("#event_description").val();
         form_data.append('event_description', description);
         var id = $("input[name=id]").val();
@@ -381,13 +393,17 @@ var form_data = new FormData();
                   var link_to_event_stream_error  = error_msg1['link_to_event_stream'][0];
                   $('#link_to_event_stream1').html(link_to_event_stream_error);
                 }
+                if(error_msg1['eventamount'] && error_msg1['eventamount'].length > 0){
+                  var eventamount_error  = error_msg1['eventamount'][0];
+                  $('#eventamount1').html(eventamount_error);
+                }
                 if(error_msg1['event_description'] && error_msg1['event_description'].length > 0){
                   var event_description_error  = error_msg1['event_description'][0];
                   $('#event_description1').html(event_description_error);
                 }
 
                }else{
-                location.reload();
+                window.location.href = "{{ url('/admin/event') }}";
                }
               
               },

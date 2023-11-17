@@ -8,6 +8,7 @@ use App\Models\introductory;
 use Image;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\eventduration;
 
 class EventController extends Controller
 {
@@ -18,7 +19,8 @@ class EventController extends Controller
     }
      public function eventcreation(Request $request)
     {
-    	return view('admin.event_manage');
+      $eventduration = eventduration::get();
+    	return view('admin.event_manage',compact('eventduration'));
     }
      public function eventstore(Request $request)
     {
@@ -42,8 +44,9 @@ class EventController extends Controller
       $edit_event = app('App\Http\Controllers\API\EventController')->eventshowweb($id);
       $edit_eventArray = json_decode ($edit_event->content(), true);
       $edit_event = $edit_eventArray['data'];
+      $eventduration = eventduration::get();
        
-        return view('admin.event_edit', compact('edit_event'));
+        return view('admin.event_edit', compact('edit_event','eventduration'));
     }
     public function updateevent(Request $request, $id)
     {
@@ -53,7 +56,12 @@ class EventController extends Controller
       if($va == 'true'){
         return response()->json($edit_eventArray['event_id']);
       }else{
-        return response()->json(['status' => 0, 'message' => $edit_eventArray['message']]);
+        if($edit_eventArray['error']){
+          return response()->json(['status' => 0, 'message' => $edit_eventArray['error']]);
+        }else{
+          return response()->json(['status' => 0, 'message' => $edit_eventArray['message']]);
+        }
+        
       }
     }
     public function deleteevent($id)

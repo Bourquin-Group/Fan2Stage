@@ -64,11 +64,7 @@
                     <div class="form-group row">
                       <label for="time" class="col-sm-2 text-end control-label col-form-label">Event Time</label>
                       <div class="col-sm-5">
-                        <select class="form-control" name="event_time" id="event_time">
-                            <option value="11 AM">11 AM</option>
-                            <option value="12 AM">12 AM</option>
-                            <option value="10 PM">10 PM</option>
-                        </select>
+                        <input type="time" class="form-control" name="event_time" id="event_time">
                         <span class="invalid-feedback" id="event_time1"></span>
                       </div>
                     </div>
@@ -76,8 +72,13 @@
                       <label for="duration" class="col-sm-2 text-end control-label col-form-label">Event Duration</label>
                       <div class="col-sm-5">
                         <select class="form-control" name="event_duration" id="event_duration">
-                            <option value="120 Min">120 Min</option>
-                            <option value="60 Min">60 Min</option>
+                          <option value="">Select Duration</option>
+                          <?php 
+                          $timer = "60,120,180";
+                                  $durations = explode(',',$timer);?>
+                          @forEach($eventduration as $value)
+                          <option value="{{$value->duration}}" @if (old('event_duration') == $value->duration) {{ 'selected' }} @endif>{{($value->duration)}} {{(in_array($value->duration, $durations)) ? 'Hour' : 'Mins'}}</option>
+                              @endforeach
                         </select>
                         <span class="invalid-feedback" id="event_duration1"></span>
                       </div>
@@ -101,6 +102,13 @@
                             placeholder="Enter Your Event Link"
                           />
                           <span class="invalid-feedback" id="link_to_event_stream1"></span>
+                        </div>
+                      </div>
+                    <div class="form-group row">
+                        <label for="event_link" class="col-sm-2 text-end control-label col-form-label">Amount</label>
+                        <div class="col-sm-5">
+                          <input class="form-control" type="url" placeholder="Amount In Dollar" name="eventamount" value="{{ old('eventamount') }}" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                          <span class="invalid-feedback" id="eventamount1"></span>
                         </div>
                       </div>
 
@@ -208,6 +216,8 @@ var form_data = new FormData();
         form_data.append('genre', genres);
         var link = $("input[name=link_to_event_stream]").val();
         form_data.append('link_to_event_stream', link);
+        var link = $("input[name=eventamount]").val();
+        form_data.append('eventamount', link);
         var description = $("#event_description").val();
         form_data.append('event_description', description);
 
@@ -272,7 +282,7 @@ var form_data = new FormData();
                 }
 
                }else{
-                location.reload();
+                window.location.href = "{{ url('/admin/event') }}";
                }
               
               },

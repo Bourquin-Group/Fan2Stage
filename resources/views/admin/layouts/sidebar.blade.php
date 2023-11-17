@@ -15,23 +15,23 @@
                   ><span class="hide-menu">Dashboard</span></a
                 >
               </li>
-              <li class="sidebar-item">
+              <li class="sidebar-item {{ (request()->is('admin/useredit*') || request()->is('admin/artistedit*') || request()->is('admin/user*') || request()->is('admin/artist*')) ? 'selected' : '' }}">
                 <a
-                  class="sidebar-link has-arrow waves-effect waves-dark"
+                  class="sidebar-link has-arrow waves-effect waves-dark {{ (request()->is('admin/useredit*') || request()->is('admin/user*') || request()->is('admin/artist*')) ? 'active' : '' }}"
                   href="javascript:void(0)"
                   aria-expanded="false"
                   ><i class="fas fa-users"></i
                   ><span class="hide-menu">User Management</span></a
                 >
-                <ul aria-expanded="false" class="collapse first-level">
+                <ul aria-expanded="false" class="collapse first-level {{ (request()->is('admin/useredit*') || request()->is('admin/artistedit*') || request()->is('admin/user*') || request()->is('admin/artist*')) ? 'in' : '' }}">
                   <li class="sidebar-item">
-                    <a href="/admin/user" class="sidebar-link"
+                    <a href="/admin/user" class="sidebar-link {{ (request()->is('admin/useredit*') || request()->is('admin/user*')) ? 'active' : '' }}"
                       ><i class="fas fa-user-plus"></i
                       ><span class="hide-menu">Fan Users</span></a
                     >
                   </li>
                   <li class="sidebar-item">
-                    <a href="/admin/artist" class="sidebar-link"
+                    <a href="/admin/artist" class="sidebar-link {{ (request()->is('admin/artistedit*') || request()->is('admin/artist*')) ? 'active' : '' }}"
                       ><i class="fas fa-user-plus"></i
                       ><span class="hide-menu">Artists </span></a
                     >
@@ -40,7 +40,7 @@
               </li>
 
 
-                <li class="sidebar-item">
+                <li class="sidebar-item {{ (request()->is('admin/cmsedit*')) ? 'selected' : '' }}">
                 <a
                   class="sidebar-link waves-effect waves-dark"
                   href="/admin/cms"
@@ -61,7 +61,7 @@
                 >
                 
               </li>
-               <li class="sidebar-item">
+               <li class="sidebar-item {{ (request()->is('admin/eventedit*') || request()->is('admin/event*')) ? 'selected' : '' }}">
                 <a
                   class="sidebar-link waves-effect waves-dark"
                   href="/admin/event"
@@ -88,7 +88,7 @@
                 >
                 
               </li>
-               <li class="sidebar-item">
+               <li class="sidebar-item {{ (request()->is('admin/audioedit*')) ? 'selected' : '' }}">
                 <a
                   class="sidebar-link waves-effect waves-dark"
                   href="/admin/audio"
@@ -97,7 +97,7 @@
                 >
                 
               </li>
-               <li class="sidebar-item">
+               <li class="sidebar-item {{ (request()->is('admin/bufferedit*') || request()->is('admin/buffer*')) ? 'selected' : '' }}">
                 <a
                   class="sidebar-link waves-effect waves-dark"
                   href="/admin/buffer"
@@ -107,7 +107,7 @@
                 
               </li>
 
-              <li class="sidebar-item">
+              <li class="sidebar-item {{ (request()->is('admin/subscriptionplanedit*') || request()->is('admin/subscriptionplan*')) ? 'selected' : '' }}">
                 <a
                   class="sidebar-link waves-effect waves-dark"
                   href="/admin/subscriptionplan"
@@ -117,7 +117,7 @@
                 >
                 
               </li>
-              <li class="sidebar-item">
+              <li class="sidebar-item {{ (request()->is('admin/contactedit*')) ? 'selected' : '' }}">
                 <a
                   class="sidebar-link waves-effect waves-dark"
                   href="/admin/contactcms"
@@ -128,7 +128,7 @@
                 
               </li>
 
-              <li class="sidebar-item">
+              <li class="sidebar-item {{ (request()->is('admin/settingedit*') || request()->is('admin/setting*')) ? 'selected' : '' }}">
                 <a
                   class="sidebar-link waves-effect waves-dark"
                   href="/admin/setting"

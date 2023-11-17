@@ -75,5 +75,13 @@
 
     @yield('eventcreate')
     @yield('eventupdate')
+    <script>
+      $(document).ready(function() {
+    // Close the success alert after 5 seconds (adjust the duration as needed)
+    setTimeout(function() {
+        $('#successAlert').alert('close');
+    }, 5000);
+});
+    </script>
   </body>
 </html>

@@ -50,10 +50,19 @@ button.btn.btn-primary {
                     </button></a></div>
                 <div class="card-body">
                       @if(session()->has('Success'))
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                            <i class="fas fa-check-circle"></i><strong class="px-2">{{ session('Success') }}</strong>
-                                           
-                                        </div>
+                      <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+                        <i class="fas fa-check-circle"></i><strong class="px-2">{{ session('Success') }}</strong>
+                    </div>
+                    
+                    <script>
+                    $(document).ready(function() {
+                        // Close the success alert after 5 seconds (adjust the duration as needed)
+                        setTimeout(function() {
+                            $('#successAlert').alert('close');
+                        }, 5000);
+                    });
+                    </script>
+                    
                                         @endif
                   <div class="table-responsive">
                     <table

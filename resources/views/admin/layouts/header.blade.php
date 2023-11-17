@@ -264,7 +264,9 @@
                   > -->
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="javascript:void(0)" onclick="event.preventDefault();
-                                        document.getElementById('employee-logout-form').submit();"
+                  if(confirm('Are you sure you want to logout?')) {
+                      document.getElementById('employee-logout-form').submit();
+                  }"
                     ><i class="fa fa-power-off me-1 ms-1"></i> Logout</a
                   >
                    <form id="employee-logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">

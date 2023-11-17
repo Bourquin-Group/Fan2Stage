@@ -2289,7 +2289,6 @@ span.img_adding:after {
             background-image: url(../images/Group\ 3239.png);
             z-index: 5;
             background-size: 100% 100%;
-            
            
         }
 
@@ -2297,11 +2296,10 @@ span.img_adding:after {
             border: none;
             background: #1D304C;
             width: 18px;
-            height: 20px;
+            height: 0px;
             border-color: #1D304C;
             border-radius: 10px;
             box-shadow: 0 0 0 px #1D304C;
-            background-image: url(../images/Group\ 3239.png);
             background-position: center;
             background-repeat:repeat;
             
@@ -3842,3 +3840,4 @@ span.modify_timezone_text {
     color: #A6C2E9;
     font-weight: bold !important;
 }
+.range-slider input[type="range"][orient="vertical"]{background:#2b405d url(../images/Group\ 3239.png) !important;}
