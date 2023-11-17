@@ -147,7 +147,7 @@
                                 @else
                                 {{-- <input type="hidden" name="event_id" value="{{$sdata['event_id']}}"> --}}
                                 
-                                <button class="bookingevent" data-id="{{base64_encode($sdata['event_id'])}}"> Book Now</button>
+                                <button class="bookingevent" data-id="{{$sdata['event_id']}}"> Book Now</button>
                                 {{-- <a href="{{route('scheduled-event',base64_encode($sdata['event_id']))}}"><button> Book Now</button></a>  --}}
                                 
                                 @endif
