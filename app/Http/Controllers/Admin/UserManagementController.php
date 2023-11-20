@@ -10,6 +10,7 @@ use App\Models\country;
 use App\Models\Artist_profiles;
 use Session;
 use Hash;
+use Mail;
 class UserManagementController extends Controller
 {
     public function user(Request $request)
@@ -25,18 +26,25 @@ class UserManagementController extends Controller
     }
      public function userstore(UserManagementRequest $request)
     {
-        //dd($request);
         $details              = [
             "name"    => $request->name,
             "country_code"    => $request->ccode,
             "phone_number"     => $request->phone,
             "email"         => $request->email,
-            "password"         => Hash::make($request->password),
+            "password"         => bcrypt($request->password),
             "user_type"     =>'users',
             "status"        =>1,
-            // "status"         => ($request->has('status') == true) ? 1 : 0,
+            "timezone"        => 'IST',
         ];
          $supplier_array        = User::create($details);
+         $email = $supplier_array->email;
+         $data = array(
+                        'name' => $request->name,
+                    );
+         Mail::send('mail.register',$data,function($message) use($email){
+            $message->to($email);
+            $message->subject('Congratulations');
+            });
         return redirect('/admin/user')->with('Success', 'User created successfully.');
     }
     public function edituser($id)
