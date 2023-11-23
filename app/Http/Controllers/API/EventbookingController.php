@@ -465,7 +465,7 @@ class EventbookingController extends Controller
         // $id = base64_decode($id);
         $event = Event::where('id',$id)->where('event_status',1)->first();
         if($event){
-            $Event = Eventbooking::where('event_id',$id)->first();
+            $Event = Eventbooking::where('event_id',$id)->where('user_id',Auth::user()->id)->first();
         if($Event){
             $Event->status = 1;
             $Event->save();
