@@ -262,13 +262,122 @@ audio2.addEventListener('ended', function() {
                     });
 
                     socket.on('artist_action_graph_count', (msg) => {
-                        document.getElementById("aact1").style.cssText = `height: calc(${msg['act1'] * 10}% + 0px)`;
+                        // document.getElementById("aact1").style.cssText = `height: calc(${msg['act1'] * 10}% + 0px)`;
                         document.getElementById("aact2").style.cssText = `height: calc(${msg['act2'] * 10}% + 0px)`;
                         document.getElementById("aact3").style.cssText = `height: calc(${msg['act3'] * 10}% + 0px)`;
                         document.getElementById("aact4").style.cssText = `height: calc(${msg['act4'] * 10}% + 0px)`;
                         document.getElementById("aact5").style.cssText = `height: calc(${msg['act5'] * 10}% + 0px)`;
                         document.getElementById("aact6").style.cssText = `height: calc(${msg['act6'] * 10}% + 0px)`;
                         $.clapsss = function(count) {
+                        if(msg['act1'] > 0){
+                        	if(msg['act1'] > 10){
+                        		act1 = 10;
+                        	}else{
+                        		act1 = msg['act1'];
+                        	}
+                        	GraphCount1=(((act1/10)*1.2)*(msg['c11']/count))*100;
+                        console.log(GraphCount1);
+                        if(GraphCount1 > 100){
+                        		GraphCount = 100;
+                        	}else{
+                        		GraphCount = GraphCount1;
+                        	}
+                        document.getElementById("aact1").style.cssText = `height: calc(${GraphCount}% + 0px)`;
+                        }else{
+                        document.getElementById("aact1").style.cssText = `height: calc(0% + 0px)`;
+
+                    }
+                        if(msg['act2'] > 0){
+                        	if(msg['act2'] > 10){
+                        		act2 = 10;
+                        	}else{
+                        		act2 = msg['act2'];
+                        	}
+                        	GraphCount2=(((act2/10)*1.2)*(msg['c12']/count))*100;
+                        console.log(GraphCount2);
+                        if(GraphCount2 > 100){
+                        		GraphCount = 100;
+                        	}else{
+                        		GraphCount = GraphCount2;
+                        	}
+                        document.getElementById("aact2").style.cssText = `height: calc(${GraphCount}% + 0px)`;
+                        }else{
+                        document.getElementById("aact2").style.cssText = `height: calc(0% + 0px)`;
+
+                    }
+                        if(msg['act3'] > 0){
+                        	if(msg['act3'] > 10){
+                        		act3 = 10;
+                        	}else{
+                        		act3 = msg['act3'];
+                        	}
+                        	GraphCount3=(((act3/10)*1.2)*(msg['c13']/count))*100;
+                        console.log(GraphCount3);
+                        if(GraphCount3 > 100){
+                        		GraphCount = 100;
+                        	}else{
+                        		GraphCount = GraphCount3;
+                        	}
+                        document.getElementById("aact3").style.cssText = `height: calc(${GraphCount}% + 0px)`;
+                        }else{
+                        document.getElementById("aact3").style.cssText = `height: calc(0% + 0px)`;
+
+                    }
+                        if(msg['act4'] > 0){
+                        	if(msg['act4'] > 10){
+                        		act4 = 10;
+                        	}else{
+                        		act4 = msg['act4'];
+                        	}
+                        	GraphCount4=(((act4/10)*1.2)*(msg['c14']/count))*100;
+                        console.log(GraphCount4);
+                        if(GraphCount4 > 100){
+                        		GraphCount = 100;
+                        	}else{
+                        		GraphCount = GraphCount4;
+                        	}
+                        document.getElementById("aact4").style.cssText = `height: calc(${GraphCount}% + 0px)`;
+                        }else{
+                        document.getElementById("aact4").style.cssText = `height: calc(0% + 0px)`;
+
+                    }
+                        if(msg['act5'] > 0){
+                        	if(msg['act5'] > 10){
+                        		act5 = 10;
+                        	}else{
+                        		act5 = msg['act5'];
+                        	}
+                        	GraphCount5=(((act5/10)*1.2)*(msg['c15']/count))*100;
+                        console.log(GraphCount5);
+                        if(GraphCount5 > 100){
+                        		GraphCount = 100;
+                        	}else{
+                        		GraphCount = GraphCount5;
+                        	}
+                        document.getElementById("aact5").style.cssText = `height: calc(${GraphCount}% + 0px)`;
+                        }else{
+                        document.getElementById("aact5").style.cssText = `height: calc(0% + 0px)`;
+
+                    }
+                        if(msg['act6'] > 0){
+                        	if(msg['act6'] > 10){
+                        		act6 = 10;
+                        	}else{
+                        		act6 = msg['act6'];
+                        	}
+                        	GraphCount6=(((act6/10)*1.2)*(msg['c16']/count))*100;
+                        console.log(GraphCount6);
+                        if(GraphCount6 > 100){
+                        		GraphCount = 100;
+                        	}else{
+                        		GraphCount = GraphCount6;
+                        	}
+                        document.getElementById("aact6").style.cssText = `height: calc(${GraphCount}% + 0px)`;
+                        }else{
+                        document.getElementById("aact6").style.cssText = `height: calc(0% + 0px)`;
+
+                    }
+                        
                                 if(msg['act1'] <= 10 && msg['act1'] > 0){
                                 if(count >= 1 && count <= 2 && msg['act1'] >= 1 && msg['act1'] <= 5){
                                     $.stopAudio(clap2);
@@ -304,9 +413,6 @@ audio2.addEventListener('ended', function() {
                                 }
                                 // document.getElementById("aact1").style.cssText = `height: calc(${msg['act1'] * 10}% + 0px)`;
                         
-                    }else{
-                        document.getElementById("aact1").style.cssText = `height: calc(0% + 0px)`;
-
                     }
                     
                     if(msg['act2'] <= 10 && msg['act2'] > 0){
@@ -343,8 +449,6 @@ audio2.addEventListener('ended', function() {
                                     $.playAudio(boo5);
                                 }
                                 // document.getElementById("aact2").style.cssText = `height: calc(${msg['act2'] * 10}% + 0px)`;
-                    }else{
-                        document.getElementById("aact2").style.cssText = `height: calc(0% + 0px)`;
                     }
                     if(msg['act3'] <= 10 && msg['act3'] > 0){
                                 if(count >= 1 && count <= 2 && msg['act3'] >= 1 && msg['act3'] <= 5){
@@ -380,9 +484,6 @@ audio2.addEventListener('ended', function() {
                                     $.playAudio(whistle5);
                                 }
                         // document.getElementById("aact3").style.cssText = `height: calc(${msg['act3'] * 10}% + 0px)`;
-                    }else{
-                        document.getElementById("aact3").style.cssText = `height: calc(0% + 0px)`;
-
                     }
                     if(msg['act4'] <= 10 && msg['act4'] > 0){
                         $.playAudio(aww1);
@@ -419,9 +520,6 @@ audio2.addEventListener('ended', function() {
                                 //     $.playAudio(aww5);
                                 // }
                         // document.getElementById("aact4").style.cssText = `height: calc(${msg['act4'] * 10}% + 0px)`;
-                    }else{
-                        document.getElementById("aact4").style.cssText = `height: calc(0% + 0px)`;
-
                     }
                     if(msg['act5'] <= 10 && msg['act5'] > 0){
                         $.playAudio(cheer1);
@@ -458,9 +556,6 @@ audio2.addEventListener('ended', function() {
                                 //     $.playAudio(cheer5);
                                 // }
                         // document.getElementById("aact5").style.cssText = `height: calc(${msg['act5'] * 10}% + 0px)`;
-                    }else{
-                        document.getElementById("aact5").style.cssText = `height: calc(0% + 0px)`;
-
                     }
                     if(msg['act6'] <= 10 && msg['act6'] > 0){
                                 if(count >= 1 && count <= 2 && msg['act6'] >= 1 && msg['act6'] <= 5){
@@ -496,9 +591,6 @@ audio2.addEventListener('ended', function() {
                                     $.playAudio(laugh5);
                                 }
                         // document.getElementById("aact6").style.cssText = `height: calc(${msg['act6'] * 10}% + 0px)`;
-                    }else{
-                        document.getElementById("aact6").style.cssText = `height: calc(0% + 0px)`;
-
                     }
             
         }

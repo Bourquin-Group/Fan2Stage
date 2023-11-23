@@ -75,7 +75,7 @@ class AuthController extends BaseController
             {
                 $user              = User::create($input);
                 $user->name        = $request->full_name;
-                $user->timezone        = 'IST';
+                $user->timezone        = 1;
                 $user->save();
                 $success['token']  = $user->createToken('MyApp')->accessToken;
                 $success['name']   = $user->name;
