@@ -201,12 +201,27 @@
                                         </div>
                                         <div class="label-sec">
                                           <label for="">Time Zone</label>
-                                          <span class="edit-text">{{$profile['timezone']}}</span>
+                                          <span class="edit-text">
+                                            @if($profile['timezone'] == 1)
+                                                {{ "PST" }}
+                                            @elseif($profile['timezone'] == 2)
+                                                {{ "IST" }}
+                                            @elseif($profile['timezone'] == 3)
+                                                {{ "EST" }}
+                                            @elseif($profile['timezone'] == 4)
+                                                {{ "MDT" }}
+                                            @elseif($profile['timezone'] == 5)
+                                                {{ "GMT" }}
+                                            @else
+                                                {{ "PDT" }}
+                                            @endif
+                                        </span>
+                                        
                                           <div class="genere_sec edit-select">
                                             <select class="selectpicker" name="timezone" id="timezone">
                                               <option value="">Select Time Zone</option>
                                               @forEach($timezone as $value)
-                                                  <option value="{{$value->timezone}}" @if ($profile['timezone'] == $value->timezone) {{ 'selected' }} @endif >{{$value->timezone}}</option>
+                                                  <option value="{{$value->id}}" @if ($profile['timezone'] == $value->id) {{ 'selected' }} @endif >{{$value->timezone}}</option>
                                                   @endforeach
                                             </select>
                                           </div>
