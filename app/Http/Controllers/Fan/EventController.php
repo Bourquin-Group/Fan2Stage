@@ -10,7 +10,7 @@ use Session;
 class EventController extends Controller
 {
     public function myevent(Request $request){
-        $timezone_region = timezone::where('timezone',Session::get('user_timezone'))->first();
+        $timezone_region = timezone::where('id',Session::get('user_timezone'))->first();
         // dd(Session::get('user_timezone'));
         if(Session::get('user_timezone')){
         date_default_timezone_set($timezone_region['region']);
