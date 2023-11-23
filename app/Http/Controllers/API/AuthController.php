@@ -647,6 +647,27 @@ class AuthController extends BaseController
                             ]);
                         }
             }
+            public function upgradeartist(Request $request){
+                        $upgrade_type = User::where('id',Auth::user()->id)->first();
+                        $upgrade_type->typeupgrade_status = '1';
+                        $upgrade_type->save();
+                        $Artist = Artist_profiles::where('user_id',Auth::user()->id)->first();
+                        if($Artist){
+                            $Artist->user_id = Auth::user()->id;
+                            $Artist->save();
+                        }else{
+                            $inputs = [ 
+                                'user_id' => Auth::user()->id,
+                            ];
+                            $Artist = Artist_profiles::create($inputs);
+                        }
+                       
+                        return response()->json([
+                            'status'    =>200,
+                            'success' => true,
+                            'message' => 'Type upgraded successfully',
+                        ]);
+            }
 
     public function logout(Request $request)
             {   

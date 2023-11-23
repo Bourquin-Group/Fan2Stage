@@ -15,7 +15,8 @@ class Artist_profiles extends Model
         'user_id','stage_name','bio','genre','ratings','website_link','itunes_link','youtube_link','instagram_link','facebook_link','profile_image','landing_page_image',
     ];
     public function userArtist(){
-        return $this->belongsTo(User::class,'user_id')->where('user_type','artists');
+        return $this->belongsTo(User::class,'user_id');
+        // return $this->belongsTo(User::class,'user_id')->where('user_type','artists');
     }
     public function Artistratings(){
         return $this->belongsTo(Event_joined_by_fans::class,'user_id','artist_id');

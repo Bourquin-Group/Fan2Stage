@@ -19,7 +19,7 @@ class IsUser
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->user_type == 'artists')
+        if(Auth::user()->user_type == 'artists' || Auth::user()->typeupgrade_status == 1)
         {
             return $next($request);
         }

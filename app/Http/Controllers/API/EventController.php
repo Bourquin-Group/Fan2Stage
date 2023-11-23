@@ -89,7 +89,7 @@ class EventController extends Controller
                     ->get();
 
         $Events_per_month_count = count($data);
-        if($usertype->user_type=='artists' || $usertype->user_type=='admin')
+        if($usertype->user_type=='artists' || $usertype->user_type=='admin' || $usertype->typeupgrade_status == 1)
         {
             if($Events_per_month_count<$events_per_month)
             {
@@ -464,7 +464,7 @@ class EventController extends Controller
         // dd($request);
         $authid = Auth::User()->id;
         $usertype = User::where('id',$authid)->first();
-        if($usertype->user_type=='artists' || $usertype->user_type=='admin')
+        if($usertype->user_type=='artists' || $usertype->user_type=='admin' || $usertype->typeupgrade_status == 1)
         {
                 $input = $request->all();
                 $todayDate = date('Y-m-d');

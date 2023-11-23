@@ -19,7 +19,7 @@ class IsFan
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->user_type == 'users')
+        if(Auth::user()->user_type == 'users' || Auth::user()->user_type == 'artists' )
         {
             return $next($request);
         }

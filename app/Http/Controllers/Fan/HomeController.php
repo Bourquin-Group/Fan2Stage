@@ -17,7 +17,7 @@ use Session;
 class HomeController extends Controller
 {
     public function homepage(Request $request){
-        $timezone_region = timezone::where('timezone',Session::get('user_timezone'))->first();
+        $timezone_region = timezone::where('id',Session::get('user_timezone'))->first();
         // dd(Session::get('user_timezone'));
         if(Session::get('user_timezone')){
         date_default_timezone_set($timezone_region['region']);
@@ -40,7 +40,7 @@ class HomeController extends Controller
     }
 
     public function showliveevent(Request $request){
-        $timezone_region = timezone::where('timezone',Session::get('user_timezone'))->first();
+        $timezone_region = timezone::where('id',Session::get('user_timezone'))->first();
         // dd(Session::get('user_timezone'));
         if(Session::get('user_timezone')){
         date_default_timezone_set($timezone_region['region']);
@@ -52,7 +52,7 @@ class HomeController extends Controller
         return view('fanweb.showliveevent',compact('liveevent_data','timezone_region'));
     }
     public function showscheduleevent(Request $request){
-        $timezone_region = timezone::where('timezone',Session::get('user_timezone'))->first();
+        $timezone_region = timezone::where('id',Session::get('user_timezone'))->first();
         // dd(Session::get('user_timezone'));
         if(Session::get('user_timezone')){
         date_default_timezone_set($timezone_region['region']);
@@ -86,7 +86,7 @@ class HomeController extends Controller
     }
     public function scheduledEvent($id)
     {
-        $timezone_region = timezone::where('timezone',Session::get('user_timezone'))->first();
+        $timezone_region = timezone::where('id',Session::get('user_timezone'))->first();
         // dd(Session::get('user_timezone'));
         if(Session::get('user_timezone')){
         date_default_timezone_set($timezone_region['region']);
@@ -166,6 +166,15 @@ class HomeController extends Controller
         $va = $artistArray['success'];
         if($va == 'true'){
             return response()->json(['status' => 1,'message'=>$artistArray['message']]);
+          }
+    }
+    public function upgradeartist(Request $request)
+    {
+        $upgrade = app('App\Http\Controllers\API\AuthController')->upgradeartist($request);
+        $upgrade = json_decode ($upgrade->content(), true);
+        $va = $upgrade['success'];
+        if($va == 'true'){
+            return response()->json(['status' => 1,'message'=>$upgrade['message']]);
           }
     }
 

@@ -192,7 +192,12 @@ class GoliveController extends Controller
             $live->save();
         }else{
             $eventStatus = Event::where(['id' => $eventid,'event_status' => 1])->first();
-            $usertype = User::where('id',$eventStatus->user_id)->where('user_type','artists')->first();
+            $usertype = User::where('id', $eventStatus->user_id)
+                ->where(function($query) {
+                    $query->where('user_type', 'artists')
+                          ->orWhere('user_type', 'users');
+                })
+                ->first();
             $planid = $usertype->subscription_plan_id;
             $f2splan = subscriptionplan::where('id',$planid)->first();
             $fans_per_event = $f2splan->fans_per_event;

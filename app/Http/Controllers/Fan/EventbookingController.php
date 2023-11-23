@@ -395,7 +395,13 @@ class EventbookingController extends Controller
   $artist_id = Event::where(['id' => $id,'event_status' => 1])->first();
         $artistid = $artist_id->user_id;
         $event_id = $request->event_id;
-        $usertype = User::where('id',$artistid)->where('user_type','artists')->first();
+        $usertype = User::where('id', $artistid)
+                ->where(function($query) {
+                    $query->where('user_type', 'artists')
+                          ->orWhere('user_type', 'users');
+                })
+                ->first();
+
         $planid = $usertype->subscription_plan_id;
         $f2splan = subscriptionplan::where('id',$planid)->first();
         $fans_per_event = $f2splan->fans_per_event;
