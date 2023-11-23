@@ -262,12 +262,6 @@ audio2.addEventListener('ended', function() {
                     });
 
                     socket.on('artist_action_graph_count', (msg) => {
-                        // document.getElementById("aact1").style.cssText = `height: calc(${msg['act1'] * 10}% + 0px)`;
-                        document.getElementById("aact2").style.cssText = `height: calc(${msg['act2'] * 10}% + 0px)`;
-                        document.getElementById("aact3").style.cssText = `height: calc(${msg['act3'] * 10}% + 0px)`;
-                        document.getElementById("aact4").style.cssText = `height: calc(${msg['act4'] * 10}% + 0px)`;
-                        document.getElementById("aact5").style.cssText = `height: calc(${msg['act5'] * 10}% + 0px)`;
-                        document.getElementById("aact6").style.cssText = `height: calc(${msg['act6'] * 10}% + 0px)`;
                         $.clapsss = function(count) {
                         if(msg['act1'] > 0){
                         	if(msg['act1'] > 10){
