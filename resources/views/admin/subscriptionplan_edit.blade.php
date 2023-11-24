@@ -230,7 +230,7 @@ input:checked + .slider:before {
                       <input type="radio" id="permonth" name="cost" value="permonth" <?php if($editsubscriptionplan->cost == 'permonth') echo "checked" ?>>
                       <label for="permonth">Per Month</label><br>
                      
-                    <input type="radio" id="callforquoate" name="cost" value="callforquoate" <?php if($editsubscriptionplan->cost == 'callforquoate') echo "checked" ?>>
+                    <input type="radio" id="callforquoate" name="cost" value="call for quoate" <?php if($editsubscriptionplan->cost == 'callforquoate') echo "checked" ?>>
                       <label for="callforquoate">Call For a Quoate</label> 
                      
                         @error('cost')

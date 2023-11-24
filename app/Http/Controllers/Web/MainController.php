@@ -17,7 +17,7 @@ use Mail;
 class MainController extends Controller
 {
     public function subscription(Request $request){
-        $sc_event = app('App\Http\Controllers\API\SubscriptionPlanController')->subscriptionplanlist($request);
+        $sc_event = app('App\Http\Controllers\API\SubscriptionPlanController')->subscriptionplanlistweb($request);
         $sc_planArray = json_decode ($sc_event->content(), true);
         $plans = $sc_planArray['data'];
         $planlist = $plans['subscriptionplan1'];

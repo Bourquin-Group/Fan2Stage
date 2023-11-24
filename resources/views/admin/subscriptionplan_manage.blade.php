@@ -158,7 +158,7 @@
                       <input type="radio" id="permonth" name="cost" value="permonth">
                       <label for="permonth">Per Month</label><br>
                      
-                    <input type="radio" id="callforquoate" name="cost" value="callforquoate">
+                    <input type="radio" id="callforquoate" name="cost" value="call for quoate">
                       <label for="callforquoate">Call For a Quoate</label> 
                      
                         @error('cost')

@@ -18,6 +18,7 @@ class subscriptionplan extends Model
         'cost_value',
         'anual_plan',
         'hardware_required',
+        'ordertype',
         'status',
       
         
