@@ -23,17 +23,16 @@
                             <div class="event_card_bottom_left">
                                 <h3>{{$ldata['event_title']}}</h3>
                                 <?php
-                                   <?php
-                                $eventdate = date('Y-m-d',strtotime($sdata['event_date']));
-                                $eventtime = $sdata['event_time'] ;
+                                $eventdate = date('Y-m-d',strtotime($ldata['event_date']));
+                                $eventtime = $ldata['event_time'] ;
                                 $eventdatetime = $eventdate.' '.$eventtime;       
 
-                                $date = new DateTime($eventdatetime, new DateTimeZone($sdata['event_timezone']));
+                                $date = new DateTime($eventdatetime, new DateTimeZone($ldata['event_timezone']));
 
                                 $date->setTimezone(new DateTimeZone($timezone_region->region));
                                 $resultdatefrom = $date->format('h:i A');
 
-                                $minutesToAdd = $sdata['event_duration']; // Change this to your desired duration
+                                $minutesToAdd = $ldata['event_duration']; // Change this to your desired duration
 
                                 // Add the minutes to the DateTime object
                                 $date->modify("+{$minutesToAdd} minutes");
