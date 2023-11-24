@@ -29,6 +29,7 @@
                     <div class="fav-colunm first-column">
                       @if(count($favorties))
                       @foreach($favorties as $list)
+                      <div style="position: relative">
                       <a href="{{url('/fan/artistprofile/'.base64_encode($list['artist_id']))}}">
                         <div class="fav-list-card">
                             @if(file_exists($list['artist_profile']) && isset($list['artist_profile']))
@@ -40,10 +41,11 @@
                               <h6 class="font-18">{{$list['artist_name']}}</h6>
                               <p class="font-14"> {{$list['genre']}}</p>
                               <span>{{$list['rating']}} <img src="{{asset('/assets/fan/images/artists_card_star.svg')}}" alt="" srcset=""></span>
-                              <img class="close-icon" src="{{asset('/assets/fan/images/artists-close.svg')}}" alt=""  onclick="favOption({{$list['artist_id']}})" srcset="" >
                             </div>
                         </div>
                      </a>
+                     <img class="close-icon" src="{{asset('/assets/fan/images/artists-close.svg')}}" alt=""  onclick="favOption({{$list['artist_id']}})" srcset="" >
+                    </div>
                       @endforeach
                       @else
                       <p class="no-fav mt-3"> No Favorites </p>
