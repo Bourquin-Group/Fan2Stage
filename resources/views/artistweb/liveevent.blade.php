@@ -38,7 +38,6 @@
           </div>
     
         </div>
-
       </div>
       <div class="col-lg-5 col-md-12">
         <div class="event_formsection h-100">
@@ -49,7 +48,6 @@
               <div class="range-slider">
                 <audio id="crowd" src="{{ asset('assets/audio/RoomNoice_B1.mp3') }}"></audio>
                 <audio id="crowd1" src="{{ asset('assets/audio/RoomNoice_B2.mp3') }}"></audio>
-                <audio id="crowd2" src="{{ asset('assets/audio/RoomNoice_B2.mp3') }}"></audio>
                 <input type="hidden" name="event_id" id="event_id" value="{{$sc_event['event_id']}}">
                 <input type="hidden" name="user_id" id="user_id" value="{{isset(auth()->user()->id) ? auth()->user()->id : ''}}">
                   <input type="range" orient="vertical" min="0" max="100" />
@@ -276,9 +274,9 @@ audio2.addEventListener('ended', function() {
                         	}else{
                         		GraphCount = GraphCount1;
                         	}
-                        document.getElementById("aact1").style.cssText = `height: calc(${GraphCount}% + 0px)`;
+                            document.getElementById("aact1").style.cssText = 'height:' + GraphCount +'%';
                         }else{
-                        document.getElementById("aact1").style.cssText = `height: calc(0% + 0px)`;
+                            document.getElementById("aact1").style.cssText = `height:0%`;
 
                     }
                         if(msg['act2'] > 0){
@@ -294,9 +292,9 @@ audio2.addEventListener('ended', function() {
                         	}else{
                         		GraphCount = GraphCount2;
                         	}
-                        document.getElementById("aact2").style.cssText = `height: calc(${GraphCount}% + 0px)`;
+                            document.getElementById("aact2").style.cssText = 'height:' + GraphCount +'%';
                         }else{
-                        document.getElementById("aact2").style.cssText = `height: calc(0% + 0px)`;
+                            document.getElementById("aact2").style.cssText = `height:0%`;
 
                     }
                         if(msg['act3'] > 0){
@@ -312,9 +310,9 @@ audio2.addEventListener('ended', function() {
                         	}else{
                         		GraphCount = GraphCount3;
                         	}
-                        document.getElementById("aact3").style.cssText = `height: calc(${GraphCount}% + 0px)`;
+                            document.getElementById("aact3").style.cssText = 'height:' + GraphCount +'%';
                         }else{
-                        document.getElementById("aact3").style.cssText = `height: calc(0% + 0px)`;
+                            document.getElementById("aact3").style.cssText = `height:0%`;
 
                     }
                         if(msg['act4'] > 0){
@@ -330,9 +328,9 @@ audio2.addEventListener('ended', function() {
                         	}else{
                         		GraphCount = GraphCount4;
                         	}
-                        document.getElementById("aact4").style.cssText = `height: calc(${GraphCount}% + 0px)`;
+                            document.getElementById("aact4").style.cssText = 'height:' + GraphCount +'%';
                         }else{
-                        document.getElementById("aact4").style.cssText = `height: calc(0% + 0px)`;
+                            document.getElementById("aact4").style.cssText = `height:0%`;
 
                     }
                         if(msg['act5'] > 0){
@@ -348,9 +346,9 @@ audio2.addEventListener('ended', function() {
                         	}else{
                         		GraphCount = GraphCount5;
                         	}
-                        document.getElementById("aact5").style.cssText = `height: calc(${GraphCount}% + 0px)`;
+                            document.getElementById("aact5").style.cssText = 'height:' + GraphCount +'%';
                         }else{
-                        document.getElementById("aact5").style.cssText = `height: calc(0% + 0px)`;
+                            document.getElementById("aact5").style.cssText = `height:0%`;
 
                     }
                         if(msg['act6'] > 0){
@@ -366,9 +364,9 @@ audio2.addEventListener('ended', function() {
                         	}else{
                         		GraphCount = GraphCount6;
                         	}
-                        document.getElementById("aact6").style.cssText = `height: calc(${GraphCount}% + 0px)`;
+                            document.getElementById("aact6").style.cssText = 'height:' + GraphCount +'%';
                         }else{
-                        document.getElementById("aact6").style.cssText = `height: calc(0% + 0px)`;
+                            document.getElementById("aact6").style.cssText = `height:0%`;
 
                     }
                         
@@ -600,13 +598,13 @@ audio2.addEventListener('ended', function() {
                         console.log('artist_action_graph_count response: ', msg)
                     });
 	setInterval(function () {
-		document.getElementById("aact1").style.cssText = `height: calc(0% + 0px)`;
-		document.getElementById("aact2").style.cssText = `height: calc(0% + 0px)`;
-		document.getElementById("aact3").style.cssText = `height: calc(0% + 0px)`;
-		document.getElementById("aact4").style.cssText = `height: calc(0% + 0px)`;
-		document.getElementById("aact5").style.cssText = `height: calc(0% + 0px)`;
-		document.getElementById("aact6").style.cssText = `height: calc(0% + 0px)`;
-	}, 8000);
+		document.getElementById("aact1").style.cssText = `height:0%`;
+		document.getElementById("aact2").style.cssText = `height:0%`;
+		document.getElementById("aact3").style.cssText = `height:0%`;
+		document.getElementById("aact4").style.cssText = `height:0%`;
+		document.getElementById("aact5").style.cssText = `height:0%`;
+		document.getElementById("aact6").style.cssText = `height:0%`;
+	}, 6000);
     $.playAudio = function(audiotype) {
             // if(audiotype == 'clap1'){
                 audiotype.play();

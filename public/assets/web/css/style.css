@@ -3624,7 +3624,7 @@ ul.dropdown-menu.inner.show {
     pointer-events: none;
     width: 18px;
     border-radius: 20px;
-    transition: height 2s;
+    transition: height 2s ease-in-out;
 }
 /* 19-05-2023 */
 /* 23-05-2023 */
