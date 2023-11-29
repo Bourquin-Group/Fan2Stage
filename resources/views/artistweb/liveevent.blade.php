@@ -6,7 +6,7 @@
       <div class="button_gorup">
           {{-- <button onclick="endLive('{{$sc_event['event_id']}}')">End Live</button>  --}}
           {{-- <button onclick="myFunction()">Click me</button> --}}
-          <span id="audioToggle" style="display: inline-block;margin-right:12px;font-size:27px;"><i class="fas fa-volume-off"></i></span>
+          {{-- <span id="audioToggle" style="display: inline-block;margin-right:12px;font-size:27px;"><i class="fas fa-volume-off"></i></span> --}}
             <audio id="myAudio" src="{{ asset('assets/graph/audio/Crowd_1_100.mp3') }}" preload="auto" muted></audio>
 
          <a class="endlive"> <button>End Live</button></a> 
