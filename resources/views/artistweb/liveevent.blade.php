@@ -6,6 +6,9 @@
       <div class="button_gorup">
           {{-- <button onclick="endLive('{{$sc_event['event_id']}}')">End Live</button>  --}}
           {{-- <button onclick="myFunction()">Click me</button> --}}
+          <span id="audioToggle" style="display: inline-block;margin-right:12px;font-size:27px;"><i class="fas fa-volume-off"></i></span>
+            <audio id="myAudio" src="{{ asset('assets/graph/audio/Crowd_1_100.mp3') }}" preload="auto" muted></audio>
+
          <a class="endlive"> <button>End Live</button></a> 
          {{-- <a href="{{url('web/endlive/'.Crypt::encryptString($sc_event['event_id']))}}" class="endlive"> <button>End Live</button></a>  --}}
       </div>
@@ -46,6 +49,9 @@
               <div class="main_live">
                 <div id="actt1">0</div>
               <div class="range-slider">
+                <!-- Button that triggers the audio play -->
+                
+                
                 <input type="hidden" name="event_id" id="event_id" value="{{$sc_event['event_id']}}">
                 <input type="hidden" name="user_id" id="user_id" value="{{isset(auth()->user()->id) ? auth()->user()->id : ''}}">
                   <input type="range" orient="vertical" min="0" max="100" />
@@ -168,20 +174,43 @@
   </script>
 
 <script>
-//   const audio1 = document.getElementById('crowd');
-// const audio2 = document.getElementById('crowd1');
-// let isPlaying = false;
+   document.addEventListener('DOMContentLoaded', function() {
+    const audio = document.getElementById('myAudio');
+    const audioToggle = document.getElementById('audioToggle');
 
-// audio1.addEventListener('ended', function() {
-//     audio1.currentTime = 0; // Reset audio1 to the beginning
-//     audio1.play();
-// });
+    // Check if the audio was playing before
+    const isAudioPlaying = localStorage.getItem('audioPlaying') === 'true';
 
-// audio2.addEventListener('ended', function() {
-//     audio2.currentTime = 0; // Reset audio2 to the beginning
-//     audio2.play();
-// });
-// </script>
+    if (isAudioPlaying) {
+        audio.play()
+            .then(() => {
+                console.log('Audio started playing');
+                audioToggle.style.display = 'none'; // Hide the button
+            })
+            .catch(error => {
+                console.error('Error playing audio:', error);
+            });
+    }
+
+    audioToggle.addEventListener('click', function() {
+        if (audio.paused) {
+            audio.play()
+                .then(() => {
+                    console.log('Audio started playing');
+                    audioToggle.style.display = 'none'; // Hide the button
+                    localStorage.setItem('audioPlaying', 'true'); // Store state
+                })
+                .catch(error => {
+                    console.error('Error playing audio:', error);
+                });
+        }
+    });
+});
+
+
+
+
+</script>
 <script>
     // var clap = document.getElementById('clap');
     // var boo = document.getElementById('boo');
