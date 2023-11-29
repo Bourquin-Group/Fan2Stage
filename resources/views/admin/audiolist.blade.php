@@ -65,6 +65,7 @@ button.btn.btn-primary {
                         <tr>
                           <th>Audio Name</th>
                           <th>Audio Type</th>
+                          <th>Block</th>
                           <th>Fan's Action Event</th>
                           <th>Audio File</th>
                           <th>Audio Status</th>
@@ -75,14 +76,15 @@ button.btn.btn-primary {
                         @if(count($audio)>0)
                       	<?php foreach ($audio as $value) {
                           if($value->audio_file !=''){
-                          $url = asset('assets/images/audio/'.$value->audio_file);}
+                          $url = asset('assets/graph/audio/'.$value->audio_file);}
                           else{
-                          $url = asset('assets/images/audio/noimage.jpg');
+                          $url = asset('assets/graph/audio/noimage.jpg');
                           }
                           ?>
                       	<tr>
                           <td><?php echo $value->audio_name; ?></td>
                           <td><?php echo $value->audio_type; ?></td>
+                          <td><?php echo $value->block; ?></td>
                           <td><?php echo $value->factcount." - ".$value->tactcount; ?></td>
                           <td><audio controls>
                             <source src="{{$url}}" type="audio/mpeg"> 

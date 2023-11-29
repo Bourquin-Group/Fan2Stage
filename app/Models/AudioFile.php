@@ -12,6 +12,7 @@ class AudioFile extends Model
         'audio_name',
         'audio_type',
         'audio_file',
+        'block',
         'factcount',
         'tactcount',
         'audio_status',

@@ -74,6 +74,22 @@
                       </div>
                     </div>
                     <div class="form-group row">
+                      <label for="time" class="col-sm-2 text-end control-label col-form-label">Block</label>
+                      <div class="col-sm-5">
+                        <select class="form-control" name="block" id="block">
+                            <option value="">Select Block</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                            <option value="4">Four</option>
+                            <option value="5">Five</option>
+                        </select>
+                        @error('block')
+                        <span class="invalid-feedback">{{$message }}</span>
+                      @enderror
+                      </div>
+                    </div>
+                    <div class="form-group row">
                       <label
                         for="title"
                         class="col-sm-2 text-end control-label col-form-label"

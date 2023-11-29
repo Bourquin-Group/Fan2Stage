@@ -72,6 +72,22 @@
                         @enderror
                         </div>
                       </div>
+                    <div class="form-group row">
+                        <label for="time" class="col-sm-2 text-end control-label col-form-label">Block</label>
+                        <div class="col-sm-5">
+                          <select class="form-control" name="block" id="block">
+                            <option {{($editaudio['block'] == '' || $editaudio['block'] == null )   ? 'Selected' : ''}}>Select Block</option>
+                              <option value="1" {{($editaudio['block'] == '1')   ? 'Selected' : ''}}>1</option>
+                              <option value="2" {{($editaudio['block'] == '2')   ? 'Selected' : ''}}>2</option>
+                              <option value="3" {{($editaudio['block'] == '3')   ? 'Selected' : ''}}>3</option>
+                              <option value="4" {{($editaudio['block'] == '4')   ? 'Selected' : ''}}>4</option>
+                              <option value="5" {{($editaudio['block'] == '5')   ? 'Selected' : ''}}>5</option>
+                          </select>
+                          @error('block')
+                          <span class="invalid-feedback">{{$message }}</span>
+                        @enderror
+                        </div>
+                      </div>
                       <div class="form-group row">
                         <label
                           for="title"

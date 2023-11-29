@@ -334,12 +334,14 @@ public function eventUpdate(Request $request,$ids){
 
       $audio = AudioFile::where('audio_status',1)->get();
 
-      $audio_value = [];
+      // $audio_value = [];
 
-      foreach($audio as $value){
-          $audio_value[$value->audio_name]= $value->audio_file;
-      }
+      // foreach($audio as $value){
+      //     $audio_value[$value->audio_name]= $value->audio_file;
+      //     $audio_value[$value->audio_type]= $value->block;
+      // }
+      // dd($audio_value);
 
-    return view('artistweb.liveevent',compact('a_profile','sc_event','audio_value'));
+    return view('artistweb.liveevent',compact('a_profile','sc_event','audio'));
   }
 }

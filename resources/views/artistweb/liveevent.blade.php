@@ -46,16 +46,16 @@
               <div class="main_live">
                 <div id="actt1">0</div>
               <div class="range-slider">
-                <audio id="crowd" src="{{ asset('assets/audio/RoomNoice_B1.mp3') }}"></audio>
-                <audio id="crowd1" src="{{ asset('assets/audio/RoomNoice_B2.mp3') }}"></audio>
                 <input type="hidden" name="event_id" id="event_id" value="{{$sc_event['event_id']}}">
                 <input type="hidden" name="user_id" id="user_id" value="{{isset(auth()->user()->id) ? auth()->user()->id : ''}}">
                   <input type="range" orient="vertical" min="0" max="100" />
-                  <audio id="clap1" src="{{ asset('assets/images/audio/'.$audio_value['Clap1']) }}"></audio>
-                  <audio id="clap2" src="{{ asset('assets/images/audio/'.$audio_value['Clap2']) }}"></audio>
-                  <audio id="clap3" src="{{ asset('assets/images/audio/'.$audio_value['Clap3']) }}"></audio>
-                  <audio id="clap4" src="{{ asset('assets/images/audio/'.$audio_value['Clap4']) }}"></audio>
-                  <audio id="clap5" src="{{ asset('assets/images/audio/'.$audio_value['Clap5']) }}"></audio>
+                  @foreach($audio as $value)
+                  <audio id="{{$value->audio_name."_".$value->block}}" src="{{ asset('assets/graph/audio/'.$value->audio_file) }}"></audio>
+                  {{-- <audio id="clap2" src="{{ asset('assets/graph/audio/'.$audio_value['Clap2']) }}"></audio>
+                  <audio id="clap3" src="{{ asset('assets/graph/audio/'.$audio_value['Clap3']) }}"></audio>
+                  <audio id="clap4" src="{{ asset('assets/graph/audio/'.$audio_value['Clap4']) }}"></audio>
+                  <audio id="clap5" src="{{ asset('assets/graph/audio/'.$audio_value['Clap5']) }}"></audio> --}}
+                    @endforeach
                   <div id="aact1"></div>
                   <div class="range-slider__thumb"></div>
               </div>
@@ -66,11 +66,11 @@
               <div class="range-slider">
                   <input type="range" orient="vertical" min="0" max="100" />
                   {{-- <audio id="boo" src="{{ asset('assets/images/audio/'.$audio_value['Boo']) }}"></audio> --}}
-                  <audio id="boo1" src="{{ asset('assets/images/audio/'.$audio_value['Boo1']) }}"></audio>
+                  {{-- <audio id="boo1" src="{{ asset('assets/images/audio/'.$audio_value['Boo1']) }}"></audio>
                   <audio id="boo2" src="{{ asset('assets/images/audio/'.$audio_value['Boo2']) }}"></audio>
                   <audio id="boo3" src="{{ asset('assets/images/audio/'.$audio_value['Boo3']) }}"></audio>
                   <audio id="boo4" src="{{ asset('assets/images/audio/'.$audio_value['Boo4']) }}"></audio>
-                  <audio id="boo5" src="{{ asset('assets/images/audio/'.$audio_value['Boo5']) }}"></audio>
+                  <audio id="boo5" src="{{ asset('assets/images/audio/'.$audio_value['Boo5']) }}"></audio> --}}
                   <div id="aact2"></div>
                   <div class="range-slider__thumb"></div>
               </div>
@@ -80,7 +80,7 @@
                 <div id="actt3">0</div>
               <div class="range-slider">
                   <input type="range" orient="vertical" min="0" max="100" />
-                  <audio id="aww1" src="{{ asset('assets/images/audio/'.$audio_value['Aww1']) }}"></audio>
+                  {{-- <audio id="aww1" src="{{ asset('assets/images/audio/'.$audio_value['Aww1']) }}"></audio> --}}
                   {{-- <audio id="whistle" src="{{ asset('assets/images/audio/'.$audio_value['Whistle']) }}"></audio> --}}
                   {{-- <audio id="whistle1" src="{{ asset('assets/images/audio/'.$audio_value['Huge Whistle']) }}"></audio> --}}
                   <div id="aact3"></div>
@@ -92,12 +92,12 @@
                 <div id="actt4">0</div>
               <div class="range-slider">
                   <input type="range" orient="vertical" min="0" max="100" value="0" />
-                  <audio id="whistle1" src="{{ asset('assets/images/audio/'.$audio_value['Whistle1']) }}"></audio>
+                  {{-- <audio id="whistle1" src="{{ asset('assets/images/audio/'.$audio_value['Whistle1']) }}"></audio>
                   <audio id="whistle2" src="{{ asset('assets/images/audio/'.$audio_value['Whistle2']) }}"></audio>
                   <audio id="whistle3" src="{{ asset('assets/images/audio/'.$audio_value['Whistle3']) }}"></audio>
                   <audio id="whistle4" src="{{ asset('assets/images/audio/'.$audio_value['Whistle4']) }}"></audio>
                   <audio id="whistle5" src="{{ asset('assets/images/audio/'.$audio_value['Whistle5']) }}"></audio>
-                  
+                   --}}
                   {{-- <audio id="aww" src="{{ asset('assets/images/audio/'.$audio_value['Aww']) }}"></audio> --}}
                   <div id="aact4"></div>
                   <div class="range-slider__thumb"></div>
@@ -107,7 +107,7 @@
                 <div id="actt5">0</div>
               <div class="range-slider">
                   <input type="range" orient="vertical" min="0" max="100" />
-                  <audio id="cheer1" src="{{ asset('assets/images/audio/'.$audio_value['Cheer1']) }}"></audio>
+                  {{-- <audio id="cheer1" src="{{ asset('assets/images/audio/'.$audio_value['Cheer1']) }}"></audio> --}}
                   {{-- <audio id="cheer2" src="{{ asset('assets/images/audio/'.$audio_value['Cheer2']) }}"></audio>
                   <audio id="cheer3" src="{{ asset('assets/images/audio/'.$audio_value['Cheer3']) }}"></audio>
                   <audio id="cheer4" src="{{ asset('assets/images/audio/'.$audio_value['Cheer4']) }}"></audio>
@@ -122,11 +122,11 @@
                 <div id="actt6">0</div>
               <div class="range-slider">
                   <input type="range" orient="vertical" min="0" max="100" value="0" />
-                  <audio id="laugh1" src="{{ asset('assets/images/audio/'.$audio_value['Laugh1']) }}"></audio>
+                  {{-- <audio id="laugh1" src="{{ asset('assets/images/audio/'.$audio_value['Laugh1']) }}"></audio>
                   <audio id="laugh2" src="{{ asset('assets/images/audio/'.$audio_value['Laugh2']) }}"></audio>
                   <audio id="laugh3" src="{{ asset('assets/images/audio/'.$audio_value['Laugh3']) }}"></audio>
                   <audio id="laugh4" src="{{ asset('assets/images/audio/'.$audio_value['Laugh4']) }}"></audio>
-                  <audio id="laugh5" src="{{ asset('assets/images/audio/'.$audio_value['Laugh5']) }}"></audio>
+                  <audio id="laugh5" src="{{ asset('assets/images/audio/'.$audio_value['Laugh5']) }}"></audio> --}}
                   {{-- <audio id="laugh" src="{{ asset('assets/images/audio/'.$audio_value['Laugh']) }}"></audio> --}}
                   {{-- <audio id="laugh1" src="{{ asset('assets/images/audio/'.$audio_value['Huge Laugh']) }}"></audio> --}}
                   <div id="aact6"></div>
@@ -168,20 +168,20 @@
   </script>
 
 <script>
-  const audio1 = document.getElementById('crowd');
-const audio2 = document.getElementById('crowd1');
-let isPlaying = false;
+//   const audio1 = document.getElementById('crowd');
+// const audio2 = document.getElementById('crowd1');
+// let isPlaying = false;
 
-audio1.addEventListener('ended', function() {
-    audio1.currentTime = 0; // Reset audio1 to the beginning
-    audio1.play();
-});
+// audio1.addEventListener('ended', function() {
+//     audio1.currentTime = 0; // Reset audio1 to the beginning
+//     audio1.play();
+// });
 
-audio2.addEventListener('ended', function() {
-    audio2.currentTime = 0; // Reset audio2 to the beginning
-    audio2.play();
-});
-</script>
+// audio2.addEventListener('ended', function() {
+//     audio2.currentTime = 0; // Reset audio2 to the beginning
+//     audio2.play();
+// });
+// </script>
 <script>
     // var clap = document.getElementById('clap');
     // var boo = document.getElementById('boo');
@@ -241,44 +241,79 @@ audio2.addEventListener('ended', function() {
                 });
                 // event ending message
     
-                    socket.on('live_fan_count', (msg) => {
-                        $('#livecount').html(msg['livecount']);
-                    	if (msg['livecount'] == 1) {
-                            isPlaying = true;
-                            audio1.play(); // Start playing audio1
-                        } else if (msg['livecount'] >= 2 && msg['livecount'] < 4) {
-                            isPlaying = true;
-                            audio2.play(); // Start playing audio2
-                        }else {
-                            isPlaying = false;
-                            audio1.pause();
-                            audio2.pause();
-                        }
+                socket.on('live_fan_count', (msg) => {
+                    const livecount = msg['livecount'];
+                    $('#livecount').html(livecount);
+
+                    const audioElements = {
+                        1: Crowd1_1,
+                        2: Crowd2_2,
+                        3: Crowd3_3,
+                        4: Crowd4_4
+                    };
+
+                    let currentAudio = audioElements[livecount];
+
+                    if (!currentAudio) {
+                        // No audio should play if livecount doesn't match any defined condition
+                        Object.values(audioElements).forEach(audio => audio.pause());
                         $('#bookedcount').html(msg['bookedcount']);
-                        $.clapsss(msg['livecount']);
-                        console.log('live_fan_count response: ', msg)
+                        $.clapsss(livecount);
+                        console.log('live_fan_count response:', msg);
+                        return;
+                    }
+
+                    $('#bookedcount').html(msg['bookedcount']);
+                    $.clapsss(livecount);
+                    console.log('live_fan_count response:', msg);
+
+                    currentAudio.loop = true; // Enable loop for current audio
+                    currentAudio.play();
+                    
+                    // Pause all other audio elements except the current one
+                    Object.values(audioElements).forEach(audio => {
+                        if (audio !== currentAudio) {
+                            audio.pause();
+                        }
                     });
+                });
+
+
 
                     socket.on('artist_action_graph_count', (msg) => {
                         $.clapsss = function(count) {
-                        if(msg['act1'] > 0){
-                        	if(msg['act1'] > 10){
-                        		act1 = 10;
-                        	}else{
-                        		act1 = msg['act1'];
-                        	}
-                        	GraphCount1=(((act1/10)*1.2)*(msg['c11']/count))*100;
-                        console.log(GraphCount1);
-                        if(GraphCount1 > 100){
-                        		GraphCount = 100;
-                        	}else{
-                        		GraphCount = GraphCount1;
-                        	}
-                            document.getElementById("aact1").style.cssText = 'height:' + GraphCount +'%';
-                        }else{
-                            document.getElementById("aact1").style.cssText = `height:0%`;
+                            if (msg['act1'] > 0) {
+                                let act1 = Math.min(msg['act1'], 10);
+                                let GraphCount1 = (((act1 / 10) * 1.2) * (msg['c11'] / count)) * 100;
+                                let GraphCount = Math.min(GraphCount1, 100);
 
-                    }
+                                document.getElementById("aact1").style.cssText = 'height:' + GraphCount + '%';
+
+                                const stopAllClaps = [
+                                    Clap1_1, Clap2_1, Clap3_1, Clap4_1, Clap5_1,
+                                    Clap1_2, Clap2_2, Clap3_2
+                                ];
+
+                                stopAllClaps.forEach(clap => $.stopAudio(clap));
+
+                                const clapRanges = [
+                                    { countRange: [1, 2], actRanges: [[1, 2, Clap1_1], [3, 4, Clap2_1], [5, 6, Clap3_1], [7, 8, Clap4_1], [9, 10, Clap5_1]] },
+                                    { countRange: [3, 6], actRanges: [[1, 3, Clap1_2], [4, 7, Clap2_2], [8, 10, Clap3_2]] }
+                                ];
+
+                                for (const range of clapRanges) {
+                                    const [startCount, endCount] = range.countRange;
+                                    const [startAct, endAct, clap] = range.actRanges.find(([start, end]) => msg['c11'] >= startCount && msg['c11'] <= endCount && act1 >= start && act1 <= end) || [];
+
+                                    if (clap) {
+                                        $.playAudio(clap);
+                                        break;
+                                    }
+                                }
+                            } else {
+                                document.getElementById("aact1").style.cssText = `height:0%`;
+                            }
+
                         if(msg['act2'] > 0){
                         	if(msg['act2'] > 10){
                         		act2 = 10;
@@ -368,43 +403,6 @@ audio2.addEventListener('ended', function() {
                         }else{
                             document.getElementById("aact6").style.cssText = `height:0%`;
 
-                    }
-                        
-                                if(msg['act1'] <= 10 && msg['act1'] > 0){
-                                if(count >= 1 && count <= 2 && msg['act1'] >= 1 && msg['act1'] <= 5){
-                                    $.stopAudio(clap2);
-                                    $.stopAudio(clap3);
-                                    $.stopAudio(clap4);
-                                    $.stopAudio(clap5);
-                                    // var clap = 'clap1';
-                                    $.playAudio(clap1);
-                                }else if(count >= 1 && count <= 2 && msg['act1'] >= 5 && msg['act1'] <= 10){
-                                    $.stopAudio(clap1);
-                                    $.stopAudio(clap3);
-                                    $.stopAudio(clap4);
-                                    $.stopAudio(clap5);
-                                    $.playAudio(clap2);
-                                }else if(count >= 3 && count <= 6 && msg['act1'] >= 1 && msg['act1'] <= 5){
-                                    $.stopAudio(clap2);
-                                    $.stopAudio(clap1);
-                                    $.stopAudio(clap4);
-                                    $.stopAudio(clap5);
-                                    $.playAudio(clap3);
-                                }else if(count >= 3 && count <= 6 && msg['act1'] >= 5 && msg['act1'] <= 10){
-                                    $.stopAudio(clap2);
-                                    $.stopAudio(clap3);
-                                    $.stopAudio(clap1);
-                                    $.stopAudio(clap5);
-                                    $.playAudio(clap4);
-                                }else{
-                                    $.stopAudio(clap2);
-                                    $.stopAudio(clap3);
-                                    $.stopAudio(clap4);
-                                    $.stopAudio(clap1);
-                                    $.playAudio(clap5);
-                                }
-                                // document.getElementById("aact1").style.cssText = `height: calc(${msg['act1'] * 10}% + 0px)`;
-                        
                     }
                     
                     if(msg['act2'] <= 10 && msg['act2'] > 0){
@@ -606,27 +604,12 @@ audio2.addEventListener('ended', function() {
 		document.getElementById("aact6").style.cssText = `height:0%`;
 	}, 6000);
     $.playAudio = function(audiotype) {
-            // if(audiotype == 'clap1'){
                 audiotype.play();
-            // }
             
         }
-        // $.playAudio1 = function(audiotype) {
-        //     if(audiotype == 'clap'){
-        //         clap1.play();
-        //     }
-            
-        // }
+        
         $.stopAudio = function(audiotype) {
-            // if(audiotype == 'clap'){
                 audiotype.pause();
-            // }
-            // if(audiotype == 'whistle'){
-            //     whistle.pause();
-            // }
-            // if(audiotype == 'laugh'){
-            //     laugh.pause();
-            // }
         }
 </script>
 
