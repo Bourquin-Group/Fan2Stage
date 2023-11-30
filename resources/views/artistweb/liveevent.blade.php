@@ -6,7 +6,9 @@
       <div class="button_gorup">
           {{-- <button onclick="endLive('{{$sc_event['event_id']}}')">End Live</button>  --}}
           {{-- <button onclick="myFunction()">Click me</button> --}}
-          {{-- <span id="audioToggle" style="display: inline-block;margin-right:12px;font-size:27px;"><i class="fas fa-volume-off"></i></span> --}}
+          <span id="audioToggle" style="display: inline-block;margin-right:12px;font-size:27px;">
+            <span style="padding: 0px 8px;font-size: 18px;">Un mute the audio </span> <img src="{{ asset('assets/web/images/mute.png') }}" alt="" style="height: 35px;">
+        </span>
             <audio id="myAudio" src="{{ asset('assets/graph/audio/Crowd_1_100.mp3') }}" preload="auto" muted></audio>
 
          <a class="endlive"> <button>End Live</button></a> 
@@ -224,8 +226,8 @@
     // $(document).ready(function(){
 
         // socket script
-     var socket = io.connect("https://live-stream.f2s.live");
-    //  var socket = io.connect("https://fan2stage-live.colanapps.in");
+    //  var socket = io.connect("https://live-stream.f2s.live");
+     var socket = io.connect("https://fan2stage-live.colanapps.in");
     //  console.log(socket);
 
   
@@ -244,6 +246,8 @@
                     function signIn() {
                         var event_id = $('#event_id').val();
                         var userid = $('#user_id').val();
+                        // var event_id = 233;
+                        // var userid = 43;
 
                         socket.emit('join-event', { event: event_id, user_id: userid });
                     }

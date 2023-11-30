@@ -429,6 +429,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
                 
                 // golive
                 Route::get('golive/{id}', [App\Http\Controllers\Fan\GoliveController::class, 'golive'])->name('golive');
+                Route::post('checklive', [App\Http\Controllers\Fan\GoliveController::class, 'checklive'])->name('checklive');
                 Route::get('livecount/{id}', [App\Http\Controllers\Fan\GoliveController::class, 'livecount'])->name('livecount');
                 Route::get('liveshow/{id}', [App\Http\Controllers\Fan\GoliveController::class, 'liveshow'])->name('liveshow');
                 Route::post('exitliveevent', [App\Http\Controllers\Fan\GoliveController::class, 'exitliveevent'])->name('exitliveevent');

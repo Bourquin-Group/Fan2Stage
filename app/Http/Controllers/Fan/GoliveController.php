@@ -15,6 +15,26 @@ use Client;
 
 class GoliveController extends Controller
 {
+    public function checklive(Request $request){
+        // $eventsid =base64_decode($id);
+        $eventsid =$request->id;
+        $liveevent = app('App\Http\Controllers\API\GoliveController')->checklive($eventsid);
+        $liveeventArray = json_decode ($liveevent->content(), true);
+         $status = $liveeventArray['event_states'];
+         if($status == true){
+            return response()->json([
+                'success' => true,
+            	'flag' => 1,
+                'event_id' => $eventsid,
+            ]);
+          }else{
+            return response()->json([
+                'success' => false,
+            	'flag' => 0,
+                'message' => "Event has been Finished",
+            ]);
+          }
+    }
     public function golive(Request $request,$id){
         // $eventsid =base64_decode($id);
         $eventsid =$id;

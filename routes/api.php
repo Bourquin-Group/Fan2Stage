@@ -182,6 +182,7 @@ Route::middleware('auth:api')->group( function () {
 	
 	// join event
 	Route::post('golive/{id}', 'App\Http\Controllers\API\GoliveController@golive')->name('golive');
+	Route::post('checklive/{id}', 'App\Http\Controllers\API\GoliveController@checklive')->name('checklive');
 	Route::post('livecount/{id}', 'App\Http\Controllers\API\GoliveController@livecount')->name('livecount');
 	// join event
 	
