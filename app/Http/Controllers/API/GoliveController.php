@@ -272,6 +272,26 @@ class GoliveController extends Controller
 			]);
         // }
     }
+    public function checklive($eventsid){
+        $eventid =$eventsid;
+        $eventStatus = Event::where(['id' => $eventid,'event_status' => 1])->first();
+        if($eventStatus){
+            return response()->json([
+                'status'   => 200,
+				'success' => true,
+                'event_states'=> true,
+                'message' => 'Event Live'
+			]);
+        }else{
+            return response()->json([
+                'status'   => 200,
+				'success' => true,
+                'event_states'=> false,
+                'message' => 'Event End'
+			]);
+        }
+            
+    }
     public function livecount($id){
         
 
