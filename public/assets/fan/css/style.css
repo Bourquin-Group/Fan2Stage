@@ -4868,6 +4868,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .followers_section_card.bg_layout a {
     width: 100%;
 }
-.error-text-color{
-    color:black !important;
+div#swal2-content{
+    color:black;
 }
