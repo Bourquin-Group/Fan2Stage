@@ -81,7 +81,7 @@
                         <div class="event_card_bottom_right">
                             @if($ldata['event_amount'] == 0)
                                 
-                            <a href="{{route('golive',$ldata['event_id'])}}"><button>Join Now</button></a>
+                            <button class="checklive" data-id="{{$ldata['event_id']}}">Join Now</button>
                             
                             @else
                             
@@ -211,6 +211,39 @@
                     }
                   }else{
                     window.location.href = "{{ url('/fan/scheduled-event/') }}"+"/"+data.event_id;
+                  }
+                }
+            });
+        });
+        $(document).on("click", ".checklive", function (e) {
+        var event_id = $(this).data('id');
+            e.preventDefault();
+            $.ajax({
+                headers: {
+                    'X-CSRF-Token': '{{ csrf_token() }}',
+                },
+                url:"{{ route('checklive') }}",
+             
+                type: 'POST',
+            	data: {'id':event_id},
+                success: function (data) {
+                    console.log(data);
+                  if (data.success === false) {
+                    if(data.flag == 0){
+                        swal.fire({
+            				text: "Event has been ended",
+            				type: "error",
+                        customClass: {
+                popup: 'error-text-color' // Add a custom class for text color
+            }
+        				}).then(function () {
+            // When the alert is dismissed (by clicking anywhere), reload the page
+            				location.reload();
+        				});
+                    
+                    }
+                  }else{
+                    window.location.href = "{{ url('/fan/golive/') }}"+"/"+data.event_id;
                   }
                 }
             });
