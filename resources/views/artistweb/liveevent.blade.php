@@ -226,8 +226,8 @@
     // $(document).ready(function(){
 
         // socket script
-    //  var socket = io.connect("https://live-stream.f2s.live");
-     var socket = io.connect("https://fan2stage-live.colanapps.in");
+     var socket = io.connect("https://live-stream.f2s.live");
+    //  var socket = io.connect("https://fan2stage-live.colanapps.in");
     //  console.log(socket);
 
   
