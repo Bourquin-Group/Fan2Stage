@@ -846,7 +846,7 @@ var testclass = 0;
 		document.getElementById("act41").style.cssText = `height: calc(0% + 0px)`;
 		document.getElementById("act51").style.cssText = `height: calc(0% + 0px)`;
 		document.getElementById("act61").style.cssText = `height: calc(0% + 0px)`;
-	}, 5000);
+	}, 6000);
            // socket script
 </script>
 <script>
