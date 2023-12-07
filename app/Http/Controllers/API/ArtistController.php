@@ -87,7 +87,7 @@ class ArtistController extends Controller
         $authid = Auth::user()->id;
         $artist = Artist_profiles::where('user_id',$authid)->first();
         $validation = [
-            'full_name' => ['required','string','regex:/^[a-z|A-Z]+(?: [a-z|A-Z]+)*$/'],
+            'full_name' => ['required', 'string', 'regex:/^[a-zA-Z]+(?:\s+[a-zA-Z]+)*$/'],
             'email' => ['required','regex:/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'],
             'stagename' => 'required',
             'mobile_number' => ['required'],
