@@ -477,7 +477,7 @@ class AuthController extends BaseController
                 if(!$user->image || $user->image == null){
                     $validator = Validator::make($request->all(),
                 [
-                    'name' => ['required','string','regex:/^[a-z|A-Z]+(?: [a-z|A-Z]+)*$/'],
+                    'name' => ['required','string','regex:/^[a-zA-Z]+(?:\s+[a-zA-Z]+)*$/'],
                     'phone_number' => ['required'],
                     // 'phone_number' => ['required','numeric','digits:10'],
                     'email' => ['required','regex:/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'],
@@ -506,7 +506,7 @@ class AuthController extends BaseController
                 }else{
                     $validator = Validator::make($request->all(),
                 [
-                    'name' => ['required','string','regex:/^[a-z|A-Z]+(?: [a-z|A-Z]+)*$/'],
+                    'name' => ['required','string','regex:/^[a-zA-Z]+(?:\s+[a-zA-Z]+)*$/'],
                     'phone_number' => ['required'],
                     // 'phone_number' => ['required','numeric','digits:10'],
                     'email' => ['required','regex:/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'],

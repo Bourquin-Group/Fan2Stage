@@ -92,7 +92,10 @@
             <span class="error_msg">{{ $errors->first('landing_page_image') }}</span><br>
             @endif
             </div>
-            <h5 class="font-22">Basic Details</h5>
+            <div class="d-flex">
+                <h5 class="font-22">Basic Details</h5>
+                <div style="color:red;margin-left:12px;">(Please update mandatory fields and profile picture to proceed further)</div>
+            </div>
             {{-- @if(isset($a_profile) && $a_profile) --}}
             
             <div class="first-column">

@@ -102,14 +102,17 @@
                                           <span class="error_msg" id="image"></span><br>
                                           {{-- @endif    --}}
                           <div class="profile-inform">
+                            <div class="d-flex">
                               <h5 class="font-22">Basic Details</h5>
+                              <div class ="edit-input" style="color:red;margin-left:12px;">(Please update mandatory fields and profile picture to proceed further)</div>
+                          </div>
                               <div class="first-column">
                                     <div class="form-section">
                                         <div class="svg-sec"> 
                                           <img src="{{asset('/assets/fan/images/user.svg')}}" alt="" srcset="">
                                         </div> 
                                         <div class="label-sec">
-                                          <label for="">Name</label>
+                                          <label for="">Name*</label>
                                           <span class="edit-text">{{$profile['name']}}</span>
                                           <input class="edit-input" type="text" name="name" placeholder="Name" 
                                           value="{{old('name')?old('name'):$profile['name']}}"> 
@@ -123,7 +126,7 @@
                                           <img src="{{asset('/assets/fan/images/Email.svg')}}" alt="" srcset="">
                                         </div>
                                         <div class="label-sec">
-                                        <label for="">Email Address</label>
+                                        <label for="">Email Address*</label>
                                         <span class="edit-text">{{$profile['email']}}</span>
                                         <div class="edit-input">
                                           <input type="email" name="email" placeholder="Email Address" value="{{old('email')?old('email'):$profile['email']}}">
@@ -139,7 +142,7 @@
                                           <img src="{{asset('/assets/fan/images/phone.svg')}}" alt="" srcset="">
                                         </div>
                                         <div class="label-sec">
-                                          <label for="">Mobile Number</label>
+                                          <label for="">Mobile Number*</label>
                                           <span class="edit-text">{{$profile['phone_number']}}</span>
                                           <div class="email-icon mbl-num-sec edit-mbl">
                                             <input type="" id="phoneNumber1" value="{{old('phone_number')?old('phone_number'):$profile['phone_number']}}" name="phone_number" placeholder="Phone Number" maxlength="16" onInput="this.value = phoneFormat(this.value)"/>
@@ -157,7 +160,7 @@
                                           <img src="{{asset('/assets/fan/images/birthday_icon.svg')}}" alt="" srcset="">
                                         </div>
                                         <div class="label-sec">
-                                          <label for="">Date of Birth</label>
+                                          <label for="">Date of Birth*</label>
                                           <?php 
                                           
                                           $dob ="";
@@ -180,7 +183,7 @@
                                           <img src="{{asset('/assets/fan/images/prefer.svg')}}" alt="" srcset="">
                                         </div>
                                         <div class="label-sec">
-                                          <label for="">Preferred genre</label>
+                                          <label for="">Preferred genre*</label>
                                           <span class="edit-text">{{(isset($profile['preferred_genre'])) ? implode(',',$profile['preferred_genre']): '-'}}</span>
                                           <div class="genere_sec edit-select">
                                             <select class="selectpicker" name="preferred_genre[]" id="genre" multiple>
@@ -200,7 +203,7 @@
                                           <img src="{{asset('/assets/fan/images/prefer.svg')}}" alt="" srcset="">
                                         </div>
                                         <div class="label-sec">
-                                          <label for="">Time Zone</label>
+                                          <label for="">Time Zone*</label>
                                           <span class="edit-text">
                                             @if($profile['timezone'] == 1)
                                                 {{ "PST" }}
