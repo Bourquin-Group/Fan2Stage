@@ -11,7 +11,7 @@
     </div>
     <div class="profile-main">
         <div class="profile-inform">
-            <div class="profile-banner_section">
+            <div class="profile-banner_section"> 
                 <div class="profile-banner">
                     <div class="avatar-edit">
                         

@@ -1039,6 +1039,7 @@ class AuthController extends BaseController
                     }
                 }
             }
+            
 
             public function deleteaccount($id){
                 $usertype = User::where('id',$id)->first();

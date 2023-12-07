@@ -699,7 +699,7 @@ function phoneFormat(input) {//returns (###) ###-####
                }else{
                 location.reload();
                }
-             
+              
            }
        });
    });
