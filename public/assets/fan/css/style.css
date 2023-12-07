@@ -4376,7 +4376,7 @@ div#act1c, div#act2c, div#act3c, div#act4c, div#act5c, div#act6c{
     pointer-events: none;
     width: 18px;
     border-radius: 20px;
-    transition: height 3s;
+    transition: height 5s ease;
 }
 /* 12-05-2023 */
 /* 17-05-2023 */

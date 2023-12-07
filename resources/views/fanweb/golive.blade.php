@@ -840,12 +840,12 @@ var testclass = 0;
                 //     console.log('artist_action_graph_count response: ', msg)
                 // });
                 setInterval(function () {
-		document.getElementById("act11").style.cssText = `height: calc(0% + 0px)`;
-		document.getElementById("act21").style.cssText = `height: calc(0% + 0px)`;
-		document.getElementById("act31").style.cssText = `height: calc(0% + 0px)`;
-		document.getElementById("act41").style.cssText = `height: calc(0% + 0px)`;
-		document.getElementById("act51").style.cssText = `height: calc(0% + 0px)`;
-		document.getElementById("act61").style.cssText = `height: calc(0% + 0px)`;
+		document.getElementById("act11").style.cssText = `height:0%`;
+		document.getElementById("act21").style.cssText = `height:0%`;
+		document.getElementById("act31").style.cssText = `height:0%`;
+		document.getElementById("act41").style.cssText = `height:0%`;
+		document.getElementById("act51").style.cssText = `height:0%`;
+		document.getElementById("act61").style.cssText = `height:0%`;
 	}, 6000);
            // socket script
 </script>
