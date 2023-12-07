@@ -30,7 +30,7 @@ class AuthController extends BaseController
     {
         $validator =$this->validate($request,[
 
-                'full_name' => ['required','string','regex:/^[a-z|A-Z]+(?: [a-z|A-Z]+)*$/'],
+                'full_name' => ['required','string','regex:/^[a-zA-Z]+(?:\s+[a-zA-Z]+)*$/'],
                 // 'last_name' => ['required','string','regex:/^[a-z|A-Z]+(?:( |-)[a-z|A-Z]+)*$/'],
                 //  'country_code' => ['required','regex:/^\+\d{1,2}$/'],
                 'phone_number' => ['required'],
@@ -1039,7 +1039,6 @@ class AuthController extends BaseController
                     }
                 }
             }
-            
 
             public function deleteaccount($id){
                 $usertype = User::where('id',$id)->first();
