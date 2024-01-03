@@ -38,7 +38,7 @@
 
 
 .login-page-main {
-    background:url('/assets/web/images/Login-bg-img.png') no-repeat,linear-gradient(113.86deg, #1B3558 0.89%, #0F192C 100%);
+    background:url('/assets/web/images/Login-bg-img.jpg') no-repeat,linear-gradient(113.86deg, #1B3558 0.89%, #0F192C 100%);
     min-height: 100vh;
     display: block;
     width: 100%;
