@@ -93,17 +93,38 @@ class EventController extends Controller
         {
             if($Events_per_month_count<$events_per_month)
             {
-                $checktime = date("H:i:s", strtotime($request['event_time']));
-                // dd($checktime);
-                $eventcheck = Event::where('user_id',$authid)->where('event_date',$request ['event_date'])->where('event_time',$checktime)->first();
-                if($eventcheck){
-                    $response = [
-                        'success'   => false,
-                        'flag' => 1,
-                        'message' => 'Already event will be existing with this time and date',
-                    ];
-                    return response()->json($response);
-                }else{
+                // $checktime = date("H:i:s", strtotime($request['event_time']));
+                // // dd($checktime);
+                // $eventcheck = Event::where('user_id',$authid)->where('event_date',$request ['event_date'])->where('event_time',$checktime)->first();
+                // if($eventcheck){
+                //     $response = [
+                //         'success'   => false,
+                //         'flag' => 1,
+                //         'message' => 'Already event will be existing with this time and date',
+                //     ];
+                //     return response()->json($response);
+                // }else{
+
+                    $eventsToday = Event::where('user_id', $authid)
+                    ->where('event_status',1)
+                    ->whereDate('event_date', $request['event_date']) // Filter events for today's date
+                    ->get(); // Retrieve all events for today
+
+                $falltime = strtotime($request['event_time']);
+
+                foreach ($eventsToday as $event) {
+                    $event_starttime = strtotime($event->event_time);
+                    $event_closetime = strtotime($event->event_closetime);
+
+                    if ($falltime >= $event_starttime && $falltime <= $event_closetime) {
+                        $response = [
+                            'success' => false,
+                            'flag' => 1,
+                            'message' => 'An event already exists with this time and date.',
+                        ];
+                        return response()->json($response);
+                    }
+                }
                 // $input = $request->all();
                 // dd($request ['event_date']);
                 $todayDate = date('Y-m-d');
@@ -322,7 +343,7 @@ class EventController extends Controller
                         'message' => 'Event created successfully',
                     ];
                     return response()->json($response, 200);
-                }
+                // }
                 }
                 else{
                     $response = [
