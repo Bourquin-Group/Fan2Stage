@@ -53,8 +53,19 @@
                     <div class="imgsection">
                         {{-- <video controls=""> --}}
                             {{-- <iframe src="https://player.twitch.tv/?channel=esl_dota2&parent=localhost" frameborder="0" allowfullscreen="true" scrolling="no" height="378" width="620"></iframe> --}}
-                            
-                            <iframe src="{{$event['link_to_event_stream']}}" frameborder="0" style="width:100%;height:100%" allowfullscreen></iframe>
+                            @php
+                                $originalURL = $event['link_to_event_stream'];
+                                $newParentURL = "livefan.f2s.live";
+                                
+                                // Check if the original URL contains 'player.twitch.tv'
+                                if (strpos($originalURL, 'player.twitch.tv') !== false) {
+                                    $modifiedURL = str_replace('onstage.f2s.live', $newParentURL, $originalURL);
+                                } else {
+                                    // Keep the default URL if 'player.twitch.tv' is not found
+                                    $modifiedURL = $originalURL;
+                                }
+                            @endphp
+                            <iframe src="{{$modifiedURL}}" frameborder="0" style="width:100%;height:100%" allowfullscreen></iframe>
                             
                           {{-- </video> --}}
                     </div>
