@@ -207,7 +207,7 @@
                     console.log(data);
                   if (data.success === false) {
                     if(data.flag == 0){
-                        swal.fire(data.message,"error");
+                        swal.fire(data.message);
                     }
                   }else{
                     window.location.href = "{{ url('/fan/scheduled-event/') }}"+"/"+data.event_id;
