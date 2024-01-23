@@ -795,7 +795,15 @@ class EventController extends Controller
 
     public function liveEventList(){
         // $allLiveEvents = Event::where('event_status',1)->where('event_date', Carbon::today())->get();
-        $allLiveEvents = Event::where('event_status',1)->where('golivestatus', 1)->where('event_date', Carbon::today())->get();
+        // $allLiveEvents = Event::where('event_status',1)->where('golivestatus', 1)->where('event_date', Carbon::today())->get();
+        $yesterday = Carbon::yesterday()->toDateString();
+// $today = Carbon::today()->toDateString();
+        $tomorrow = Carbon::tomorrow()->toDateString();
+
+        $allLiveEvents = Event::where('event_status', 1)
+            ->where('golivestatus', 1)
+            ->whereBetween('event_date', [$yesterday, $tomorrow])
+            ->get();
         $data = [];
         $totData = [];
         foreach($allLiveEvents as $value){
@@ -836,7 +844,15 @@ class EventController extends Controller
         date_default_timezone_set($timezone_region['region']);
         }
         // $allLiveEvents = Event::where('event_status',1)->where('event_date', Carbon::today())->get();
-        $allLiveEvents = Event::where('event_status',1)->where('golivestatus', 1)->where('event_date', Carbon::today())->get();
+        // $allLiveEvents = Event::where('event_status',1)->where('golivestatus', 1)->where('event_date', Carbon::today())->get();
+        $yesterday = Carbon::yesterday()->toDateString();
+        // $today = Carbon::today()->toDateString();
+        $tomorrow = Carbon::tomorrow()->toDateString();
+
+        $allLiveEvents = Event::where('event_status', 1)
+            ->where('golivestatus', 1)
+            ->whereBetween('event_date', [$yesterday, $tomorrow])
+            ->get();
         $data = [];
         $totData = [];
         foreach($allLiveEvents as $value){
