@@ -93,7 +93,7 @@
                         <div class="main_live">
                             {{-- <audio id="crowd" src="{{ asset('assets/audio/RoomNoice_B1.mp3') }}"></audio> --}}
                             <div class="emog_section pos-icon"><div id="act1" style="display:none;">0</div><img src="{{ asset('assets/fan/images/clap-svg.svg') }}" alt=""></div>
-                            <div id="act1c">0</div>
+                            {{-- <div id="act1c">0</div> --}}
                         <div class="range-slider">
                             <input type="range" orient="vertical" min="0" max="100" value="0">
                             <div id="act11"></div>
@@ -105,7 +105,7 @@
                 
                         <div class="main_live">
                         <div class="emog_section pos-icon"><div id="act2" style="display:none;">0</div><img src="{{ asset('assets/fan/images/boo-svg.svg') }}" alt=""></div>
-                        <div id="act2c">0</div>
+                        {{-- <div id="act2c">0</div> --}}
                         <div class="range-slider">
                             <input type="range" orient="vertical" min="0" max="100" value="0">
                             <div id="act21"></div>
@@ -116,7 +116,7 @@
                 
                         <div class="main_live">
                             <div class="emog_section pos-icon"><div id="act3" style="display:none;">0</div><img src="{{ asset('assets/fan/images/party-svg.svg') }}" alt=""></div>
-                            <div id="act3c">0</div>
+                            {{-- <div id="act3c">0</div> --}}
                         <div class="range-slider" >
                             <input type="range" orient="vertical" min="0" max="100" value="0" >
                             <div id="act31"></div>
@@ -127,7 +127,7 @@
                 
                         <div class="main_live">
                         <div class="emog_section pos-icon"><div id="act4" style="display:none;">0</div><img src="{{ asset('assets/fan/images/music-svg.svg') }}" alt=""></div>
-                        <div id="act4c">0</div>
+                        {{-- <div id="act4c">0</div> --}}
                         <div class="range-slider">
                             <input type="range" orient="vertical" min="0" max="100" value="0">
                             <div id="act41"></div>
@@ -137,7 +137,7 @@
                         <div class="emog_section" id="4" data-id="act4" onclick="buttonClicked(this)"><img src="{{ asset('assets/fan/images/music-svg.svg') }}" alt=""></div></div>
                         <div class="main_live">
                         <div class="emog_section pos-icon"><div id="act5" style="display:none;">0</div><img src="{{ asset('assets/fan/images/surprised-svg.svg') }}" alt=""></div>
-                        <div id="act5c">0</div>
+                        {{-- <div id="act5c">0</div> --}}
                         <div class="range-slider">
                             <input type="range" orient="vertical" min="0" max="100" value="0">
                             <div id="act51"></div>
@@ -148,7 +148,7 @@
                 
                         <div class="main_live">
                         <div class="emog_section pos-icon"><div id="act6" style="display:none;">0</div><img src="{{ asset('assets/fan/images/smile-svg.svg') }}" alt=""></div>
-                        <div id="act6c">0</div>
+                        {{-- <div id="act6c">0</div> --}}
                         <div class="range-slider">
                             <input type="range" orient="vertical" min="0" max="100" value="0">
                             <div id="act61"></div>
@@ -857,7 +857,7 @@ var testclass = 0;
 		document.getElementById("act41").style.cssText = `height:0%`;
 		document.getElementById("act51").style.cssText = `height:0%`;
 		document.getElementById("act61").style.cssText = `height:0%`;
-	}, 6000);
+	}, 3000);
            // socket script
 </script>
 <script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Fan;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
@@ -14,6 +15,7 @@ use Redirect;
 use App\Models\Admin\cms_manage;
 class LoginController extends Controller
 {
+  use AuthenticatesUsers;
     public function login(){
         return view('fanweb.login');
     }
@@ -24,6 +26,18 @@ class LoginController extends Controller
       if($login_dataArray['success'] == 'true'){
         $login = $login_dataArray['data'];
         Session::put('user_timezone', $login['timezone']);
+
+        // Check if multiple logins are allowed
+        if ($login_dataArray['message'] == 'You are already logged in.') {
+          // Log out the user if already logged in on another device
+          if (auth()->check() && auth()->user()->session_id !== session()->getId()) {
+              auth()->logout();
+              Session::flash('error', 'You are already logged in.');
+              return redirect('/fan/login');
+          }
+      }
+
+
 
         $timezone_date = timezone_change::where('user_id',Auth::user()->id)->first();
         $timezone_getdate = timezone_notify::where('id',1)->first();
@@ -58,6 +72,9 @@ class LoginController extends Controller
         return redirect('/fan/fanhome');
       }else{
         if($login_dataArray['message'] == 'Your Email Is Not Existing'){
+          Session::flash('error', $login_dataArray['message']);
+        }
+        if($login_dataArray['message'] == 'You are already logged in.'){
           Session::flash('error', $login_dataArray['message']);
         }
         if($login_dataArray['message'] =='notverified')
@@ -196,6 +213,9 @@ class LoginController extends Controller
     public function logout(Request $request)
      {
 
+        $user = Auth::user();
+        $user->session_id = null;
+        $user->save();
          Auth::logout();
         return redirect('/fan/login');
      }
