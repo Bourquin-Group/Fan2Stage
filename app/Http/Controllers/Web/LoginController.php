@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\timezone_change;
@@ -14,6 +15,7 @@ use App\Models\Admin\cms_manage;
 use Mail;
 class LoginController extends Controller
 {
+  use AuthenticatesUsers;
      public function login(){
         return view('artistweb.login');
     }
@@ -25,6 +27,16 @@ class LoginController extends Controller
        if($login_dataArray['success'] == 'true'){
         $login = $login_dataArray['data'];
         Session::put('user_timezone', $login['timezone']);
+
+        // Check if multiple logins are allowed
+        if ($login_dataArray['message'] == 'You are already logged in.') {
+          // Log out the user if already logged in on another device
+          if (auth()->check() && auth()->user()->session_id !== session()->getId()) {
+              auth()->logout();
+              Session::flash('error', 'You are already logged in.');
+              return redirect('/fan/login');
+          }
+      }
 
         $timezone_date = timezone_change::where('user_id',Auth::user()->id)->first();
         $timezone_getdate = timezone_notify::where('id',1)->first();
@@ -59,6 +71,9 @@ class LoginController extends Controller
         
         return redirect('/web/artisthome');
        }else{
+        if($login_dataArray['message'] == 'You are already logged in.'){
+          Session::flash('error', $login_dataArray['message']);
+        }
         if($login_dataArray['message'] =='notverified')
         {
         Session::flash('error', "You are not verified user");
@@ -244,6 +259,9 @@ class LoginController extends Controller
      }
      public function logout(Request $request)
      {
+      $user = Auth::user();
+        $user->session_id = null;
+        $user->save();
          Auth::logout();
         return redirect('/web/login');
      }
