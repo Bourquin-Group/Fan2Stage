@@ -612,7 +612,7 @@ var testclass = 0;
                     }
                 // if(totalcountfunction1 <= 10){
                     document.getElementById(ids).style.cssText = `height:${totalcountfunction1 * 10}%`;
-                    document.getElementById(ids1).textContent = totalcountfunction1;
+                    // document.getElementById(ids1).textContent = totalcountfunction1;
                 // }
                 $.actionbutton_call(v, btn.click_counter);
                     testclass = 1;
