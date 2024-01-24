@@ -465,6 +465,7 @@ class EventController extends Controller
                 'event_description' => $event->event_description,
                 'event_status' => $event->event_status,
                 'artist_id' => $event->user_id,
+                'eventstart' => $event->starteventflag,
                 'artist_name' => $event->userDetail['name'],
                 'artist_image' => (isset($a_profile['profile_image'])) ? url('').'/artist_profile_images/'.$a_profile['profile_image']: '',
             ];

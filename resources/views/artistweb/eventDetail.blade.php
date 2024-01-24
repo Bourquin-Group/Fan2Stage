@@ -14,7 +14,7 @@
         
         @if($sc_event['event_status'] == 1)
        {{-- <button><a href="{{url('web/startevent/'.Crypt::encryptString($sc_event['event_id']))}}">Start Event</a></button> --}}
-       <button class="startevent">Start Event</button>
+       <button class="startevent">{{$sc_event['eventstart'] == 1 ? 'Resume Event' : 'Start Event'}}</button>
        <input type="hidden" name="event_id" value="{{$sc_event['event_id']}}">
        @endif
       </div>
