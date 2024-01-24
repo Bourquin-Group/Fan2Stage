@@ -49,7 +49,7 @@
           <div class="slider_header h-100">
 
               <div class="main_live">
-                <div id="actt1">0</div>
+                {{-- <div id="actt1">0</div> --}}
               <div class="range-slider">
                 <!-- Button that triggers the audio play -->
                 
@@ -70,7 +70,7 @@
               <div class="emog_section"><img src="{{asset('/assets/web/images/clap-svg.svg')}}" alt=""></div></div>
       
               <div class="main_live">
-                <div id="actt2">0</div>
+                {{-- <div id="actt2">0</div> --}}
               <div class="range-slider">
                   <input type="range" orient="vertical" min="0" max="100" />
                   {{-- <audio id="boo" src="{{ asset('assets/images/audio/'.$audio_value['Boo']) }}"></audio> --}}
@@ -85,7 +85,7 @@
               <div class="emog_section"><img src="{{asset('/assets/web/images/boo-svg.svg')}}" alt=""></div></div>
       
               <div class="main_live">
-                <div id="actt3">0</div>
+                {{-- <div id="actt3">0</div> --}}
               <div class="range-slider">
                   <input type="range" orient="vertical" min="0" max="100" />
                   {{-- <audio id="aww1" src="{{ asset('assets/images/audio/'.$audio_value['Aww1']) }}"></audio> --}}
@@ -97,7 +97,7 @@
               <div class="emog_section"><img src="{{asset('/assets/web/images/party-svg.svg')}}" alt=""></div></div>
       
               <div class="main_live">
-                <div id="actt4">0</div>
+                {{-- <div id="actt4">0</div> --}}
               <div class="range-slider">
                   <input type="range" orient="vertical" min="0" max="100" value="0" />
                   {{-- <audio id="whistle1" src="{{ asset('assets/images/audio/'.$audio_value['Whistle1']) }}"></audio>
@@ -112,7 +112,7 @@
               </div>
               <div class="emog_section"><img src="{{asset('/assets/web/images/music-svg.svg')}}" alt=""></div></div>
               <div class="main_live">
-                <div id="actt5">0</div>
+                {{-- <div id="actt5">0</div> --}}
               <div class="range-slider">
                   <input type="range" orient="vertical" min="0" max="100" />
                   {{-- <audio id="cheer1" src="{{ asset('assets/images/audio/'.$audio_value['Cheer1']) }}"></audio> --}}
@@ -127,7 +127,7 @@
               <div class="emog_section"><img src="{{asset('/assets/web/images/surprised-svg .svg')}}" alt=""></div></div>
       
               <div class="main_live">
-                <div id="actt6">0</div>
+                {{-- <div id="actt6">0</div> --}}
               <div class="range-slider">
                   <input type="range" orient="vertical" min="0" max="100" value="0" />
                   {{-- <audio id="laugh1" src="{{ asset('assets/images/audio/'.$audio_value['Laugh1']) }}"></audio>
@@ -620,12 +620,12 @@
                      
                      
                     
-                        $('#actt1').html(msg['actt1']);
-                        $('#actt2').html(msg['actt2']);
-                        $('#actt3').html(msg['actt3']);
-                        $('#actt4').html(msg['actt4']);
-                        $('#actt5').html(msg['actt5']);
-                        $('#actt6').html(msg['actt6']);
+                        // $('#actt1').html(msg['actt1']);
+                        // $('#actt2').html(msg['actt2']);
+                        // $('#actt3').html(msg['actt3']);
+                        // $('#actt4').html(msg['actt4']);
+                        // $('#actt5').html(msg['actt5']);
+                        // $('#actt6').html(msg['actt6']);
                         console.log('artist_action_graph_count response: ', msg)
                     });
 	setInterval(function () {
