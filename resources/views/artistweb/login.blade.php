@@ -103,7 +103,7 @@
                 type: 'POST',
                 data: {'email':email},
                 success: function (data) {
-                    window.location.href = "{{ url('/fan/login') }}";
+                    window.location.href = "{{ url('/web/login') }}";
                 }
             });
         });

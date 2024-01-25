@@ -267,7 +267,7 @@ class LoginController extends Controller
          Auth::logout();
         return redirect('/web/login');
      }
-     public function alllogouts(Request $request)
+     public function alllogoutwebs(Request $request)
      {
       $user = User::where('email',$request->email)->first();
         $user->session_id = null;
