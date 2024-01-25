@@ -82,7 +82,9 @@ class LoginController extends Controller
           if($login_dataArray['message'] =='Invalid User'){
             Session::flash('error', "Incorrect Email Or Password");
           }else{
-            return Redirect::back()->withInput();
+            $email = $request->email;
+            return Redirect::back()->withInput(['email' => $email]);
+            // return Redirect::back()->withInput();
           }
 
          
@@ -264,6 +266,16 @@ class LoginController extends Controller
         $user->save();
          Auth::logout();
         return redirect('/web/login');
+     }
+     public function alllogouts(Request $request)
+     {
+      $user = User::where('email',$request->email)->first();
+        $user->session_id = null;
+        $user->save();
+         return response()->json([
+          'success' => true,
+          'message' => 'Session cleared successfully',
+      ]);
      }
 
 }

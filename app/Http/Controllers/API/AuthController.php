@@ -183,13 +183,13 @@ class AuthController extends BaseController
                 $pass_word = User::where('email',$request->email)->first();
                 if($pass_word){
                 if($pass_word->password_otp =='' || $pass_word->password_otp == null ){
-                    // if ($pass_word->session_id && $pass_word->session_id !== session()->getId()) {
-                    //     return response()->json([
-                    //         'status' => 401,
-                    //         'success' => false,
-                    //         'message' => 'You are already logged in.',
-                    //     ], 401);
-                    // }
+                    if ($pass_word->session_id && $pass_word->session_id !== session()->getId()) {
+                        return response()->json([
+                            'status' => 401,
+                            'success' => false,
+                            'message' => 'You are already logged in.',
+                        ], 401);
+                    }
                 if(Auth::attempt(['email' => $request->email, 'password' => $request->password]) || Auth::attempt(['phone_number' => $request->email, 'password' => $request->password]) ){ 
                     $user = Auth::user(); 
                     $user->session_id = session()->getId();

@@ -27,6 +27,24 @@ label.error {
                     @if (Session::has('error'))
                       <div class="text-danger">{{ Session::get('error') }}</div>
                       @endif
+                      @if (Session::has('error'))
+                      @if(Session::get('error') == 'You are already logged in.')
+                      <div class="text-danger" style="margin-left: 45px;">Do you want to logout all devices</div>
+                      <button type="button" class="btn" id="logs" style="margin-left: 28%;font-style: normal;
+                      font-weight: 700;
+                      line-height: 20px;
+                      text-align: center;
+                      text-transform: uppercase;
+                      color: #FFFFFF;
+                      background: #081A34;
+                      border: 1px solid #A6C2E9 !important;
+                      box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.05);
+                      border-radius: 50px;
+                      width: 140px;
+                      height: 40px;
+                      display: block;">logout</button>
+                      @endif
+                    @endif
                   <div class="form-input-section">
                      <form method="post" action="{{url('/fan/loginstore')}}" autocomplete="on" id="signupForm">
                          @csrf
@@ -37,6 +55,7 @@ label.error {
                                     <img src="{{asset('/assets/fan/images/Email.svg')}}" alt="" srcset="">
                                 </span>
                                 <input class="font-16" name="email" type="emails" placeholder="Enter Address" style="color:none !important;">
+                                <input class="font-16" name="emails" type="hidden" value="{{ old('email') }}">
                               </div>
                               @if ($errors->has('email'))
                           <span class="error_msg">{{ $errors->first('email') }}</span>
@@ -107,7 +126,23 @@ function signInWithApple() {
     AppleID.auth.signIn();
 }
 
-// $(document).ready(function(){
+$(document).ready(function(){
+    $(document).on("click", "#logs", function (e) {
+        var email = $("input[name=emails]").val();
+            e.preventDefault();
+            $.ajax({
+                headers: {
+                    'X-CSRF-Token': '{{ csrf_token() }}',
+                },
+                url: "{{route('alllogout') }}",
+             
+                type: 'POST',
+                data: {'email':email},
+                success: function (data) {
+                    window.location.href = "{{ url('/fan/login') }}";
+                }
+            });
+        });
 //     $("#signupForm").validate({
 //     rules: {
 //         email: {
@@ -124,7 +159,7 @@ function signInWithApple() {
 //         password: "Please enter your password",
 //     }
 // });
-// });
+});
 
 
 

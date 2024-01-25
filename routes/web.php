@@ -307,6 +307,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
         Route::post('changepasswordstore', [App\Http\Controllers\Web\LoginController::class, 'changepasswordstore'])->name('changepasswordstore');
 
         Route::post('resendotp', [App\Http\Controllers\Web\LoginController::class, 'resendotp'])->name('resendotp');
+        Route::post('alllogoutweb', [App\Http\Controllers\Web\LoginController::class, 'alllogoutwebs'])->name('alllogout');
         // Login Page
         Route::get('logout', '\App\Http\Controllers\Web\LoginController@logout')->name('logout');
     });
@@ -326,6 +327,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
         Route::get('changepassword/{uuid}', [App\Http\Controllers\Fan\LoginController::class, 'changepassword'])->name('changepassword');
         Route::post('changepasswordstore', [App\Http\Controllers\Fan\LoginController::class, 'changepasswordstore'])->name('changepasswordstore');
         Route::post('resentotp', [App\Http\Controllers\Fan\LoginController::class, 'resendotp'])->name('resentotp');
+        Route::post('alllogout', [App\Http\Controllers\Fan\LoginController::class, 'alllogouts'])->name('alllogout');
 
         Route::get('logout', [App\Http\Controllers\Fan\LoginController::class, 'logout'])->name('logout');
  // socket test

@@ -28,14 +28,14 @@ class LoginController extends Controller
         Session::put('user_timezone', $login['timezone']);
 
         // Check if multiple logins are allowed
-      //   if ($login_dataArray['message'] == 'You are already logged in.') {
-      //     // Log out the user if already logged in on another device
-      //     if (auth()->check() && auth()->user()->session_id !== session()->getId()) {
-      //         auth()->logout();
-      //         Session::flash('error', 'You are already logged in.');
-      //         return redirect('/fan/login');
-      //     }
-      // }
+        if ($login_dataArray['message'] == 'You are already logged in.') {
+          // Log out the user if already logged in on another device
+          if (auth()->check() && auth()->user()->session_id !== session()->getId()) {
+              auth()->logout();
+              Session::flash('error', 'You are already logged in.');
+              return redirect('/fan/login');
+          }
+      }
 
 
 
@@ -85,7 +85,8 @@ class LoginController extends Controller
           if($login_dataArray['message'] =='Invalid User'){
             Session::flash('error', "Incorrect Email Or Password");
           }else{
-            return Redirect::back()->withInput();
+            $email = $request->email;
+            return Redirect::back()->withInput(['email' => $email]);
           }
         }
         return redirect('/fan/login');
@@ -219,6 +220,18 @@ class LoginController extends Controller
          Auth::logout();
         return redirect('/fan/login');
      }
+
+     public function alllogouts(Request $request)
+     {
+      $user = User::where('email',$request->email)->first();
+        $user->session_id = null;
+        $user->save();
+         return response()->json([
+          'success' => true,
+          'message' => 'Session cleared successfully',
+      ]);
+     }
+
 
   public function dashboard()
   {

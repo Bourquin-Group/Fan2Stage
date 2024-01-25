@@ -19,6 +19,24 @@
                       @if(session()->has('success'))
                       <p class="text-success">{{session('success')}}</p>
                         @endif
+                        @if (Session::has('error'))
+                      @if(Session::get('error') == 'You are already logged in.')
+                      <div class="text-danger" style="margin-left: 45px;">Do you want to logout all devices</div>
+                      <button type="button" class="btn" id="logs" style="margin-left: 28%;font-style: normal;
+                      font-weight: 700;
+                      line-height: 20px;
+                      text-align: center;
+                      text-transform: uppercase;
+                      color: #FFFFFF;
+                      background: #081A34;
+                      border: 1px solid #A6C2E9 !important;
+                      box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.05);
+                      border-radius: 50px;
+                      width: 140px;
+                      height: 40px;
+                      display: block;">logout</button>
+                      @endif
+                    @endif
                   </div>
                   <div class="form-input-section">
                       <form method="post" action="{{url('/web/loginstore')}}" autocomplete="on" id="signupForm">
@@ -30,6 +48,7 @@
                                     <img src="{{ asset('assets/web/images/Email.svg') }}" alt="" srcset="">
                                 </span>
                                 <input class="font-16" type="email" name="email" placeholder="Enter Address" value="{{old('email')}}">
+                                <input class="font-16" name="emails" type="hidden" value="{{ old('email') }}">
                               </div>
                               @if ($errors->has('email'))
                               <span class="error_msg">{{ $errors->first('email') }}</span>
@@ -71,7 +90,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
 {{-- validation --}}
 <script>
-//     $(document).ready(function(){
+    $(document).ready(function(){
+        $(document).on("click", "#logs", function (e) {
+        var email = $("input[name=emails]").val();
+            e.preventDefault();
+            $.ajax({
+                headers: {
+                    'X-CSRF-Token': '{{ csrf_token() }}',
+                },
+                url: "{{route('alllogoutweb') }}",
+             
+                type: 'POST',
+                data: {'email':email},
+                success: function (data) {
+                    window.location.href = "{{ url('/fan/login') }}";
+                }
+            });
+        });
 //         $("#signupForm").validate({
 //     rules: {
 //         email: {
@@ -88,7 +123,7 @@
 //         password: "Please enter your password",
 //     }
 // });
-//     });
+    });
     
 </script>
 @endsection
