@@ -114,16 +114,16 @@ label.error {
 
 function signInWithApple() {
 
-    AppleID.auth.init({
-        clientId : 'live.f2s.staging', // Replace with your own client ID
-        scope : 'email',
-        state :'EN',
-        reponse_type:'code', 
-        
-        redirectURI: 'https://staging.f2s.live/auth/apple/callback',
-    // usePopup : true
-    });
-    AppleID.auth.signIn();
+AppleID.auth.init({
+    clientId : 'live.f2s.livefan', // Replace with your own client ID
+    scope : 'email',
+    state :'EN',
+    reponse_type:'code', 
+    
+    redirectURI: 'https://livefan.f2s.live/auth/apple/callback',
+// usePopup : true
+});
+AppleID.auth.signIn();
 }
 
 $(document).ready(function(){
