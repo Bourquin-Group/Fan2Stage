@@ -822,7 +822,7 @@ class EventController extends Controller
             $data['event_duration']=$value->event_duration;
             $data['event_amount']=($value->eventamount > 0)? (int)$value->eventamount: 0;
             $data['event_time']=$value->event_time;
-            $timezone_region = timezone::where('id',$value->event_timezone)->first();
+            $timezone_region = timezone::where('timezone',$value->event_timezone)->first();
             $data['event_timezone']=$timezone_region->region;
             $data['event_web_start_time']=$event_web_start_time;
             $data['event_web_end_time']=$event_web_end_time;
@@ -916,7 +916,7 @@ class EventController extends Controller
             $data['event_time']=$value->event_time;
             $data['event_description']=$value->event_description;
             $data['event_plan_type']=(int)$value->event_plan_type;
-            $timezone_region = timezone::where('id',$value->event_timezone)->first();
+            $timezone_region = timezone::where('timezone',$value->event_timezone)->first();
             $data['event_timezone']=$timezone_region->region;
 
             $eventimage = explode(',',$value->event_image);
@@ -955,7 +955,7 @@ class EventController extends Controller
             $eventtime = $value->event_time ;
             $eventdatetime = $eventdate.' '.$eventtime;       
             
-            $timezone_region1 = timezone::where('id',$value->event_timezone)->first();
+            $timezone_region1 = timezone::where('timezone',$value->event_timezone)->first();
             
             $date = new DateTime($eventdatetime, new DateTimeZone($timezone_region1->region));
 
