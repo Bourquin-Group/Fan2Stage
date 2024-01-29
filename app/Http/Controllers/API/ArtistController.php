@@ -347,7 +347,7 @@ class ArtistController extends Controller
             $aProfile['raiting']=$raiting;
         }
         // $artistName = $artistDetail->name;
-        $artistEventDetails = Event::where('user_id',$authid)->where('deleted_at',Null)->get();
+        $artistEventDetails = Event::where('user_id',$authid)->where('deleted_at',Null)->orderBy('event_time')->get();
         $pastEvent = [];$topastEvent = [];
         $sceduleEvent = [];$toSceduleEvent = [];
         foreach ($artistEventDetails as $value) {
@@ -432,7 +432,7 @@ class ArtistController extends Controller
     }
     public function apiArtistDetail($id){
         $user = Auth::user();
-        $artistDetail = Artist_profiles::with('userArtist')->where('user_id',$id)->get();
+        $artistDetail = Artist_profiles::with('userArtist')->where('user_id',$id)->orderBy('event_time')->get();
         $aProfile = [];
         foreach($artistDetail as $artistprofile){
             $favourite = Favourite::where('user_id',$user->id)->where('artist_id',$artistprofile->user_id)->first();

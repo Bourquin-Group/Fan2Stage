@@ -741,6 +741,7 @@ class AuthController extends BaseController
                         return response()->json([
                             'status'    =>200,
                             'success' => true,
+                            'timezone' => $authUser->timezone,
                             'message' => 'Login Successfully',
                         ]);
                         
@@ -752,6 +753,7 @@ class AuthController extends BaseController
                         return response()->json([
                             'status'    =>200,
                             'success' => true,
+                            'timezone' => $authUser->timezone,
                             'message' => 'Login Successfully',
                             'access_token' => $authToken,
                             'user_id' => $authUser->id,
@@ -771,6 +773,7 @@ class AuthController extends BaseController
                         return response()->json([
                             'status'    =>200,
                             'success' => true,
+                            'timezone' => $authUser->timezone,
                             'message' => 'Login Successfully',
                         ]);
                         
@@ -781,6 +784,7 @@ class AuthController extends BaseController
                         return response()->json([
                             'status'    =>200,
                             'success' => true,
+                            'timezone' => $authUser->timezone,
                             'message' => 'Login Successfully',
                             'access_token' => $authToken,
                             'user_id' => $authUser->id,
@@ -801,6 +805,7 @@ class AuthController extends BaseController
                         'email' => $user->email,
                         'social_id' => $user->id,
                         'social_type' => $service,
+                        'timezone' => 1,
                         'password' => encrypt('john123'),
                         'last_login' =>  $current_date
                     ]);
@@ -812,6 +817,7 @@ class AuthController extends BaseController
                         return response()->json([
                             'status'    =>200,
                             'success' => true,
+                            'timezone' => $authUser->timezone,
                             'message' => 'Login Successfully',
                         ]);
                         // return view('home');

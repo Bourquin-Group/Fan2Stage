@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Session;
 
 class FanSocialController extends Controller
 {
@@ -16,6 +17,7 @@ class FanSocialController extends Controller
         $result = app('App\Http\Controllers\API\AuthController')->socialLogin($service,$request);
         $login_dataArray = json_decode ($result->content(), true);
         if(isset($login_dataArray['success']) && $login_dataArray['success'] == 'true'){
+            Session::put('user_timezone', $login_dataArray['timezone']);
             return redirect('fan/fanhome');
         }
         else{

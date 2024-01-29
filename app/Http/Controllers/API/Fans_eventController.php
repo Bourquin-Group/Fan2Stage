@@ -23,7 +23,7 @@ class Fans_eventController extends Controller
         $authid = Auth::user()->id;
         $user = User::where('id',$authid)->where('user_type','users')->first();
         $event_id = Eventbooking::where('user_id',$authid)->where('status',1)->pluck('event_id')->toArray();
-        $fansevent = Event::whereIn('id',$event_id)->get();
+        $fansevent = Event::whereIn('id',$event_id)->orderBy('event_time')->get();
         $upcomingEvent=[];
         $fanupcomingEvent = [];
         $pastEvent=[];
@@ -97,7 +97,7 @@ class Fans_eventController extends Controller
         $authid = Auth::user()->id;
         $user = User::where('id',$authid)->where('user_type','users')->first();
         $event_id = Eventbooking::where('user_id',$authid)->where('status',1)->pluck('event_id')->toArray();
-        $fansevent = Event::whereIn('id',$event_id)->get();
+        $fansevent = Event::whereIn('id',$event_id)->orderBy('event_time')->get();
         $upcomingEvent=[];
         $fanupcomingEvent = [];
         $pastEvent=[];
@@ -203,7 +203,7 @@ class Fans_eventController extends Controller
         $user = User::where('id',$request->user_id)->where('user_type','users')->first();
         $data = [];
         if($user){
-            $pastevent = Event::where(['user_id'=> $user->id,'event_status'=>0])->where('deleted_at',Null)->get();
+            $pastevent = Event::where(['user_id'=> $user->id,'event_status'=>0])->where('deleted_at',Null)->orderBy('event_time')->get();
             foreach($pastevent as $i => $value){
                 $data['schedule_event'][$i]['event_title'] = $value->event_title;
                 $data['schedule_event'][$i]['date'] = $value->event_date;
@@ -247,7 +247,7 @@ class Fans_eventController extends Controller
         $user = User::where('id',$request->user_id)->where('user_type','users')->first();
         $data = [];
         if($user){
-            $scheduleevent = Event::where(['user_id'=> $user->id,'event_status'=>1])->where('deleted_at',Null)->get();
+            $scheduleevent = Event::where(['user_id'=> $user->id,'event_status'=>1])->where('deleted_at',Null)->orderBy('event_time')->get();
             foreach($scheduleevent as $i => $value){
                 $data['live_event'][$i]['event_title'] = $value->event_title;
                 $data['live_event'][$i]['date'] = $value->event_date;

@@ -24,7 +24,7 @@
                     <a href="{{url('/fan/artistprofile/'.base64_encode($aprofile['id']))}}">
                     <div class="fav-artis-wrap-inner">
                         <div class="fav-ar-img">
-                            @if(file_exists(public_path('/artist_landingpage_images/'.$aprofile['profile_image'])) && isset($aprofile['profile_image']))
+                            @if(file_exists(public_path('/artist_profile_images/'.$aprofile['profile_image'])) && isset($aprofile['profile_image']))
                                 <img src="{{asset('/artist_profile_images/'.$aprofile['profile_image'])}}" alt="profile" />
                             @else
                                 <img src="{{ asset('artist_profile_images/profile1.jpeg')}}" alt="profile" />

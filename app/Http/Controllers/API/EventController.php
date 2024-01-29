@@ -804,6 +804,7 @@ class EventController extends Controller
         $allLiveEvents = Event::where('event_status', 1)
             ->where('golivestatus', 1)
             ->whereBetween('event_date', [$yesterday, $tomorrow])
+            ->orderBy('event_time')
             ->get();
         $data = [];
         $totData = [];
@@ -853,6 +854,7 @@ class EventController extends Controller
         $allLiveEvents = Event::where('event_status', 1)
             ->where('golivestatus', 1)
             ->whereBetween('event_date', [$yesterday, $tomorrow])
+            ->orderBy('event_time')
             ->get();
         $data = [];
         $totData = [];
@@ -902,7 +904,7 @@ class EventController extends Controller
         return response()->json($response, 200);
     }
     public function scheduledEventList(){
-        $scheduleEvents = Event::where('event_status',1)->where('event_date','>=',Carbon::today())->where('golivestatus', 0)->get();
+        $scheduleEvents = Event::where('event_status',1)->where('event_date','>=',Carbon::today())->where('golivestatus', 0)->orderBy('event_time')->get();
         $data = [];
         $totData = [];
         foreach($scheduleEvents as $value){
@@ -939,7 +941,7 @@ class EventController extends Controller
         if($timezone_region){
         date_default_timezone_set($timezone_region['region']);
         }
-        $scheduleEvents = Event::where('event_status',1)->where('event_date','>=',Carbon::today())->where('golivestatus', 0)->get();
+        $scheduleEvents = Event::where('event_status',1)->where('event_date','>=',Carbon::today())->where('golivestatus', 0)->orderBy('event_time')->get();
         $data = [];
         $totData = [];
         foreach($scheduleEvents as $value){

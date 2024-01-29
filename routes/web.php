@@ -307,7 +307,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
         Route::post('changepasswordstore', [App\Http\Controllers\Web\LoginController::class, 'changepasswordstore'])->name('changepasswordstore');
 
         Route::post('resendotp', [App\Http\Controllers\Web\LoginController::class, 'resendotp'])->name('resendotp');
-        Route::post('alllogoutweb', [App\Http\Controllers\Web\LoginController::class, 'alllogoutwebs'])->name('alllogout');
+        Route::post('alllogoutweb', [App\Http\Controllers\Web\LoginController::class, 'alllogoutwebs'])->name('alllogoutweb');
         // Login Page
         Route::get('logout', '\App\Http\Controllers\Web\LoginController@logout')->name('logout');
     });
