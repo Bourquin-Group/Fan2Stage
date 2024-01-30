@@ -183,7 +183,11 @@ class EventbookingController extends Controller
                 return redirect()->back();
             }   
         }
-        return redirect('fan/scheduled-event/'.base64_encode($event_id));
+        if($events->golivestatus == 1){
+            return redirect('/fan/golive/'.$event_id);
+         }else{
+             return redirect('fan/scheduled-event/'.base64_encode($event_id));
+         }
     }
 
     public function tipspost(Request $request)

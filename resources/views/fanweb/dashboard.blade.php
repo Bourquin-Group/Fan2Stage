@@ -79,13 +79,13 @@
                             <p>{{$resultdatefrom}} - {{$resultdateto}}</p>
                         </div>
                         <div class="event_card_bottom_right">
-                            @if($ldata['event_amount'] == 0)
+                            @if($ldata['event_amount'] == 0 || $ldata['booking_status'] == true)
                                 
                             <button class="checklive" data-id="{{$ldata['event_id']}}">Join Now</button>
                             
                             @else
                             
-                            <a href="{{route('live-event',base64_encode($ldata['event_id']))}}">
+                            <a href="{{route('bookevent',base64_encode($ldata['event_id']))}}">
                                 <button>Join Now</button>
                                 </a>
                             

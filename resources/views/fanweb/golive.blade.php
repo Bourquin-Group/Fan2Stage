@@ -65,7 +65,9 @@
                                     $modifiedURL = $originalURL;
                                 }
                             @endphp
-                            <iframe src="{{$modifiedURL}}" frameborder="0" style="width:100%;height:100%" allowfullscreen></iframe>
+                            <input type="hidden" name="videourl" value="{{$modifiedURL}}">
+                            <iframe class="play" src="{{$modifiedURL}}" frameborder="0" style="width:100%;height:100%" allowfullscreen></iframe>
+                            <img class="play-profile-pic" src="{{$event['artist_image']}}" alt="">
                             
                           {{-- </video> --}}
                     </div>
@@ -897,5 +899,27 @@ var testclass = 0;
         inputs.forEach(input => input.addEventListener('change', element => app.updateSlider(input)));
     })();
    
+</script>
+<script>
+    $(document).ready(function() {
+    $("#play_off").click(function() {
+        var iframe = $(".play");
+        var img = $(".play-profile-pic");
+        var url = $("input[name=videourl]").val();
+
+        // Toggle the visibility of the iframe and image
+        if (iframe.css("display") === "none") {
+            iframe.css("display", "block");
+            img.css("display", "none");
+            $(this).text("Play off");
+            iframe.attr("src", url);
+        } else {
+            iframe.css("display", "none");
+            img.css("display", "block");
+            iframe.attr("src", "");
+            $(this).text("Play on");
+        }
+    });
+});
 </script>
 @endsection
