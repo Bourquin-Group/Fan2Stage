@@ -226,6 +226,7 @@ class LoginController extends Controller
       $user = User::where('email',$request->email)->first();
         $user->session_id = null;
         $user->save();
+        
          return response()->json([
           'success' => true,
           'message' => 'Session cleared successfully',

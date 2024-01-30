@@ -681,6 +681,9 @@ class AuthController extends BaseController
     public function logout(Request $request)
             {   
                 if (Auth::check()) {
+                    $user = Auth::user();
+                    $user->session_id = null;
+                    $user->save();
                     Auth::user()->token()->revoke();
                     return response()->json(['success' =>'logout_success'],200); 
                 }else{
