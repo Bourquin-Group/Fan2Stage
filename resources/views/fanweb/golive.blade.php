@@ -36,6 +36,25 @@
         .modal.right.fade.show .modal-dialog {
             right: 0;
         }
+        .play {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .play-profile-pic {
+            display: none;
+        }
+        .play-off {
+            border: 2px solid green !important;
+            color:green !important;
+        }
+
+        .play-on {
+            border: 2px solid red !important;
+            color:red !important;
+        }
+
 </style>
 @endsection
 @section('content')
@@ -44,6 +63,7 @@
             <div class="navgat_otherpage">
                 <h1 class="task_titlt"><a href="{{ url()->previous() }}"><span><img src="{{ asset('assets/fan/images/arrow-left.svg') }}" alt="arrow"></span></a> {{ucfirst(trans($event['event_title']))}}</h1>
                 <div class="button_gorup">
+                <button id="play_off" class="play-off">Stream off</button>
                 <button data-bs-toggle="modal" data-bs-target="#exampleModal1">Exit Event</button>
                 </div>
             </div>
