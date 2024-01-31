@@ -173,7 +173,7 @@ Route::middleware('auth:api')->group( function () {
     Route::get('view-profile', 'App\Http\Controllers\API\AuthController@viewProfile')->name('viewUserProfile');
     Route::post('update-profile', 'App\Http\Controllers\API\AuthController@updateProfile')->name('updateUserProfile');
     Route::post('change-password', 'App\Http\Controllers\API\AuthController@changePassword')->name('postChangePassword');
-	Route::post('alllogoutapi', 'App\Http\Controllers\API\AuthController@alllogoutsapi')->name('postlogoutapi');
+	
 
 
 	// Billing Information
@@ -194,7 +194,7 @@ Route::middleware('auth:api')->group( function () {
 });
 
 });
-
+Route::post('alllogoutapi', 'App\Http\Controllers\API\AuthController@alllogoutsapi')->name('postlogoutapi');
 //CMS
 Route::get('about-us','App\Http\Controllers\API\CmsManageController@aboutus')->name('aboutus');
 Route::get('privacy-policy','App\Http\Controllers\API\CmsManageController@privacypolicy')->name('privacypolicy');
