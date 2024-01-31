@@ -1078,4 +1078,15 @@ class AuthController extends BaseController
                     ], 422);
                 }
             }
+            public function alllogoutsapi(Request $request)
+            {
+            $user = User::where('email',$request->email)->first();
+                $user->session_id = null;
+                $user->save();
+                return response()->json([
+                    'status'  => 200,
+                    'success' => true,
+                    'message' => 'Session cleared successfully',
+            ]);
+            }
 }
