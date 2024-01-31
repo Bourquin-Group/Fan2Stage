@@ -194,7 +194,7 @@ Route::middleware('auth:api')->group( function () {
 });
 
 });
-Route::post('alllogoutapi', 'App\Http\Controllers\API\AuthController@alllogoutsapi')->name('postlogoutapi');
+Route::post('alllogoutapi', 'App\Http\Controllers\API\AuthController@alllogoutsapi')->name('alllogoutapi');
 //CMS
 Route::get('about-us','App\Http\Controllers\API\CmsManageController@aboutus')->name('aboutus');
 Route::get('privacy-policy','App\Http\Controllers\API\CmsManageController@privacypolicy')->name('privacypolicy');
