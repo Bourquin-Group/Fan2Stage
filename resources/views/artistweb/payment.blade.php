@@ -68,122 +68,80 @@ label.error {
                   </div>
                 </div>
                 <div class="more_informstion">
-                  <form method="post" action="{{route('subscription.post')}}"
-                                      role="form" 
-                                  action="{{ route('stripe.post') }}" 
-                                  method="post" 
-                                  class="require-validation"
-                                  data-cc-on-file="false"
-                                  data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
-                                  id="payment-form">
-                                  @csrf() 
-                                  <input type="hidden" value="{{$subscriptionplan->id}}" name="subscription_plan_id">
-                                   <input type="hidden" value="1" name="type">
-                              {{-- <div class="billingInformation">
-                                <h2 class="detail_header">Billing Information</h2>
-                                    
-                                    <div class="billinginfo">
-                                        <div class="form-section">
-                                            <label for="first_name">First Name</label>
-                                            <input type="text"  name="first_name" id="first_name" placeholder="First Name" value="">
-                                        </div>
-                                        <div class="form-section">
-                                            <label for="last_name">Last Name</label>
-                                            <input type="text" placeholder="Last Name" name="last_name" id="last_name" value="">
-                                        </div>
-                                        </div>
-                                        <div class="form-section">
-                                        <label for="">Email</label>
-                                        <input type="text" placeholder="Enter Email"  id="email"  name="email">
-                                        </div>
-                                        <div class="form-section">
-                                        <label for="">Address line </label>
-                                        <input type="text" placeholder="Enter address"   id="address"  name="address" >
-                                        </div>
-                                        <div class="billinginfo">
-                                        <div class="form-section">
-                                            <label for="city">City</label>
-                                            <input type="text" name="city"  id="city"  placeholder="Enter City" >
-                                        </div>
-                                        <!-- <div class="form-section">
-                                            <label for="state">State</label>
-                                            <select name="state"  id="state">
-                                            <option value="11 AM" >Select State</option>
-                                            <option value="11 AM">Select State</option>
-                                            </select>
-                                        </div> -->
-                                        </div>
-                                        <div class="billinginfo">
-                                        <div class="form-section">
-                                            <label for="">Country</label>
-                                            <input type="text" name="country" placeholder="Enter Country" >
-                                        </div>
-                                        <div class="form-section">
-                                            <label for="">Postal Code</label>
-                                            <input type="text" name="postal_code" placeholder="Enter Postal code" >
-                                        </div>
-                                        </div>
-                                    </div> --}}
-                                    <div class="cardDetails">
-                                        <h2 class="detail_header">Card Details</h2>
-                                        <div class="card_img_section">
-                                        <div class="card_list"><img src="{{asset('assets/images/Card_1.png')}}" alt=""></div>
-                                        <div class="card_list"><img src="{{asset('assets/images/Card_2.png')}}" alt=""></div>
-                                        <div class="card_list"><img src="{{asset('assets/images/Card_3.png')}}" alt=""></div>
-                                        <div class="card_list"><img src="{{asset('assets/images/Card_4.png')}}" alt=""></div>
-                                        </div>
-                               
-                                        <div class="form-section">
-                                        <label for="">Card Number</label>
-                                        <input type="text" autocomplete='off' id="card" class='form-control card-number' maxlength="19" placeholder="0000 0000 0000 0000"  name="card" >
-                                        <label class="error" id="card_error"></label>
-                                        {{-- @if($errors->has('card'))
-                                        <label class="error">{{$errors->first('card')}}</label>
-                                        @endif --}}
-                                        </div>
-                                        <div class="billinginfo">
-                                        <div class="form-section">
-                                            <label for="month">Month</label>
-                                            <input type="number" maxlength="2" minlength="2" name="month" id="month"  class='form-control card-expiry-month' placeholder="MM" value="">
-                                            <label class="error" id="month_error"></label>
-                                            {{-- @if($errors->has('month'))
-                                            <label class="error">{{$errors->first('month')}}</label>
-                                            @endif --}}
-                                        </div>
-                                        <div class="form-section">
-                                            <label for="year">Year</label>
-                                            <input type="number" maxlength="4" minlength="4" name="year" id="year"  placeholder="YYYY"  class='form-control card-expiry-year' value="">
-                                            <label class="error" id="year_error"></label>
-                                            {{-- @if($errors->has('year'))
-                                            <label class="error">{{$errors->first('year')}}</label>
-                                            @endif --}}
-                                        </div>
-                                        </div>
-                                        <div class="billinginfo">
-                                        <div class="form-section">
-                                            <label for="">CVV</label>
-                                            <input type="text" placeholder="(Eg). 123" maxlength="3" name="cvv"  id="cvv"   autocomplete='off'
-                                          class='form-control card-cvc'>
-                                          <label class="error" id="cvv_error"></label>
-                                           {{-- @if($errors->has('cvv'))
-                                            <label class="error">{{$errors->first('cvv')}}</label>
-                                            @endif --}}
-                                        </div>
-                                        </div>
-                                        <div class="form-section">
-                                        <label for="">Account Holders Name</label>
-                                        <input type="text" placeholder="Type Name" id="account_holder_name" name="account_holder_name">
-                                        <label class="error" id="account_holder_name_error"></label>
-                                            @if($errors->has('account_holder_name'))
-                                            <label class="error">{{$errors->first('account_holder_name')}}</label>
-                                            @endif
-                                        </div>
-                                        <div class="button_gorup">
-                                        <button><a href="{{url('web/subscription')}}">Cancel</a> </button>
-                                        <button  type="submit"  > Pay Now</button>
-                                    </div>
-                    </form>  
-                  </div>
+                  <div class="cardDetails">
+                    <form method="post" action="{{route('subscription.post')}}"
+                          role="form" 
+                      action="{{ route('stripe.post') }}" 
+                      method="post" 
+                      class="require-validation"
+                      data-cc-on-file="false"
+                      data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
+                      id="payment-form">
+                      @csrf() 
+                      <input type="hidden" value="{{$subscriptionplan->id}}" name="subscription_plan_id">
+                     <input type="hidden" value="1" name="type">
+                    <h2 class="detail_header">Card Details</h2>
+                    <div class="card_img_section">
+                    <div class="card_list"><img src="{{asset('assets/images/Card_1.png')}}" alt=""></div>
+                    <div class="card_list"><img src="{{asset('assets/images/Card_2.png')}}" alt=""></div>
+                    <div class="card_list"><img src="{{asset('assets/images/Card_3.png')}}" alt=""></div>
+                    <div class="card_list"><img src="{{asset('assets/images/Card_4.png')}}" alt=""></div>
+                    </div>
+                    <label class="error mb-2" id="paymenterror"></label>
+                    <div class="form-section">
+                    <label for="">Card Number</label>
+                    <input type="text" maxlength="19" autocomplete='off' id="card" class='form-control card-number'  placeholder="Enter card number"  name="card" oninput="if (/[^\d\s]/g.test(this.value))this.value=this.value.replace(/[^0-9]/g,'');">
+                    <label class="error paymenterror" id="card-error"></label>
+                    @if($errors->has('card'))
+                    <label class="error" id="paymenterror">{{$errors->first('card')}}</label>
+                    @endif
+                    </div>
+                    <div class="billinginfo row">
+                    <div class="form-section col-md-3" style="min-width:45%">
+                        <label for="month">Month</label>
+                        <input type="number" name="month" id="month"  class='form-control card-expiry-month' placeholder="MM" oninput="this.value=this.value.replace(/[^0-9]/g,'');" minlength="2" maxlength="2"/>
+                        <label class="error paymenterror" id="month_error"></label>
+                        @if($errors->has('month'))
+                        <label class="error" id="paymenterror">{{$errors->first('month')}}</label>
+                        @endif
+                    </div>
+                    <div class="form-section col-md-3" style="min-width:50%; ">
+                        <label for="year">Year</label>
+                        <input type="number" name="year" id="year"  placeholder="YYYY"  class='form-control card-expiry-year' oninput="this.value=this.value.replace(/[^0-9]/g,'');" minlength=4 maxlength=4>
+                        <label class="error paymenterror" id="year_error"></label>
+                        @if($errors->has('year'))
+                        <label class="error" id="paymenterror">{{$errors->first('year')}}</label>
+                        @endif
+                    </div>
+                    </div>
+                    <div class="billinginfo">
+                    <div class="form-section">
+                        <label for="">CVV</label>
+                        <input type="text" placeholder="(Eg). 123" name="cvv"  id="cvv"   autocomplete='off'
+                      class='form-control card-cvc' oninput="this.value=this.value.replace(/[^0-9]/g,'');" minlength=3 maxlength=3>
+                      <label class="error paymenterror" id="cvv_error"></label>
+                       @if($errors->has('cvv'))
+                        <label class="error" id="paymenterror">{{$errors->first('cvv')}}</label>
+                        @endif
+                    </div>
+                    </div>
+                    <div class="form-section">
+                    <label for="">Account Holders Name</label>
+                    <input type="text" placeholder="Type Name" id="account_holder_name" name="account_holder_name">
+                    <label class="error paymenterror" id="account_holder_name_error"></label>
+                        @if($errors->has('account_holder_name'))
+                        <label class="error" id="paymenterror">{{$errors->first('account_holder_name')}}</label>
+                        @endif
+                    </div>
+                    <label class="error paymenterror" id="finalerror"></label>
+                    <div class="button_gorup">
+                    <button><a href="{{url('web/subscription')}}">Cancel</a> </button>
+                    <button  type="submit"  > Pay Now</button>
+                </div>
+</form>
+</div>
+
+</div>
                 </div>
               </div>
 
@@ -203,194 +161,205 @@ label.error {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript">
-    $(function() {
+  $(function() {
+ var $form = $(".require-validation");
 
-   
-   var $form = $(".require-validation");
-  
-   $('form.require-validation').bind('submit', function(e) {
-       var $form         = $(".require-validation"),
-       inputSelector = ['input[name=card]','input[name=month]',
-                        ].join(', '),
-       $inputs       = $form.find('.required').find(inputSelector),
-       $errorsMessage = $form.find('div.error'),
-       valid         = true;
-       $errorsMessage.addClass('hide');
-    //    console.log('submit');
-       $('.has-error').removeClass('has-error');
-       $inputs.each(function(i, el) {
-         var $input = $(el);
-         if ($input.val() === '') {
-           $input.parent().addClass('has-error');
-           $errorsMessage.removeClass('hide');
-           e.preventDefault();
-         }
-       });
-  
-       if (!$form.data('cc-on-file')) {
-           var regex = /^[a-z]*$/i;
-           var numbers = /^[0-9]+$/;
-           var card =  $('#card').val();
-        // var card += $(".credit").credit();
-           var month =  $('#month').val();
-           var year =  $('#year').val();
-           var cvv  =  $('#cvv').val();
-           var validation =0;
-           var account_holder_name  =  $('#account_holder_name').val();
-           
-            if(card == '')
-           {
-            validation =1;
-            $('#card_error').html('Please enter a Card Number');
-           }else{
-            $('#card_error').html('');
-           }
-
-           if(month == '')
-           {
-            validation =1;
-            $('#month_error').html('Please enter a Month');
-           }
-
-           if(year == '')
-           {
-            validation =1;
-            $('#year_error').html('Please enter a Year');
-           }
-
-           if(cvv == '')
-           {
-            validation =1;
-            $('#cvv_error').html('Please enter a cvv');
-           }
-
-           if(account_holder_name == '')
-           {
-            validation =1;
-            $('#account_holder_name_error').html('Please enter a Account Holder Name');
-           }
-           else if(!regex.test(account_holder_name)){
-            $('#account_holder_name_error').html('Please enter only Alphabets');
-           }else{
-            $('#account_holder_name_error').html('');
-           }
+ $('form.require-validation').bind('submit', function(e) {
+     var $form         = $(".require-validation"),
+     inputSelector = ['input[name=card]','input[name=month]',
+                      ].join(', '),
+     $inputs       = $form.find('.required').find(inputSelector),
+     $errorsMessage = $form.find('div.error'),
+     valid         = true;
+     $errorsMessage.addClass('hide');
+     console.log('submit');
+     $('.has-error').removeClass('has-error');
+     $inputs.each(function(i, el) {
+       var $input = $(el);
+       if ($input.val() === '') {
+         $input.parent().addClass('has-error');
+         $errorsMessage.removeClass('hide');
          e.preventDefault();
-         Stripe.setPublishableKey($form.data('stripe-publishable-key'));
-         Stripe.createToken({
-           number: $('.card-number').val(),
-           cvc: $('.card-cvc').val(),
-           exp_month: $('.card-expiry-month').val(),
-           exp_year: $('.card-expiry-year').val()
-         }, stripeResponseHandler);
        }
- 
- });
- 
- function stripeResponseHandler(status, response) {
-          var card  =  $('#card').val();       
-          var month  =  $('#month').val();
-          var year  =  $('#year').val();
-          var cvv  =  $('#cvv').val();
-          var account_holder_name  =  $('#account_holder_name').val();
-          if(account_holder_name != '' && cvv != '' && year != '' && card != '' && month != '' ){
-         
-          if (response.error) {
-      
-                    if(response.error.param == "number"){
-                      $('#card_error').html(response.error.message);
-                    }else{
-                      $('#card_error').html("");
-                    }
-                    if(response.error.code == "missing_payment_information"){
-                      $('#card_error').html(response.error.message);
-                    }else{
-                      $('#card_error').html("");
-                    }
-                    if(response.error.param == "exp_month"){
-                      $('#month_error').html(response.error.message);
-                    }else{
-                      $('#month_error').html("");
-                    }
-                    if(response.error.param == "exp_year"){
-                      $('#year_error').html(response.error.message);
-                    }else{
-                      $('#year_error').html("");
-                    }
-       }}else { 
-        if (response.error) {
-                    if(response.error.param == "number"){
-                      $('#card_error').html(response.error.message);
-                    }else{
-                      $('#card_error').html("");
-                    }
-                    if(response.error.code == "missing_payment_information"){
-                      $('#paymenterror').html(response.error.message);
-                    }else{
-                      $('#paymenterror').html("");
-                    }
-                    if(response.error.param == "exp_month"){
-                      $('#month_error').html(response.error.message);
-                    }else{
-                      $('#month_error').html("");
-                    }
-                    if(response.error.param == "exp_year"){
-                      $('#year_error').html(response.error.message);
-                    }else{
-                      $('#year_error').html("");
-                    }
-              }
-       
-              else {
-           /* token contains id, last4, and card type */
-           var token = response['id'];
-              
-           $form.find('input[type=text]').empty();
-           $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
-           $form.get(0).submit();
-       }
-            if(card == '')
-           {
-            $('#card_error').html('Please enter a Card Number ');
-           }
+     });
 
-           if(month == '')
-           {
-            $('#month_error').html('Please enter a Month');
-           }
+     if (!$form.data('cc-on-file')) {
+      var card =  $('#card').val();
+         var month =  $('#month').val();
+         var year =  $('#year').val();
+         var cvv  =  $('#cvv').val();
+         var validation =0;
+         var account_holder_name  =  $('#account_holder_name').val();
+         if(card == '')
+         {
+          validation =1;
+          $('#card-error').html('Please enter a Card');
+         }
 
-           if(year == '')
-           {
-            $('#year_error').html('Please enter a Year');
-           }
-                if(account_holder_name == ''){
-                  $('#account_holder_name_error').html('Please enter a Account Holder Name');
-                }else{
-                  $('#account_holder_name_error').html('');
-                }
-                if(cvv == ''){
-                  $('#cvv_error').html('Please enter a cvv');
-                }else{
-                  $('#cvv_error').html('');
-                }
-                
-   }
-}
-  
+         if(month == '')
+         {
+          validation =1;
+          $('#month_error').html('Please enter a Month');
+         }
+
+         if(year == '')
+         {
+          validation =1;
+          $('#year_error').html('Please enter a Year');
+         }
+
+        //  if(cvv == '')
+        //  {
+        //   validation =1;
+        //   $('#cvv_error').html('Please enter a cvv');
+        //  }
+
+        //  if(account_holder_name == '')
+        //  {
+        //   validation =1;
+        //   $('#account_holder_name_error').html('Please enter a Account Holder Name');
+        //  }
+       e.preventDefault();
+       Stripe.setPublishableKey($form.data('stripe-publishable-key'));
+       Stripe.createToken({
+         number: $('.card-number').val(),
+         cvc: $('.card-cvc').val(),
+         exp_month: $('.card-expiry-month').val(),
+         exp_year: $('.card-expiry-year').val()
+       }, stripeResponseHandler);
+     }
+
 });
+
+function stripeResponseHandler(status, response) {
+console.log(response.error);
+    //  if (response.error) {
+    //      $('.error')
+    //          .removeClass('hide')
+    //          .find('.alert')
+    //          .text(response.error.message);
+    //  } else {
+    //      /* token contains id, last4, and card type */
+    //      var token = response['id'];
+            
+    //      $form.find('input[type=text]').empty();
+    //      $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+    //      $form.get(0).submit();
+    //  }
+        var cvv  =  $('#cvv').val();
+        var account_holder_name  =  $('#account_holder_name').val();
+        if(account_holder_name != '' && cvv != '')
+         {
+            if (response.error) {
+                  if(response.error.param == "number"){
+                    $('#card-error').html(response.error.message);
+                  }else{
+                    $('#card-error').html("");
+                  }
+                  if(response.error.code == "missing_payment_information"){
+                    $('#paymenterror').html(response.error.message);
+                  }else{
+                    $('#paymenterror').html("");
+                  }
+                  if(response.error.param == "exp_month"){
+                    $('#month_error').html(response.error.message);
+                  }else{
+                    $('#month_error').html("");
+                  }
+
+                  if(response.error.param == "exp_year"){
+                    $('#year_error').html(response.error.message);
+                  }else{
+                    $('#year_error').html("");
+                  }
+
+                  if(response.error.param == "cvc"){
+                    $('#cvv_error').html(response.error.message);
+                  }else{
+                    $('#cvv_error').html('');
+                  }
+            } else {
+                  var token = response['id'];
+                    
+                    $form.find('input[type=text]').empty();
+                    $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+                    $form.get(0).submit();
+                //  }
+                /* token contains id, last4, and card type */
+                
+            }
+         }else{
+          if(card == '')
+         {
+          $('#card-error').html('Please enter a Card');
+         }
+
+         if(month == '')
+         {
+          $('#month_error').html('Please enter a Month');
+         }
+
+         if(year == '')
+         {
+          $('#year_error').html('Please enter a Year');
+         }
+              if(account_holder_name == ''){
+                $('#account_holder_name_error').html('Please enter a Account Holder Name');
+              }else{
+                $('#account_holder_name_error').html('');
+              }
+              if(cvv == ''){
+                $('#cvv_error').html('Please enter a cvv');
+              }else{
+                $('#cvv_error').html('');
+              }
+              if (response.error) {
+                  if(response.error.param == "number"){
+                    $('#card-error').html(response.error.message);
+                  }else{
+                    $('#card-error').html("");
+                  }
+                  if(response.error.code == "missing_payment_information"){
+                    $('#paymenterror').html(response.error.message);
+                  }else{
+                    $('#paymenterror').html("");
+                  }
+                  if(response.error.param == "exp_month"){
+                    $('#month_error').html(response.error.message);
+                  }else{
+                    $('#month_error').html("");
+                  }
+                  if(response.error.param == "exp_year"){
+                    $('#year_error').html(response.error.message);
+                  }else{
+                    $('#year_error').html("");
+                  }
+            } else {
+              if(account_holder_name != '' && cvv != '')
+         {
+                  var token = response['id'];
+                    
+                    $form.find('input[type=text]').empty();
+                    $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+                    $form.get(0).submit();
+         }
+                //  }
+                /* token contains id, last4, and card type */
+                
+            }
+              
+         }
+ }
+
+});
+
+$('#card').on('keyup', function () {
+               $(this).val(function (index, value) {
+                   return value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');
+               });
+          });
 //   $("#payment-form").validate({
 //     rules: {
-//         email: {
-//             required: true,
-//             email: true
-//         },
-//         first_name: "required",
-//         last_name: "required",
-//         email:"required",
-//         address:"required",
-//         city:"required",
-//         state:"required",
-//         country:"required",
-//         postal_code:"required",
 //         card:"required",
 //         month:"required",
 //         year:"required",
@@ -398,16 +367,6 @@ label.error {
 //         account_holder_name:"required",
 //     },
 //     messages: {
-//         email: {
-//             required: "Please enter your email",
-//             email: "Please enter a valid email address"
-//         },
-//         first_name: "Please enter a First Name",
-//         last_name: "Please enter a Last Name",
-//         address: "Please enter a Address Line",
-//         city: "Please enter a City",
-//         state: "Please enter a State",
-//         country: "Please enter a Country",
 //         postal_code: "Please enter a Postal Code",
 //         card: "Please enter a Card",
 //         month: "Please enter a Month",
@@ -416,10 +375,6 @@ label.error {
 //         account_holder_name: "Please enter a Account Holder Name",
 //     }
 // });
- $('#card').on('keypress change', function () {
-                 $(this).val(function (index, value) {
-                     return value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');
-                 });
-            });
+
 </script>
 @endsection

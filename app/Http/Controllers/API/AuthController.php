@@ -183,14 +183,14 @@ class AuthController extends BaseController
                 $pass_word = User::where('email',$request->email)->first();
                 if($pass_word){
                 if($pass_word->password_otp =='' || $pass_word->password_otp == null ){
-                    // if ($pass_word->session_id && $pass_word->session_id !== session()->getId()) {
-                    //     return response()->json([
-                    //         'status' => 200,
-                    //         'success' => true,
-                    //     	'flag' => true,
-                    //         'message' => 'You are already logged in.',
-                    //     ], 200);
-                    // }
+                    if ($pass_word->session_id && $pass_word->session_id !== session()->getId()) {
+                        return response()->json([
+                            'status' => 200,
+                            'success' => false,
+                        	'flag' => 1,
+                            'message' => 'You are already logged in.',
+                        ], 200);
+                    }
                 if(Auth::attempt(['email' => $request->email, 'password' => $request->password]) || Auth::attempt(['phone_number' => $request->email, 'password' => $request->password]) ){ 
                     $user = Auth::user(); 
                     $user->session_id = session()->getId();
@@ -1084,10 +1084,28 @@ class AuthController extends BaseController
             $user = User::where('email',$request->email)->first();
                 $user->session_id = null;
                 $user->save();
-                return response()->json([
-                    'status'  => 200,
-                    'success' => true,
-                    'message' => 'Session cleared successfully',
-            ]);
+                if(Auth::attempt(['email' => $request->email, 'password' => $request->password]) || Auth::attempt(['phone_number' => $request->email, 'password' => $request->password]) ){ 
+                    $user = Auth::user(); 
+                    $user->session_id = session()->getId();
+                    $user->save();
+                    $success['token']  =  $user->createToken('MyApp')->accessToken; 
+                    $success['name']   =  $user->name;
+                    $success['id']   =  $user->id;
+                    $success['timezone']   =  $user->timezone;
+                    $success['subscription_plan_id']   =  $user->subscription_plan_id;
+                    $f2splan = subscriptionplan::where('id',$user->subscription_plan_id)->first();
+                    if(isset($f2splan->f2s_plan)){
+                    $success['subscription_plan_name']   =  $f2splan->f2s_plan;
+                    }
+
+                    return $this->sendResponse($success, 'User login successfully.');
+                } 
+                else{ 
+                    return response()->json([
+                        'status'   => 401,
+                        'success' => false,
+                        'message' => 'Invalid User',
+                    ],401);
+                } 
             }
 }
