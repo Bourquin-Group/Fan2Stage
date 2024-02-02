@@ -183,14 +183,14 @@ class AuthController extends BaseController
                 $pass_word = User::where('email',$request->email)->first();
                 if($pass_word){
                 if($pass_word->password_otp =='' || $pass_word->password_otp == null ){
-                    if ($pass_word->session_id && $pass_word->session_id !== session()->getId()) {
-                        return response()->json([
-                            'status' => 200,
-                            'success' => false,
-                        	'flag' => 1,
-                            'message' => 'You are already logged in.',
-                        ], 200);
-                    }
+                    // if ($pass_word->session_id && $pass_word->session_id !== session()->getId()) {
+                    //     return response()->json([
+                    //         'status' => 200,
+                    //         'success' => false,
+                    //     	'flag' => 1,
+                    //         'message' => 'You are already logged in.',
+                    //     ], 200);
+                    // }
                 if(Auth::attempt(['email' => $request->email, 'password' => $request->password]) || Auth::attempt(['phone_number' => $request->email, 'password' => $request->password]) ){ 
                     $user = Auth::user(); 
                     $user->session_id = session()->getId();
@@ -686,7 +686,11 @@ class AuthController extends BaseController
                     $user->session_id = null;
                     $user->save();
                     Auth::user()->token()->revoke();
-                    return response()->json(['success' =>'logout_success'],200); 
+                    return response()->json([
+                        'status'    =>200,
+                        'success' => true,
+                        'message' => 'Logout Successfully',
+                    ]);
                 }else{
                     return response()->json(['error' =>'api.something_went_wrong'], 500);
                 }

@@ -169,7 +169,7 @@ Route::middleware('auth:api')->group( function () {
 	
     // Route::resource('products', 'App\Http\Controllers\API\ProductController');
     Route::resource('events', 'App\Http\Controllers\API\EventController');
-    Route::get('logout', 'App\Http\Controllers\API\AuthController@logout')->name('userLogout');
+    Route::get('logout', 'App\Http\Controllers\API\AuthController@logout');
     Route::get('view-profile', 'App\Http\Controllers\API\AuthController@viewProfile')->name('viewUserProfile');
     Route::post('update-profile', 'App\Http\Controllers\API\AuthController@updateProfile')->name('updateUserProfile');
     Route::post('change-password', 'App\Http\Controllers\API\AuthController@changePassword')->name('postChangePassword');
