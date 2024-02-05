@@ -22,7 +22,6 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\PreventMultipleLogins::class,
-        \App\Http\Middleware\CheckSessionMiddleware::class,
     ];
 
     /**
@@ -72,6 +71,8 @@ class Kernel extends HttpKernel
         'isadmin' => \App\Http\Middleware\IsAdmin::class,
         'subscription' => \App\Http\Middleware\Subscription::class,
         'artistprofile' => \App\Http\Middleware\Artistprofile::class,
+        'check' => \App\Http\Middleware\CheckSessionMiddleware::class,
+        'checkartist' => \App\Http\Middleware\CheckSessionMiddleware::class,
         
     ];
 }

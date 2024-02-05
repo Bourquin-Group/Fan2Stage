@@ -184,7 +184,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
 
     Route::group(['prefix' => 'web'], function ()
     {
-        Route::group(['middleware' => ['auth', 'user']], function ()
+        Route::group(['middleware' => ['checkartist', 'user']], function ()
         {
             Route::group(['middleware' => ['subscription']], function ()
             {
@@ -334,7 +334,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
  Route::get('socket', [App\Http\Controllers\Fan\HomeController::class, 'socket'])->name('socket');
 
  // socket test
-        Route::group(['middleware' => ['auth', 'fan']], function ()
+        Route::group(['middleware' => ['check', 'fan']], function ()
         {
 
            
