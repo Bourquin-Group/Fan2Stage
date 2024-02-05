@@ -72,7 +72,7 @@ class Kernel extends HttpKernel
         'subscription' => \App\Http\Middleware\Subscription::class,
         'artistprofile' => \App\Http\Middleware\Artistprofile::class,
         'check' => \App\Http\Middleware\CheckSessionMiddleware::class,
-        'checkartist' => \App\Http\Middleware\CheckSessionMiddleware::class,
+        'checkartist' => \App\Http\Middleware\CheckArtistSessionMiddleware::class,
         
     ];
 }
