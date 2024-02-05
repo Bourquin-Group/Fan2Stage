@@ -1085,31 +1085,41 @@ class AuthController extends BaseController
             }
             public function alllogoutsapi(Request $request)
             {
-            $user = User::where('email',$request->email)->first();
+                $user = User::where('email', $request->email)->first();
+
+                // Invalidate session for the user
                 $user->session_id = null;
                 $user->save();
-                if(Auth::attempt(['email' => $request->email, 'password' => $request->password]) || Auth::attempt(['phone_number' => $request->email, 'password' => $request->password]) ){ 
-                    $user = Auth::user(); 
+                $token = $user->tokens->first(); // Get the first token associated with the user
+                if ($token) {
+                    $token->revoke();
+                }
+
+                // Attempt to log in the user
+                if (Auth::attempt(['email' => $request->email, 'password' => $request->password]) || Auth::attempt(['phone_number' => $request->email, 'password' => $request->password])) {
+                    // Generate a new token
+                    $user = Auth::user();
                     $user->session_id = session()->getId();
                     $user->save();
-                    $success['token']  =  $user->createToken('MyApp')->accessToken; 
-                    $success['name']   =  $user->name;
-                    $success['id']   =  $user->id;
-                    $success['timezone']   =  $user->timezone;
-                    $success['subscription_plan_id']   =  $user->subscription_plan_id;
-                    $f2splan = subscriptionplan::where('id',$user->subscription_plan_id)->first();
-                    if(isset($f2splan->f2s_plan)){
-                    $success['subscription_plan_name']   =  $f2splan->f2s_plan;
+
+                    $success['token'] = $user->createToken('MyApp')->accessToken;
+                    $success['name'] = $user->name;
+                    $success['id'] = $user->id;
+                    $success['timezone'] = $user->timezone;
+                    $success['subscription_plan_id'] = $user->subscription_plan_id;
+
+                    $f2splan = subscriptionplan::where('id', $user->subscription_plan_id)->first();
+                    if (isset($f2splan->f2s_plan)) {
+                        $success['subscription_plan_name'] = $f2splan->f2s_plan;
                     }
 
                     return $this->sendResponse($success, 'User login successfully.');
-                } 
-                else{ 
+                } else {
                     return response()->json([
-                        'status'   => 401,
+                        'status' => 401,
                         'success' => false,
                         'message' => 'Invalid User',
-                    ],401);
-                } 
+                    ], 401);
+                }
             }
 }
