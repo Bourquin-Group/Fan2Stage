@@ -250,6 +250,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
             Route::post('contactcreate', [App\Http\Controllers\Web\ContactController::class, 'contactSave'])->name('contactcreates');
             //contact
 
+            // audiofiles
+            Route::get('audiofiles', [App\Http\Controllers\Web\EventController::class, 'audiofilesView'])->name('audiofiles');
+
             //Time zone change
             Route::post('timezone_no', [App\Http\Controllers\Web\ArtistController::class, 'timezone_no'])->name('timezone_no');
             //Time zone change

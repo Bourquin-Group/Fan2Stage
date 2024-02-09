@@ -344,4 +344,25 @@ public function eventUpdate(Request $request,$ids){
 
     return view('artistweb.liveevent',compact('a_profile','sc_event','audio'));
   }
+  public function audiofilesView(Request $request){
+    
+    $audio = AudioFile::where('audio_status',1)->get();
+
+    $data = [];
+    $audios = [];
+    foreach($audio as $value){
+        $data['audio_name']=$value->audio_name;
+        $data['audio_file']=$value->audio_file;
+        $data['block']=$value->block;
+        $data['audio_type']=$value->audio_type;
+        $audios[]=$data;
+    }
+    $response = [
+        'status'  => 200,
+        'success' => true,
+        'message' => "Audio Data Retrived Successfully",
+        'data'    => $audios,
+    ];
+    return response()->json($response, 200);
+}
 }
