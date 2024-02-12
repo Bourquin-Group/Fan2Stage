@@ -19,11 +19,15 @@ class IsUser
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->user_type == 'artists' || Auth::user()->typeupgrade_status == 1)
-        {
-            return $next($request);
-        }
-        else{
+        if(Auth::user()){
+            if(Auth::user()->user_type == 'artists' || Auth::user()->typeupgrade_status == 1)
+            {
+                return $next($request);
+            }
+            else{
+                return redirect('/web/login');
+            }
+        }else{
             return redirect('/web/login');
         }
       
