@@ -64,12 +64,7 @@
                                     value="{{ isset(auth()->user()->id) ? auth()->user()->id : '' }}">
                                 <input type="range" orient="vertical" min="0" max="100" />
                                 @foreach ($audio as $value)
-                                    <audio id="{{ $value->audio_name . '_' . $value->block }}"
-                                        src="{{ asset('assets/graph/audio/' . $value->audio_file) }}"></audio>
-                                    {{-- <audio id="clap2" src="{{ asset('assets/graph/audio/'.$audio_value['Clap2']) }}"></audio>
-                  <audio id="clap3" src="{{ asset('assets/graph/audio/'.$audio_value['Clap3']) }}"></audio>
-                  <audio id="clap4" src="{{ asset('assets/graph/audio/'.$audio_value['Clap4']) }}"></audio>
-                  <audio id="clap5" src="{{ asset('assets/graph/audio/'.$audio_value['Clap5']) }}"></audio> --}}
+                                    <audio id="{{ $value->audio_name . '_' . $value->block }}" src="{{ asset('assets/graph/audio/' . $value->audio_file) }}"></audio>
                                 @endforeach
                                 <div id="aact1"></div>
                                 <div class="range-slider__thumb"></div>
@@ -82,12 +77,6 @@
                             {{-- <div id="actt2">0</div> --}}
                             <div class="range-slider">
                                 <input type="range" orient="vertical" min="0" max="100" />
-                                {{-- <audio id="boo" src="{{ asset('assets/images/audio/'.$audio_value['Boo']) }}"></audio> --}}
-                                {{-- <audio id="boo1" src="{{ asset('assets/images/audio/'.$audio_value['Boo1']) }}"></audio>
-                  <audio id="boo2" src="{{ asset('assets/images/audio/'.$audio_value['Boo2']) }}"></audio>
-                  <audio id="boo3" src="{{ asset('assets/images/audio/'.$audio_value['Boo3']) }}"></audio>
-                  <audio id="boo4" src="{{ asset('assets/images/audio/'.$audio_value['Boo4']) }}"></audio>
-                  <audio id="boo5" src="{{ asset('assets/images/audio/'.$audio_value['Boo5']) }}"></audio> --}}
                                 <div id="aact2"></div>
                                 <div class="range-slider__thumb"></div>
                             </div>
@@ -99,9 +88,6 @@
                             {{-- <div id="actt3">0</div> --}}
                             <div class="range-slider">
                                 <input type="range" orient="vertical" min="0" max="100" />
-                                {{-- <audio id="aww1" src="{{ asset('assets/images/audio/'.$audio_value['Aww1']) }}"></audio> --}}
-                                {{-- <audio id="whistle" src="{{ asset('assets/images/audio/'.$audio_value['Whistle']) }}"></audio> --}}
-                                {{-- <audio id="whistle1" src="{{ asset('assets/images/audio/'.$audio_value['Huge Whistle']) }}"></audio> --}}
                                 <div id="aact3"></div>
                                 <div class="range-slider__thumb"></div>
                             </div>
@@ -113,13 +99,6 @@
                             {{-- <div id="actt4">0</div> --}}
                             <div class="range-slider">
                                 <input type="range" orient="vertical" min="0" max="100" value="0" />
-                                {{-- <audio id="whistle1" src="{{ asset('assets/images/audio/'.$audio_value['Whistle1']) }}"></audio>
-                  <audio id="whistle2" src="{{ asset('assets/images/audio/'.$audio_value['Whistle2']) }}"></audio>
-                  <audio id="whistle3" src="{{ asset('assets/images/audio/'.$audio_value['Whistle3']) }}"></audio>
-                  <audio id="whistle4" src="{{ asset('assets/images/audio/'.$audio_value['Whistle4']) }}"></audio>
-                  <audio id="whistle5" src="{{ asset('assets/images/audio/'.$audio_value['Whistle5']) }}"></audio>
-                   --}}
-                                {{-- <audio id="aww" src="{{ asset('assets/images/audio/'.$audio_value['Aww']) }}"></audio> --}}
                                 <div id="aact4"></div>
                                 <div class="range-slider__thumb"></div>
                             </div>
@@ -130,12 +109,6 @@
                             {{-- <div id="actt5">0</div> --}}
                             <div class="range-slider">
                                 <input type="range" orient="vertical" min="0" max="100" />
-                                {{-- <audio id="cheer1" src="{{ asset('assets/images/audio/'.$audio_value['Cheer1']) }}"></audio> --}}
-                                {{-- <audio id="cheer2" src="{{ asset('assets/images/audio/'.$audio_value['Cheer2']) }}"></audio>
-                  <audio id="cheer3" src="{{ asset('assets/images/audio/'.$audio_value['Cheer3']) }}"></audio>
-                  <audio id="cheer4" src="{{ asset('assets/images/audio/'.$audio_value['Cheer4']) }}"></audio>
-                  <audio id="cheer5" src="{{ asset('assets/images/audio/'.$audio_value['Cheer5']) }}"></audio> --}}
-                                {{-- <audio id="cheer" src="{{ asset('assets/images/audio/'.$audio_value['Cheer']) }}"></audio> --}}
                                 <div id="aact5"></div>
                                 <div class="range-slider__thumb"></div>
                             </div>
@@ -147,13 +120,6 @@
                             {{-- <div id="actt6">0</div> --}}
                             <div class="range-slider">
                                 <input type="range" orient="vertical" min="0" max="100" value="0" />
-                                {{-- <audio id="laugh1" src="{{ asset('assets/images/audio/'.$audio_value['Laugh1']) }}"></audio>
-                  <audio id="laugh2" src="{{ asset('assets/images/audio/'.$audio_value['Laugh2']) }}"></audio>
-                  <audio id="laugh3" src="{{ asset('assets/images/audio/'.$audio_value['Laugh3']) }}"></audio>
-                  <audio id="laugh4" src="{{ asset('assets/images/audio/'.$audio_value['Laugh4']) }}"></audio>
-                  <audio id="laugh5" src="{{ asset('assets/images/audio/'.$audio_value['Laugh5']) }}"></audio> --}}
-                                {{-- <audio id="laugh" src="{{ asset('assets/images/audio/'.$audio_value['Laugh']) }}"></audio> --}}
-                                {{-- <audio id="laugh1" src="{{ asset('assets/images/audio/'.$audio_value['Huge Laugh']) }}"></audio> --}}
                                 <div id="aact6"></div>
                                 <div class="range-slider__thumb"></div>
                             </div>
@@ -246,14 +212,12 @@
         // socket script
         var socket = io.connect("https://live-stream.f2s.live");
         //  var socket = io.connect("https://fan2stage-live.colanapps.in");
-        //  console.log(socket);
 
 
 
         signIn();
 
         function endLive(eventId) {
-            // console.log('hello vimal');
             socket.emit('end-event', {
                 event: eventId
             });
@@ -276,13 +240,11 @@
         }
 
         socket.on('joining-confirmation', (msg) => {
-            // will receive the socket idfor the user;
             console.log('My Socket Id: ', msg)
         });
 
         // event ending message
         socket.on('ended-the-event', (msg) => {
-            // console.log('ended-the-event response: ', msg)
             if (msg['success'] == true) {
                 Swal.fire({
                     title: 'Event has been ended!',
@@ -367,7 +329,7 @@
                     if (datas.find(item => item.block === '2')) {
                         const secondBlockActRanges = datas
                             .filter(item => item.block === "2")
-                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_1`]);
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_2`]);
 
                         clapRanges.push({
                             actRanges: secondBlockActRanges,
@@ -378,10 +340,32 @@
                     if (datas.find(item => item.block === '3')) {
                         const thirdBlockActRanges = datas
                             .filter(item => item.block === "3")
-                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_1`]);
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_3`]);
 
                         clapRanges.push({
                             actRanges: thirdBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+                    // fourth block
+                    if (datas.find(item => item.block === '4')) {
+                        const fourthBlockActRanges = datas
+                            .filter(item => item.block === "4")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_4`]);
+
+                        clapRanges.push({
+                            actRanges: fourthBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+                    // fifth block
+                    if (datas.find(item => item.block === '5')) {
+                        const fifthBlockActRanges = datas
+                            .filter(item => item.block === "5")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_5`]);
+
+                        clapRanges.push({
+                            actRanges: fifthBlockActRanges,
                             countRange: [8, 10]
                         });
                     }
@@ -403,286 +387,442 @@
                 } else {
                     document.getElementById("aact1").style.cssText = `height:0%`;
                 }
-
                 if (msg['act2'] > 0) {
-                    if (msg['act2'] > 10) {
-                        act2 = 10;
-                    } else {
-                        act2 = msg['act2'];
-                    }
-                    GraphCount2 = (((act2 / 10) * 1.2) * (msg['c12'] / count)) * 100;
-                    console.log(GraphCount2);
-                    if (GraphCount2 > 100) {
-                        GraphCount = 100;
-                    } else {
-                        GraphCount = GraphCount2;
-                    }
+                    let act2 = Math.min(msg['act2'], 10);
+                    let GraphCount1 = (((act2 / 10) * 1.2) * (msg['c12'] / count)) * 100;
+                    let GraphCount = Math.min(GraphCount1, 100);
+
                     document.getElementById("aact2").style.cssText = 'height:' + GraphCount + '%';
+
+                    const stopAllBoos = Array.from(document.querySelectorAll('[id^="Boo"]'));
+                    stopAllBoos.forEach(boo => $.stopAudio(boo));
+                    const data = audios_files.data;
+                    const datas = data.filter(item => item.audio_name.startsWith("Boo"));
+
+                    const booRanges = [];
+                    // First block
+                    if (datas.find(item => item.block === '1')) {
+                        const firstBlockActRanges = datas
+                            .filter(item => item.block === "1")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_1`]);
+
+                        booRanges.push({
+                            actRanges: firstBlockActRanges,
+                            countRange: [1, 2]
+                        });
+                    }
+
+                    // Second block
+                    if (datas.find(item => item.block === '2')) {
+                        const secondBlockActRanges = datas
+                            .filter(item => item.block === "2")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_2`]);
+
+                        booRanges.push({
+                            actRanges: secondBlockActRanges,
+                            countRange: [3, 6]
+                        });
+                    }
+                    // third block
+                    if (datas.find(item => item.block === '3')) {
+                        const thirdBlockActRanges = datas
+                            .filter(item => item.block === "3")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_3`]);
+
+                        booRanges.push({
+                            actRanges: thirdBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+                    // fourth block
+                    if (datas.find(item => item.block === '4')) {
+                        const fourthBlockActRanges = datas
+                            .filter(item => item.block === "4")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_4`]);
+
+                        booRanges.push({
+                            actRanges: fourthBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+                    // fifth block
+                    if (datas.find(item => item.block === '5')) {
+                        const fifthBlockActRanges = datas
+                            .filter(item => item.block === "5")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_5`]);
+
+                        booRanges.push({
+                            actRanges: fifthBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+
+                    for (const range of booRanges) {
+                        const [startCount, endCount] = range.countRange;
+                        const [startAct, endAct, boo] = range.actRanges.find(([start, end]) => msg['c12'] >=
+                            startCount && msg['c12'] <= endCount && act2 >= start && act2 <= end) || [];
+
+                        const audioElement = document.getElementById(boo);
+
+
+                        if (audioElement) {
+                            audioElement.play();
+                            break;
+                        }
+
+                    }
                 } else {
                     document.getElementById("aact2").style.cssText = `height:0%`;
-
                 }
                 if (msg['act3'] > 0) {
-                    if (msg['act3'] > 10) {
-                        act3 = 10;
-                    } else {
-                        act3 = msg['act3'];
-                    }
-                    GraphCount3 = (((act3 / 10) * 1.2) * (msg['c13'] / count)) * 100;
-                    console.log(GraphCount3);
-                    if (GraphCount3 > 100) {
-                        GraphCount = 100;
-                    } else {
-                        GraphCount = GraphCount3;
-                    }
+                    let act3 = Math.min(msg['act3'], 10);
+                    let GraphCount1 = (((act3 / 10) * 1.2) * (msg['c13'] / count)) * 100;
+                    let GraphCount = Math.min(GraphCount1, 100);
+
                     document.getElementById("aact3").style.cssText = 'height:' + GraphCount + '%';
+
+                    const stopAllAwws = Array.from(document.querySelectorAll('[id^="Aww"]'));
+                    stopAllAwws.forEach(aww => $.stopAudio(aww));
+                    const data = audios_files.data;
+                    const datas = data.filter(item => item.audio_name.startsWith("Aww"));
+
+                    const awwRanges = [];
+                    // First block
+                    if (datas.find(item => item.block === '1')) {
+                        const firstBlockActRanges = datas
+                            .filter(item => item.block === "1")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_1`]);
+
+                        awwRanges.push({
+                            actRanges: firstBlockActRanges,
+                            countRange: [1, 2]
+                        });
+                    }
+
+                    // Second block
+                    if (datas.find(item => item.block === '2')) {
+                        const secondBlockActRanges = datas
+                            .filter(item => item.block === "2")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_2`]);
+
+                        awwRanges.push({
+                            actRanges: secondBlockActRanges,
+                            countRange: [3, 6]
+                        });
+                    }
+                    // third block
+                    if (datas.find(item => item.block === '3')) {
+                        const thirdBlockActRanges = datas
+                            .filter(item => item.block === "3")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_3`]);
+
+                        awwRanges.push({
+                            actRanges: thirdBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+                    // fourth block
+                    if (datas.find(item => item.block === '4')) {
+                        const fourthBlockActRanges = datas
+                            .filter(item => item.block === "4")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_4`]);
+
+                        awwRanges.push({
+                            actRanges: fourthBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+                    // fifth block
+                    if (datas.find(item => item.block === '5')) {
+                        const fifthBlockActRanges = datas
+                            .filter(item => item.block === "5")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_5`]);
+
+                        awwRanges.push({
+                            actRanges: fifthBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+
+                    for (const range of awwRanges) {
+                        const [startCount, endCount] = range.countRange;
+                        const [startAct, endAct, aww] = range.actRanges.find(([start, end]) => msg['c13'] >=
+                            startCount && msg['c13'] <= endCount && act3 >= start && act3 <= end) || [];
+
+                        const audioElement = document.getElementById(aww);
+
+
+                        if (audioElement) {
+                            audioElement.play();
+                            break;
+                        }
+
+                    }
                 } else {
                     document.getElementById("aact3").style.cssText = `height:0%`;
-
                 }
                 if (msg['act4'] > 0) {
-                    if (msg['act4'] > 10) {
-                        act4 = 10;
-                    } else {
-                        act4 = msg['act4'];
-                    }
-                    GraphCount4 = (((act4 / 10) * 1.2) * (msg['c14'] / count)) * 100;
-                    console.log(GraphCount4);
-                    if (GraphCount4 > 100) {
-                        GraphCount = 100;
-                    } else {
-                        GraphCount = GraphCount4;
-                    }
+                    let act4 = Math.min(msg['act4'], 10);
+                    let GraphCount1 = (((act4 / 10) * 1.2) * (msg['c14'] / count)) * 100;
+                    let GraphCount = Math.min(GraphCount1, 100);
+
                     document.getElementById("aact4").style.cssText = 'height:' + GraphCount + '%';
+
+                    const stopAllWhistles = Array.from(document.querySelectorAll('[id^="Whistle"]'));
+                    stopAllWhistles.forEach(whistle => $.stopAudio(whistle));
+                    const data = audios_files.data;
+                    const datas = data.filter(item => item.audio_name.startsWith("Whistle"));
+
+                    const whistleRanges = [];
+                    // First block
+                    if (datas.find(item => item.block === '1')) {
+                        const firstBlockActRanges = datas
+                            .filter(item => item.block === "1")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_1`]);
+
+                        whistleRanges.push({
+                            actRanges: firstBlockActRanges,
+                            countRange: [1, 2]
+                        });
+                    }
+
+                    // Second block
+                    if (datas.find(item => item.block === '2')) {
+                        const secondBlockActRanges = datas
+                            .filter(item => item.block === "2")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_2`]);
+
+                        whistleRanges.push({
+                            actRanges: secondBlockActRanges,
+                            countRange: [3, 6]
+                        });
+                    }
+                    // third block
+                    if (datas.find(item => item.block === '3')) {
+                        const thirdBlockActRanges = datas
+                            .filter(item => item.block === "3")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_3`]);
+
+                        whistleRanges.push({
+                            actRanges: thirdBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+                    // fourth block
+                    if (datas.find(item => item.block === '4')) {
+                        const fourthBlockActRanges = datas
+                            .filter(item => item.block === "4")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_4`]);
+
+                        whistleRanges.push({
+                            actRanges: fourthBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+                    // fifth block
+                    if (datas.find(item => item.block === '5')) {
+                        const fifthBlockActRanges = datas
+                            .filter(item => item.block === "5")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_5`]);
+
+                        whistleRanges.push({
+                            actRanges: fifthBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+
+                    for (const range of whistleRanges) {
+                        const [startCount, endCount] = range.countRange;
+                        const [startAct, endAct, whistle] = range.actRanges.find(([start, end]) => msg['c14'] >=
+                            startCount && msg['c14'] <= endCount && act4 >= start && act4 <= end) || [];
+
+                        const audioElement = document.getElementById(whistle);
+
+
+                        if (audioElement) {
+                            audioElement.play();
+                            break;
+                        }
+
+                    }
                 } else {
                     document.getElementById("aact4").style.cssText = `height:0%`;
-
                 }
                 if (msg['act5'] > 0) {
-                    if (msg['act5'] > 10) {
-                        act5 = 10;
-                    } else {
-                        act5 = msg['act5'];
-                    }
-                    GraphCount5 = (((act5 / 10) * 1.2) * (msg['c15'] / count)) * 100;
-                    console.log(GraphCount5);
-                    if (GraphCount5 > 100) {
-                        GraphCount = 100;
-                    } else {
-                        GraphCount = GraphCount5;
-                    }
+                    let act5 = Math.min(msg['act5'], 10);
+                    let GraphCount1 = (((act5 / 10) * 1.2) * (msg['c15'] / count)) * 100;
+                    let GraphCount = Math.min(GraphCount1, 100);
+
                     document.getElementById("aact5").style.cssText = 'height:' + GraphCount + '%';
+
+                    const stopAllCheers = Array.from(document.querySelectorAll('[id^="Cheer"]'));
+                    stopAllCheers.forEach(cheer => $.stopAudio(cheer));
+                    const data = audios_files.data;
+                    const datas = data.filter(item => item.audio_name.startsWith("Cheer"));
+
+                    const cheerRanges = [];
+                    // First block
+                    if (datas.find(item => item.block === '1')) {
+                        const firstBlockActRanges = datas
+                            .filter(item => item.block === "1")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_1`]);
+
+                        cheerRanges.push({
+                            actRanges: firstBlockActRanges,
+                            countRange: [1, 2]
+                        });
+                    }
+
+                    // Second block
+                    if (datas.find(item => item.block === '2')) {
+                        const secondBlockActRanges = datas
+                            .filter(item => item.block === "2")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_2`]);
+
+                        cheerRanges.push({
+                            actRanges: secondBlockActRanges,
+                            countRange: [3, 6]
+                        });
+                    }
+                    // third block
+                    if (datas.find(item => item.block === '3')) {
+                        const thirdBlockActRanges = datas
+                            .filter(item => item.block === "3")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_3`]);
+
+                        cheerRanges.push({
+                            actRanges: thirdBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+                    // fourth block
+                    if (datas.find(item => item.block === '4')) {
+                        const fourthBlockActRanges = datas
+                            .filter(item => item.block === "4")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_4`]);
+
+                        cheerRanges.push({
+                            actRanges: fourthBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+                    // fifth block
+                    if (datas.find(item => item.block === '5')) {
+                        const fifthBlockActRanges = datas
+                            .filter(item => item.block === "5")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_5`]);
+
+                        cheerRanges.push({
+                            actRanges: fifthBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+
+                    for (const range of cheerRanges) {
+                        const [startCount, endCount] = range.countRange;
+                        const [startAct, endAct, cheer] = range.actRanges.find(([start, end]) => msg['c15'] >=
+                            startCount && msg['c15'] <= endCount && act5 >= start && act5 <= end) || [];
+
+                        const audioElement = document.getElementById(cheer);
+
+
+                        if (audioElement) {
+                            audioElement.play();
+                            break;
+                        }
+
+                    }
                 } else {
                     document.getElementById("aact5").style.cssText = `height:0%`;
-
                 }
                 if (msg['act6'] > 0) {
-                    if (msg['act6'] > 10) {
-                        act6 = 10;
-                    } else {
-                        act6 = msg['act6'];
-                    }
-                    GraphCount6 = (((act6 / 10) * 1.2) * (msg['c16'] / count)) * 100;
-                    console.log(GraphCount6);
-                    if (GraphCount6 > 100) {
-                        GraphCount = 100;
-                    } else {
-                        GraphCount = GraphCount6;
-                    }
+                    let act6 = Math.min(msg['act6'], 10);
+                    let GraphCount1 = (((act6 / 10) * 1.2) * (msg['c16'] / count)) * 100;
+                    let GraphCount = Math.min(GraphCount1, 100);
+
                     document.getElementById("aact6").style.cssText = 'height:' + GraphCount + '%';
+
+                    const stopAllLaughs = Array.from(document.querySelectorAll('[id^="Laugh"]'));
+                    stopAllLaughs.forEach(laugh => $.stopAudio(laugh));
+                    const data = audios_files.data;
+                    const datas = data.filter(item => item.audio_name.startsWith("Laugh"));
+
+                    const laughRanges = [];
+                    // First block
+                    if (datas.find(item => item.block === '1')) {
+                        const firstBlockActRanges = datas
+                            .filter(item => item.block === "1")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_1`]);
+
+                        laughRanges.push({
+                            actRanges: firstBlockActRanges,
+                            countRange: [1, 2]
+                        });
+                    }
+
+                    // Second block
+                    if (datas.find(item => item.block === '2')) {
+                        const secondBlockActRanges = datas
+                            .filter(item => item.block === "2")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_2`]);
+
+                        laughRanges.push({
+                            actRanges: secondBlockActRanges,
+                            countRange: [3, 6]
+                        });
+                    }
+                    // third block
+                    if (datas.find(item => item.block === '3')) {
+                        const thirdBlockActRanges = datas
+                            .filter(item => item.block === "3")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_3`]);
+
+                        laughRanges.push({
+                            actRanges: thirdBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+                    // fourth block
+                    if (datas.find(item => item.block === '4')) {
+                        const fourthBlockActRanges = datas
+                            .filter(item => item.block === "4")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_4`]);
+
+                        laughRanges.push({
+                            actRanges: fourthBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+                    // fifth block
+                    if (datas.find(item => item.block === '5')) {
+                        const fifthBlockActRanges = datas
+                            .filter(item => item.block === "5")
+                            .map((audio, index) => [(index * 2) + 1, (index * 2) + 2, `${audio.audio_name}_5`]);
+
+                        laughRanges.push({
+                            actRanges: fifthBlockActRanges,
+                            countRange: [8, 10]
+                        });
+                    }
+
+                    for (const range of laughRanges) {
+                        const [startCount, endCount] = range.countRange;
+                        const [startAct, endAct, laugh] = range.actRanges.find(([start, end]) => msg['c16'] >=
+                            startCount && msg['c16'] <= endCount && act6 >= start && act6 <= end) || [];
+
+                        const audioElement = document.getElementById(laugh);
+
+
+                        if (audioElement) {
+                            audioElement.play();
+                            break;
+                        }
+
+                    }
                 } else {
                     document.getElementById("aact6").style.cssText = `height:0%`;
-
                 }
-
-                if (msg['act2'] <= 10 && msg['act2'] > 0) {
-                    if (count >= 1 && count <= 2 && msg['act2'] >= 1 && msg['act2'] <= 5) {
-                        $.stopAudio(boo2);
-                        $.stopAudio(boo3);
-                        $.stopAudio(boo4);
-                        $.stopAudio(boo5);
-                        // var boo = 'boo1';
-                        $.playAudio(boo1);
-                    } else if (count >= 1 && count <= 2 && msg['act2'] >= 6 && msg['act2'] <= 10) {
-                        $.stopAudio(boo1);
-                        $.stopAudio(boo3);
-                        $.stopAudio(boo4);
-                        $.stopAudio(boo5);
-                        $.playAudio(boo2);
-                    } else if (count >= 3 && count <= 6 && msg['act2'] >= 1 && msg['act2'] <= 5) {
-                        $.stopAudio(boo2);
-                        $.stopAudio(boo1);
-                        $.stopAudio(boo4);
-                        $.stopAudio(boo5);
-                        $.playAudio(boo3);
-                    } else if (count >= 3 && count <= 6 && msg['act2'] >= 6 && msg['act2'] <= 10) {
-                        $.stopAudio(boo2);
-                        $.stopAudio(boo3);
-                        $.stopAudio(boo1);
-                        $.stopAudio(boo5);
-                        $.playAudio(boo4);
-                    } else {
-                        $.stopAudio(boo2);
-                        $.stopAudio(boo3);
-                        $.stopAudio(boo4);
-                        $.stopAudio(boo1);
-                        $.playAudio(boo5);
-                    }
-                    // document.getElementById("aact2").style.cssText = `height: calc(${msg['act2'] * 10}% + 0px)`;
-                }
-                if (msg['act3'] <= 10 && msg['act3'] > 0) {
-                    if (count >= 1 && count <= 2 && msg['act3'] >= 1 && msg['act3'] <= 5) {
-                        $.stopAudio(whistle2);
-                        $.stopAudio(whistle3);
-                        $.stopAudio(whistle4);
-                        $.stopAudio(whistle5);
-                        // var whistle = 'whistle1';
-                        $.playAudio(whistle1);
-                    } else if (count >= 1 && count <= 2 && msg['act3'] >= 6 && msg['act3'] <= 10) {
-                        $.stopAudio(whistle1);
-                        $.stopAudio(whistle3);
-                        $.stopAudio(whistle4);
-                        $.stopAudio(whistle5);
-                        $.playAudio(whistle2);
-                    } else if (count >= 3 && count <= 6 && msg['act3'] >= 1 && msg['act3'] <= 5) {
-                        $.stopAudio(whistle2);
-                        $.stopAudio(whistle1);
-                        $.stopAudio(whistle4);
-                        $.stopAudio(whistle5);
-                        $.playAudio(whistle3);
-                    } else if (count >= 3 && count <= 6 && msg['act3'] >= 6 && msg['act3'] <= 10) {
-                        $.stopAudio(whistle2);
-                        $.stopAudio(whistle3);
-                        $.stopAudio(whistle1);
-                        $.stopAudio(whistle5);
-                        $.playAudio(whistle4);
-                    } else {
-                        $.stopAudio(whistle2);
-                        $.stopAudio(whistle3);
-                        $.stopAudio(whistle4);
-                        $.stopAudio(whistle1);
-                        $.playAudio(whistle5);
-                    }
-                    // document.getElementById("aact3").style.cssText = `height: calc(${msg['act3'] * 10}% + 0px)`;
-                }
-                if (msg['act4'] <= 10 && msg['act4'] > 0) {
-                    $.playAudio(aww1);
-                    // if(count >= 1 && count <= 50 && msg['act4'] >= 1 && msg['act4'] <= 2){
-                    //     $.stopAudio(aww2);
-                    //     $.stopAudio(aww3);
-                    //     $.stopAudio(aww4);
-                    //     $.stopAudio(aww5);
-                    //     // var aww = 'aww1';
-                    //     $.playAudio(aww1);
-                    // }else if(count >= 1 && count <= 50 && msg['act4'] >= 3 && msg['act4'] <= 4){
-                    //     $.stopAudio(aww1);
-                    //     $.stopAudio(aww3);
-                    //     $.stopAudio(aww4);
-                    //     $.stopAudio(aww5);
-                    //     $.playAudio(aww2);
-                    // }else if(count >= 1 && count <= 50 && msg['act4'] >= 5 && msg['act4'] <= 6){
-                    //     $.stopAudio(aww2);
-                    //     $.stopAudio(aww1);
-                    //     $.stopAudio(aww4);
-                    //     $.stopAudio(aww5);
-                    //     $.playAudio(aww3);
-                    // }else if(count >= 1 && count <= 50 && msg['act4'] >= 7 && msg['act4'] <= 8){
-                    //     $.stopAudio(aww2);
-                    //     $.stopAudio(aww3);
-                    //     $.stopAudio(aww1);
-                    //     $.stopAudio(aww5);
-                    //     $.playAudio(aww4);
-                    // }else{
-                    //     $.stopAudio(aww2);
-                    //     $.stopAudio(aww3);
-                    //     $.stopAudio(aww4);
-                    //     $.stopAudio(aww1);
-                    //     $.playAudio(aww5);
-                    // }
-                    // document.getElementById("aact4").style.cssText = `height: calc(${msg['act4'] * 10}% + 0px)`;
-                }
-                if (msg['act5'] <= 10 && msg['act5'] > 0) {
-                    $.playAudio(cheer1);
-                    // if(count >= 1 && count <= 50 && msg['act5'] >= 1 && msg['act5'] <= 2){
-                    //     $.stopAudio(cheer2);
-                    //     $.stopAudio(cheer3);
-                    //     $.stopAudio(cheer4);
-                    //     $.stopAudio(cheer5);
-                    //     // var cheer = 'cheer1';
-                    //     $.playAudio(cheer1);
-                    // }else if(count >= 1 && count <= 50 && msg['act5'] >= 3 && msg['act5'] <= 4){
-                    //     $.stopAudio(cheer1);
-                    //     $.stopAudio(cheer3);
-                    //     $.stopAudio(cheer4);
-                    //     $.stopAudio(cheer5);
-                    //     $.playAudio(cheer2);
-                    // }else if(count >= 1 && count <= 50 && msg['act5'] >= 5 && msg['act5'] <= 6){
-                    //     $.stopAudio(cheer2);
-                    //     $.stopAudio(cheer1);
-                    //     $.stopAudio(cheer4);
-                    //     $.stopAudio(cheer5);
-                    //     $.playAudio(cheer3);
-                    // }else if(count >= 1 && count <= 50 && msg['act5'] >= 7 && msg['act5'] <= 8){
-                    //     $.stopAudio(cheer2);
-                    //     $.stopAudio(cheer3);
-                    //     $.stopAudio(cheer1);
-                    //     $.stopAudio(cheer5);
-                    //     $.playAudio(cheer4);
-                    // }else{
-                    //     $.stopAudio(cheer2);
-                    //     $.stopAudio(cheer3);
-                    //     $.stopAudio(cheer4);
-                    //     $.stopAudio(cheer1);
-                    //     $.playAudio(cheer5);
-                    // }
-                    // document.getElementById("aact5").style.cssText = `height: calc(${msg['act5'] * 10}% + 0px)`;
-                }
-                if (msg['act6'] <= 10 && msg['act6'] > 0) {
-                    if (count >= 1 && count <= 2 && msg['act6'] >= 1 && msg['act6'] <= 5) {
-                        $.stopAudio(laugh2);
-                        $.stopAudio(laugh3);
-                        $.stopAudio(laugh4);
-                        $.stopAudio(laugh5);
-                        // var laugh = 'laugh1';
-                        $.playAudio(laugh1);
-                    } else if (count >= 1 && count <= 2 && msg['act6'] >= 6 && msg['act6'] <= 10) {
-                        $.stopAudio(laugh1);
-                        $.stopAudio(laugh3);
-                        $.stopAudio(laugh4);
-                        $.stopAudio(laugh5);
-                        $.playAudio(laugh2);
-                    } else if (count >= 3 && count <= 6 && msg['act6'] >= 1 && msg['act6'] <= 5) {
-                        $.stopAudio(laugh2);
-                        $.stopAudio(laugh1);
-                        $.stopAudio(laugh4);
-                        $.stopAudio(laugh5);
-                        $.playAudio(laugh3);
-                    } else if (count >= 3 && count <= 6 && msg['act6'] >= 6 && msg['act6'] <= 10) {
-                        $.stopAudio(laugh2);
-                        $.stopAudio(laugh3);
-                        $.stopAudio(laugh1);
-                        $.stopAudio(laugh5);
-                        $.playAudio(laugh4);
-                    } else {
-                        $.stopAudio(laugh2);
-                        $.stopAudio(laugh3);
-                        $.stopAudio(laugh4);
-                        $.stopAudio(laugh1);
-                        $.playAudio(laugh5);
-                    }
-                    // document.getElementById("aact6").style.cssText = `height: calc(${msg['act6'] * 10}% + 0px)`;
-                }
-
             }
-
-
-
-            // $('#actt1').html(msg['actt1']);
-            // $('#actt2').html(msg['actt2']);
-            // $('#actt3').html(msg['actt3']);
-            // $('#actt4').html(msg['actt4']);
-            // $('#actt5').html(msg['actt5']);
-            // $('#actt6').html(msg['actt6']);
             console.log('artist_action_graph_count response: ', msg)
         });
         setInterval(function() {
