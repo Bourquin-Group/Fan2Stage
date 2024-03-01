@@ -35,7 +35,7 @@ class Fans_eventController extends Controller
                 $upcomingEvent['event_title'] = $value->event_title;
                 $upcomingEvent['date'] = $value->event_date;
                 $upcomingEvent['time'] = $value->event_time;
-                $timezone_region = timezone::where('id',$value->event_timezone)->first();
+                $timezone_region = timezone::where('timezone',$value->event_timezone)->first();
                 $upcomingEvent['event_timezone']=$timezone_region->region;
                 $upcomingEvent['link_to_event_stream'] = $value->link_to_event_stream;
                 $upcomingEvent['duration'] = $value->event_duration;
@@ -53,7 +53,7 @@ class Fans_eventController extends Controller
                 $pastEvent['event_title'] = $value->event_title;
                 $pastEvent['date'] = $value->event_date;
                 $pastEvent['time'] = $value->event_time;
-                $timezone_region = timezone::where('id',$value->event_timezone)->first();
+                $timezone_region = timezone::where('timezone',$value->event_timezone)->first();
                 $pastEvent['event_timezone']=$timezone_region->region;
                 $pastEvent['link_to_event_stream'] = $value->link_to_event_stream;
                 $pastEvent['duration'] = $value->event_duration;
@@ -90,7 +90,7 @@ class Fans_eventController extends Controller
 
     }
     public function fansEventApi(Request $request){
-        $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
+        $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
         if($timezone_region){
         date_default_timezone_set($timezone_region['region']);
         }
@@ -108,12 +108,12 @@ class Fans_eventController extends Controller
                 $upcomingEvent['event_id'] = $value->id;
                 $upcomingEvent['event_title'] = $value->event_title;
                 $upcomingEvent['date'] = $value->event_date;
-                $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
+                $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
                 $eventdate = date('Y-m-d',strtotime($value->event_date));
                 $eventtime = $value->event_time ;
                 $eventdatetime = $eventdate.' '.$eventtime;       
                 
-                $timezone_region1 = timezone::where('id',$value->event_timezone)->first();
+                $timezone_region1 = timezone::where('timezone',$value->event_timezone)->first();
                 
                 $date = new DateTime($eventdatetime, new DateTimeZone($timezone_region1->region));
 
@@ -143,12 +143,12 @@ class Fans_eventController extends Controller
                 $pastEvent['event_id'] = $value->id;
                 $pastEvent['event_title'] = $value->event_title;
                 $pastEvent['date'] = $value->event_date;
-                $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
+                $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
                 $eventdate = date('Y-m-d',strtotime($value->event_date));
                 $eventtime = $value->event_time ;
                 $eventdatetime = $eventdate.' '.$eventtime;       
                 
-                $timezone_region1 = timezone::where('id',$value->event_timezone)->first();
+                $timezone_region1 = timezone::where('timezone',$value->event_timezone)->first();
                 
                 $date = new DateTime($eventdatetime, new DateTimeZone($timezone_region1->region));
 
