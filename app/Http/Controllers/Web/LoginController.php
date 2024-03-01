@@ -29,14 +29,14 @@ class LoginController extends Controller
         Session::put('user_timezone', $login['timezone']);
 
         // Check if multiple logins are allowed
-      //   if ($login_dataArray['message'] == 'You are already logged in.') {
-      //     // Log out the user if already logged in on another device
-      //     if (auth()->check() && auth()->user()->session_id !== session()->getId()) {
-      //         auth()->logout();
-      //         Session::flash('error', 'You are already logged in.');
-      //         return redirect('/fan/login');
-      //     }
-      // }
+        if ($login_dataArray['message'] == 'You are already logged in.') {
+          // Log out the user if already logged in on another device
+          if (auth()->check() && auth()->user()->session_id !== session()->getId()) {
+              auth()->logout();
+              Session::flash('error', 'You are already logged in.');
+              return redirect('/fan/login');
+          }
+      }
 
         $timezone_date = timezone_change::where('user_id',Auth::user()->id)->first();
         $timezone_getdate = timezone_notify::where('id',1)->first();

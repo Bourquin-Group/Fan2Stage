@@ -452,7 +452,7 @@ class AuthController extends BaseController
                     $data['name']     = $user->name;
                     $data['email']          = $user->email;
                     $data['phone_number']   = $user->phone_number;
-                    $data['timezone']   = ($user->timezone != NULL) ? $user->timezone : null;
+                    $data['timezone']   = ($user->timezone != NULL) ? (int)$user->timezone : null;
                     $data['countrycode']   = ($user->country_code != NULL) ? $user->country_code : null;
                     $data['preferred_genre']   =($user->preferred_genre != NULL) ? explode(',',$user->preferred_genre) : null;
                     $data['dob']   = $user->dob;

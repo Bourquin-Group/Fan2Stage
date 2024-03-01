@@ -194,7 +194,7 @@ class EventfilterController extends Controller
     }
     public function eventFilterApi(Request $request)
     {
-        $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+        $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
         if($timezone_region){
         date_default_timezone_set($timezone_region['region']);
         }
@@ -299,7 +299,7 @@ class EventfilterController extends Controller
                     $datetimeString = $date . ' ' . $time; // Combine date and time into a string
                     $originalDateTime = Carbon::create($datetimeString); // Create a Carbon instance with the original datetime and timezone.
                     // dd(Auth::user()->timezone)
-                    $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+                    $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
                     $convertedDateTime = $originalDateTime->setTimezone($timezone_region->region); // Convert the timezone.
                     
                     $dateTime = $convertedDateTime->format('h:i:s A');
@@ -354,7 +354,7 @@ class EventfilterController extends Controller
                     $datetimeString = $date . ' ' . $time; // Combine date and time into a string
                     $originalDateTime = Carbon::create($datetimeString); // Create a Carbon instance with the original datetime and timezone.
                     // dd(Auth::user()->timezone)
-                    $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+                    $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
                     $convertedDateTime = $originalDateTime->setTimezone($timezone_region->region); // Convert the timezone.
                     
                     $dateTime = $convertedDateTime->format('h:i:s A');

@@ -823,7 +823,7 @@ class EventController extends Controller
             $data['event_duration']=$value->event_duration;
             $data['event_amount']=($value->eventamount > 0)? (int)$value->eventamount: 0;
             $data['event_time']=$value->event_time;
-            $timezone_region = timezone::where('timezone',$value->event_timezone)->first();
+            $timezone_region = timezone::where('id',$value->event_timezone)->first();
             $data['event_timezone']=$timezone_region->region;
             $data['event_web_start_time']=$event_web_start_time;
             $data['event_web_end_time']=$event_web_end_time;
@@ -841,7 +841,7 @@ class EventController extends Controller
         return response()->json($response, 200);
     }
     public function liveEventListApi(){
-        $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+        $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
         if($timezone_region){
         date_default_timezone_set($timezone_region['region']);
         }
@@ -859,7 +859,7 @@ class EventController extends Controller
         $data = [];
         $totData = [];
         foreach($allLiveEvents as $value){
-            $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+            $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
             $eventdate = date('Y-m-d',strtotime($value->event_date));
             $eventtime = $value->event_time ;
             $eventdatetime = $eventdate.' '.$eventtime;       
@@ -918,7 +918,7 @@ class EventController extends Controller
             $data['event_time']=$value->event_time;
             $data['event_description']=$value->event_description;
             $data['event_plan_type']=(int)$value->event_plan_type;
-            $timezone_region = timezone::where('timezone',$value->event_timezone)->first();
+            $timezone_region = timezone::where('id',$value->event_timezone)->first();
             $data['event_timezone']=$timezone_region->region;
 
             $eventimage = explode(',',$value->event_image);
@@ -937,7 +937,7 @@ class EventController extends Controller
         return response()->json($response, 200);    
     }
     public function scheduledEventListApi(){
-        $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+        $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
         if($timezone_region){
         date_default_timezone_set($timezone_region['region']);
         }
@@ -952,12 +952,12 @@ class EventController extends Controller
             $data['booking_status']=($eventStatus) ? true : false;
             $data['event_duration']=$value->event_duration;
             $data['event_amount']=($value->eventamount > 0)? (int)$value->eventamount: 0;
-            $timezone_region = timezone::where('timezone',Auth::user()->timezone)->first();
+            $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
             $eventdate = date('Y-m-d',strtotime($value->event_date));
             $eventtime = $value->event_time ;
             $eventdatetime = $eventdate.' '.$eventtime;       
             
-            $timezone_region1 = timezone::where('timezone',$value->event_timezone)->first();
+            $timezone_region1 = timezone::where('id',$value->event_timezone)->first();
             
             $date = new DateTime($eventdatetime, new DateTimeZone($timezone_region1->region));
 
@@ -1058,7 +1058,7 @@ class EventController extends Controller
           $usertype = User::where('id',$id)->first();
         if($usertype->user_type=='artists')
         {
-             if(($event_details[0]['start_at'] !='') && ($event_details[0]['id']==$event_id)){
+             if(($event_details[0]['start_at'] !='') && ($event_details[0]['id']==$request->event_id)){
         $endevent = [
             'end_at' =>date("Y-m-d h:i:s"),
             ];
