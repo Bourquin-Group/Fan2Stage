@@ -8,10 +8,8 @@
             <div class="button_gorup">
                 {{-- <button onclick="endLive('{{$sc_event['event_id']}}')">End Live</button>  --}}
                 {{-- <button onclick="myFunction()">Click me</button> --}}
-                <span id="audioToggle" style="display: inline-block;margin-right:12px;font-size:27px;">
-                    <span style="padding: 0px 8px;font-size: 18px;">Un mute the audio </span> <img
-                        src="{{ asset('assets/web/images/mute.png') }}" alt="" style="height: 35px;">
-                </span>
+               
+                <button id="audioToggle" class="btn btn-info" style="height:46px;"><img src="{{ asset('assets/web/images/mute.png') }}" alt="" style="height: 29px;"></button>
                 <audio id="myAudio" src="{{ asset('assets/graph/audio/Crowd_1_100.mp3') }}" preload="auto" muted></audio>
 
                 <a class="endlive"> <button>End Live</button></a>
@@ -171,7 +169,7 @@
                 audio.play()
                     .then(() => {
                         console.log('Audio started playing');
-                        audioToggle.style.display = 'none'; // Hide the button
+                        // audioToggle.style.display = 'none'; // Hide the button
                     })
                     .catch(error => {
                         console.error('Error playing audio:', error);
@@ -183,7 +181,7 @@
                     audio.play()
                         .then(() => {
                             console.log('Audio started playing');
-                            audioToggle.style.display = 'none'; // Hide the button
+                            // audioToggle.style.display = 'none'; // Hide the button
                             localStorage.setItem('audioPlaying', 'true'); // Store state
                         })
                         .catch(error => {
@@ -308,7 +306,7 @@
                     document.getElementById("aact1").style.cssText = 'height:' + GraphCount + '%';
 
                     const stopAllClaps = Array.from(document.querySelectorAll('[id^="Clap"]'));
-                    stopAllClaps.forEach(clap => $.stopAudio(clap));
+                    // stopAllClaps.forEach(clap => $.stopAudio(clap));
                     const data = audios_files.data;
                     const datas = data.filter(item => item.audio_name.startsWith("Clap"));
 
@@ -395,7 +393,7 @@
                     document.getElementById("aact2").style.cssText = 'height:' + GraphCount + '%';
 
                     const stopAllBoos = Array.from(document.querySelectorAll('[id^="Boo"]'));
-                    stopAllBoos.forEach(boo => $.stopAudio(boo));
+                    // stopAllBoos.forEach(boo => $.stopAudio(boo));
                     const data = audios_files.data;
                     const datas = data.filter(item => item.audio_name.startsWith("Boo"));
 
@@ -482,7 +480,7 @@
                     document.getElementById("aact3").style.cssText = 'height:' + GraphCount + '%';
 
                     const stopAllAwws = Array.from(document.querySelectorAll('[id^="Aww"]'));
-                    stopAllAwws.forEach(aww => $.stopAudio(aww));
+                    // stopAllAwws.forEach(aww => $.stopAudio(aww));
                     const data = audios_files.data;
                     const datas = data.filter(item => item.audio_name.startsWith("Aww"));
 
@@ -569,7 +567,7 @@
                     document.getElementById("aact4").style.cssText = 'height:' + GraphCount + '%';
 
                     const stopAllWhistles = Array.from(document.querySelectorAll('[id^="Whistle"]'));
-                    stopAllWhistles.forEach(whistle => $.stopAudio(whistle));
+                    // stopAllWhistles.forEach(whistle => $.stopAudio(whistle));
                     const data = audios_files.data;
                     const datas = data.filter(item => item.audio_name.startsWith("Whistle"));
 
@@ -656,7 +654,7 @@
                     document.getElementById("aact5").style.cssText = 'height:' + GraphCount + '%';
 
                     const stopAllCheers = Array.from(document.querySelectorAll('[id^="Cheer"]'));
-                    stopAllCheers.forEach(cheer => $.stopAudio(cheer));
+                    // stopAllCheers.forEach(cheer => $.stopAudio(cheer));
                     const data = audios_files.data;
                     const datas = data.filter(item => item.audio_name.startsWith("Cheer"));
 
