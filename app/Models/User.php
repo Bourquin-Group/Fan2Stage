@@ -40,6 +40,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'typeupgrade_status',
         'verified_profile',
         'device_token',
+        'session_id',
         'status',
         'last_login',
         'password_otp',
