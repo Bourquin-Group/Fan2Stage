@@ -741,7 +741,7 @@ class AuthController extends BaseController
                 //    dd($socialId,1);
                     Auth::login($socialId);
                     $authUser = User::where('email', $socialId->email)->first();
-                    $authUser->update(['last_login' => $current_date]);
+                    $authUser->update(['last_login' => $current_date,'session_id' => session()->getId()]);
                   
                     $authToken = $authUser->createToken('MyApp')->accessToken; 
                     if($browser)
@@ -773,7 +773,7 @@ class AuthController extends BaseController
                 //    dd($socialEmail,2);
                     Auth::login($socialEmail);
                     $authUser = User::where('email', $socialEmail->email)->first();
-                    $authUser->update(['last_login' => $current_date]);
+                    $authUser->update(['last_login' => $current_date,'session_id' => session()->getId()]);
                   
                     $authToken = $authUser->createToken('MyApp')->accessToken; 
                     if($browser)
@@ -962,10 +962,10 @@ class AuthController extends BaseController
                     $authUser = User::where('email', $socialId->email)->first();
                     if($social_image != null){
 
-                        $authUser->update(['last_login' => $current_date, 'image' => $social_image]);
+                        $authUser->update(['last_login' => $current_date,'session_id' => session()->getId(), 'image' => $social_image]);
                     }else{
 
-                        $authUser->update(['last_login' => $current_date]);
+                        $authUser->update(['last_login' => $current_date,'session_id' => session()->getId()]);
                     }
                   
                     $authToken = $authUser->createToken('MyApp')->accessToken; 
@@ -995,10 +995,10 @@ class AuthController extends BaseController
                     $authUser = User::where('email', $socialEmail->email)->first();
                     if($social_image != null){
 
-                        $authUser->update(['last_login' => $current_date, 'image' => $social_image]);
+                        $authUser->update(['last_login' => $current_date,'session_id' => session()->getId(), 'image' => $social_image]);
                     }else{
 
-                        $authUser->update(['last_login' => $current_date]);
+                        $authUser->update(['last_login' => $current_date,'session_id' => session()->getId()]);
                     }
                   
                     $authToken = $authUser->createToken('MyApp')->accessToken; 
