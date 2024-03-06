@@ -2,9 +2,16 @@
 @section('body')
     <section class="main_section custom_container">
         <div class="navgat_otherpage">
+            <?php
+                $src = $sc_event['link_to_event_stream'];
+
+                $parsedUrl = parse_url($src);
+                $sourcefrom = isset($parsedUrl['host']) ? $parsedUrl['host'] : '';
+
+                ?>
             <h1 class="task_titlt"><a href="{{ url()->previous() }}"><span><img
                             src="{{ asset('/assets/fan/images/arrow-left.svg') }}" alt="arrow"></span></a>
-                {{ ucfirst(trans($sc_event['event_title'])) }}</h1>
+                {{ ucfirst(trans($sc_event['event_title'])) }}<button id="muteButton" class="btn btn-info" @if($sourcefrom != 'www.youtube.com') onclick="toggleMute()" @endif>Mute Audio</button></h1>
             <div class="button_gorup">
                 {{-- <button onclick="endLive('{{$sc_event['event_id']}}')">End Live</button>  --}}
                 {{-- <button onclick="myFunction()">Click me</button> --}}
@@ -20,8 +27,12 @@
             <div class="col-lg-7 col-md-12 d-grid">
                 <div class="event_bg">
                     <div class="imgsection">
-                        <iframe src="{{ $sc_event['link_to_event_stream'] }}" frameborder="0" style="width:100%;height:100%"
-                            allowfullscreen></iframe>
+                        @if($sourcefrom == 'www.youtube.com')
+                            <iframe id="videoIframe" src="{{$sc_event['link_to_event_stream']}}" frameborder="0" style="width:100%;height:100%" allowfullscreen=""></iframe>
+                        @else
+                            <p class="twitch-url" style="display: none">{{$sc_event['link_to_event_stream']}}</p>
+                            <div id="twitch-embed"></div>
+                        @endif
                     </div>
                     <div class="card_live">
                         <div class="live_fans">
@@ -136,6 +147,76 @@
 @endsection
 
 @section('golive')
+<script type="text/javascript">
+    var embed;
+    var player;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var pElement = document.querySelector('.twitch-url');
+
+// Get the text content of the <p> element
+var twitchUrl = pElement.textContent.trim();
+
+    var channelId = extractChannelId(twitchUrl);
+        embed = new Twitch.Embed("twitch-embed", {
+            width: 760,
+            height: 380,
+            channel: channelId,
+            layout: "video",
+            autoplay: true,
+            parent: ["localhost"]
+        });
+
+        embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
+            player = embed.getPlayer();
+            player.setMuted(false);
+        });
+    });
+
+    function toggleMute() {
+        if (player) {
+            var isMuted = player.getMuted();
+            player.setMuted(!isMuted);
+        }
+    }
+    function extractChannelId(url) {
+        var match = url.match(/channel=([^&]+)/);
+        return match ? match[1] : null;
+    }
+</script>
+<script>
+     var videoIframe = document.getElementById('videoIframe');
+var muteButton = document.getElementById('muteButton');
+var player;
+
+// Function to handle the YouTube API ready state
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('videoIframe', {
+        events: {
+            'onReady': onPlayerReady
+        }
+    });
+}
+
+// Function to handle player ready event
+function onPlayerReady(event) {
+    // Mute the audio initially
+    player.mute();
+}
+
+// Add click event listener to the mute button
+muteButton.addEventListener('click', function() {
+    if (player.isMuted()) {
+        // Unmute the audio
+        player.unMute();
+        muteButton.textContent = 'Mute Audio';
+    } else {
+        // Mute the audio
+        player.mute();
+        muteButton.textContent = 'Unmute Audio';
+    }
+});
+</script>
     <script>
         $(document).ready(function() {
             $(document).on("click", ".endlive", function(e) {

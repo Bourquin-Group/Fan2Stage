@@ -238,12 +238,12 @@ class EventController extends Controller
                 $contains3 = Str::contains($myString, 'watch?v=');
                 if($contains3){
                     $badUrl = $request['link_to_event_stream'];
-                    $contains1 = str_replace('watch?v=', 'embed/', $badUrl);
+                    $contains1 = str_replace('watch?v=', 'embed/', $badUrl.'?enablejsapi=1');
                 }
                 $contains5 = Str::contains($myString, 'youtu.be');
                 if($contains5){
                     $badUrl = $request['link_to_event_stream'];
-                    $contains1 = str_replace('youtu.be', 'www.youtube.com/embed', $badUrl);
+                    $contains1 = str_replace('youtu.be', 'www.youtube.com/embed', $badUrl.'?enablejsapi=1');
                 }
                 // dd($contains1);
 //                 $contains4 = Str::contains($myString, '?si=');
@@ -618,13 +618,13 @@ class EventController extends Controller
                 $contains3 = Str::contains($myString, 'watch?v=');
                 if($contains3){
                     $badUrl = $request['link_to_event_stream'];
-                    $contains1 = str_replace('watch?v=', 'embed/', $badUrl);
+                    $contains1 = str_replace('watch?v=', 'embed/', $badUrl.'?enablejsapi=1');
                 }
 
                 $contains4 = Str::contains($myString, '?si=');
                 // https://youtu.be/EQ783EHQkng?si=jTV8piWnHfWTQMRL
                 if($contains4){
-                    $url = $request['link_to_event_stream'];
+                    $url = $request['link_to_event_stream'].'?enablejsapi=1';
                 // Parse the URL
                 $urlParts = parse_url($url);
                 if (isset($urlParts['path'])) {
@@ -634,7 +634,7 @@ class EventController extends Controller
                     // Split the path by '/' and get the username (which is the last part)
                     $pathParts = explode('/', $path);
                     $youtubename = end($pathParts);
-                    $contains1 = "https://www.youtube.com/embed/".$youtubename;
+                    $contains1 = "https://www.youtube.com/embed/".$youtubename.'?enablejsapi=1';
                 }
                 }
                 // youtube
