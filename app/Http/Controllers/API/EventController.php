@@ -198,7 +198,7 @@ class EventController extends Controller
                 if($contains){
                     $contains1 = str_replace("www.example.com", "onstage.f2s.live", $myString);
                 }else{
-                    $contains1 = $request['link_to_event_stream'];
+                    $contains1 = $request['link_to_event_stream'].'?enablejsapi=1';
                 }
                 
                 
@@ -228,10 +228,10 @@ class EventController extends Controller
                     
                     
                 }else{
-                    $contains1 = $request['link_to_event_stream'];
+                    $contains1 = $request['link_to_event_stream'].'?enablejsapi=1';
                 } 
                 }else {
-                    $contains1 = $request['link_to_event_stream'];
+                    $contains1 = $request['link_to_event_stream'].'?enablejsapi=1';
                 }
 
                 // youtube
