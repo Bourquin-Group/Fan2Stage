@@ -215,11 +215,11 @@
         if (player.isMuted()) {
             
             player.unMute();
-            muteButton.textContent = 'Mute Audio';
+            // muteButton.textContent = 'Mute Audio';
         } else {
             
             player.mute();
-            muteButton.textContent = 'Unmute Audio';
+            // muteButton.textContent = 'Unmute Audio';
         }
     });
         // youtube
