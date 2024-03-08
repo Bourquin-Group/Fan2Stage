@@ -28,7 +28,7 @@
         <p id="audioToggle" style="cursor:pointer;
         cursor: pointer;
         color: #95B1D8;
-        font-size: 20px;">Click For Audio Enabel</p>
+        font-size: 20px;">Click For Audio Enable</p>
         </div>
         <div class="row ">
             <div class="col-lg-7 col-md-12 d-grid">
