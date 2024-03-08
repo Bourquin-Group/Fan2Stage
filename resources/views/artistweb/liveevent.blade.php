@@ -22,10 +22,14 @@
                 <a class="endlive"> <button>End Live</button></a>
             </div>
         </div>
-        <p id="audioToggle" style="text-align: right;cursor:pointer;text-align: right;
+        <div class="d-flex" style="display: flex;justify-content:center">
+            <p></p>
+
+        <p id="audioToggle" style="cursor:pointer;
         cursor: pointer;
         color: #95B1D8;
-        font-size: 20px;">Click For Audio Enable</p>
+        font-size: 20px;">Click For Audio Enabel</p>
+        </div>
         <div class="row ">
             <div class="col-lg-7 col-md-12 d-grid">
                 <div class="event_bg">
