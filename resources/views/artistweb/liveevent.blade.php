@@ -16,7 +16,7 @@
                 {{-- <button onclick="endLive('{{$sc_event['event_id']}}')">End Live</button>  --}}
                 {{-- <button onclick="myFunction()">Click me</button> --}}
                
-                <button id="muteButton" class="btn" @if($sourcefrom != 'www.youtube.com') onclick="toggleMute()" @endif style="color: #95B1D8;">Stream <i class="fa-solid fa-volume-xmark"></i></button><button id="muteallButton" class="btn"  @if($sourcefrom != 'www.youtube.com') onclick="toggleAllMute('twitch')" @else onclick="toggleAllMute('youtube')" @endif style="color: #95B1D8;">Audio <i class="fa-solid fa-volume-xmark"></i></button>
+                <button id="muteButton" class="btn" @if($sourcefrom != 'www.youtube.com') onclick="toggleMute()" @endif style="color: #95B1D8;">Stream <i id="volumeIcon" class="fa-solid fa-volume-xmark"></i></button><button id="muteallButton" class="btn"  @if($sourcefrom != 'www.youtube.com') onclick="toggleAllMute('twitch')" @else onclick="toggleAllMute('youtube')" @endif style="color: #95B1D8;">Audio <i id="volumeallIcon" class="fa-solid fa-volume-xmark"></i></button>
                 <audio id="myAudio" src="{{ asset('assets/graph/audio/Crowd_1_100.mp3') }}" preload="auto" muted></audio>
 
                 <a class="endlive"> <button>End Live</button></a>
@@ -152,47 +152,63 @@
 @section('golive')
 <script type="text/javascript">
     // twitch
-    
-        var embed;
-        var player;
-    
-        document.addEventListener('DOMContentLoaded', function() {
-            var pElement = document.querySelector('.twitch-url');
-    
-    
+    var embed;
+var player;
+var isMuted = false; // Define isMuted variable globally
+
+document.addEventListener('DOMContentLoaded', function() {
+    var pElement = document.querySelector('.twitch-url');
     var twitchUrl = pElement.textContent.trim();
-    
-        var channelId = extractChannelId(twitchUrl);
-            embed = new Twitch.Embed("twitch-embed", {
-                width: 760,
-                height: 380,
-                channel: channelId,
-                layout: "video",
-                autoplay: true,
-                parent: ["localhost"]
-            });
-    
-            embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
-                player = embed.getPlayer();
-                player.setMuted(false);
-            });
-        });
-    
-        function toggleMute() {
-            if (player) {
-                var isMuted = player.getMuted();
-                player.setMuted(!isMuted);
-            }
-        }
-        function extractChannelId(url) {
-            var match = url.match(/channel=([^&]+)/);
-            return match ? match[1] : null;
-        }
+    var channelId = extractChannelId(twitchUrl);
+if(channelId){
+ var volumeIcon = document.getElementById('volumeIcon');
+volumeIcon.className = 'fa-solid fa-volume-high';
+}
+
+    embed = new Twitch.Embed("twitch-embed", {
+        width: 760,
+        height: 380,
+        channel: channelId,
+        layout: "video",
+        autoplay: true,
+        parent: ["localhost"]
+    });
+
+    embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
+        player = embed.getPlayer();
+        player.setMuted(false);
+    });
+});
+
+function toggleMute() {
+    if (player) {
+        isMuted = !isMuted; // Toggle the isMuted variable
+        player.setMuted(isMuted);
+        updateIcon(); // Update the icon based on the new mute state
+    }
+}
+
+function updateIcon() {
+    var volumeIcon = document.getElementById('volumeIcon');
+
+    if (isMuted) {
+        volumeIcon.className = 'fa-solid fa-volume-xmark';
+    } else {
+        volumeIcon.className = 'fa-solid fa-volume-high';
+    }
+}
+
+function extractChannelId(url) {
+    var match = url.match(/channel=([^&]+)/);
+    return match ? match[1] : null;
+}
+
         // twitch
     
         // youtube
         var videoIframe = document.getElementById('videoIframe');
     var muteButton = document.getElementById('muteButton');
+var volumeIcon = document.getElementById('volumeIcon');
     var player;
     
     
@@ -213,17 +229,20 @@
     
     muteButton.addEventListener('click', function() {
         if (player.isMuted()) {
-            
+            // Unmute the audio
             player.unMute();
-            // muteButton.textContent = 'Mute Audio';
+            // Change the icon to indicate unmuted state
+            volumeIcon.className = 'fa-solid fa-volume-high';
         } else {
-            
+            // Mute the audio
             player.mute();
-            // muteButton.textContent = 'Unmute Audio';
+            // Change the icon to indicate muted state
+            volumeIcon.className = 'fa-solid fa-volume-xmark';
         }
     });
         // youtube
     var mutevalue = 0;
+var volumeIcons = document.getElementById('volumeallIcon');
         // muteall
         function unmuteAll() {
         var audioElements = document.getElementsByTagName('audio');
@@ -232,6 +251,7 @@
         for (var i = 0; i < audioElements.length; i++) {
             audioElements[i].muted = false;
         }
+         volumeIcons.className = 'fa-solid fa-volume-high';
     }
         function muteAll() {
         var audioElements = document.getElementsByTagName('audio');
@@ -240,6 +260,8 @@
         for (var i = 0; i < audioElements.length; i++) {
             audioElements[i].muted = true;
         }
+        volumeIcons.className = 'fa-solid fa-volume-xmark';
+       
     }
     
         function toggleAllMute(value) {
