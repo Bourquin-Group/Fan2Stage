@@ -22,7 +22,7 @@
                 <a class="endlive"> <button>End Live</button></a>
             </div>
         </div>
-        <div class="d-flex" style="display: flex;justify-content:center">
+        <div style="display: flex;justify-content:space-between">
             <p></p>
 
         <p id="audioToggle" style="cursor:pointer;
