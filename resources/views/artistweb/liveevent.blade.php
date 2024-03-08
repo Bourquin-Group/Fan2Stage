@@ -11,7 +11,7 @@
                 ?>
             <h1 class="task_titlt"><a href="{{ url()->previous() }}"><span><img
                             src="{{ asset('/assets/fan/images/arrow-left.svg') }}" alt="arrow"></span></a>
-                {{ ucfirst(trans($sc_event['event_title'])) }}<button id="muteButton" class="btn btn-info" @if($sourcefrom != 'www.youtube.com') onclick="toggleMute()" @endif>Mute Audio</button><button id="muteallButton" class="btn btn-info"  @if($sourcefrom != 'www.youtube.com') onclick="toggleAllMute('twitch')" @else onclick="toggleAllMute('youtube')" @endif>Mute All</button></h1>
+                {{ ucfirst(trans($sc_event['event_title'])) }}</h1>
             <div class="button_gorup">
                 {{-- <button onclick="endLive('{{$sc_event['event_id']}}')">End Live</button>  --}}
                 {{-- <button onclick="myFunction()">Click me</button> --}}
