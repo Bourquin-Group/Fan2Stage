@@ -11,7 +11,7 @@
                 ?>
             <h1 class="task_titlt"><a href="{{ url()->previous() }}"><span><img
                             src="{{ asset('/assets/fan/images/arrow-left.svg') }}" alt="arrow"></span></a>
-                {{ ucfirst(trans($sc_event['event_title'])) }}<button id="muteButton" class="btn btn-info" @if($sourcefrom != 'www.youtube.com') onclick="toggleMute()" @endif>Mute Audio</button></h1>
+                {{ ucfirst(trans($sc_event['event_title'])) }}<button id="muteButton" class="btn btn-info" @if($sourcefrom != 'www.youtube.com') onclick="toggleMute()" @endif>Mute Audio</button><button id="muteallButton" class="btn btn-info"  @if($sourcefrom != 'www.youtube.com') onclick="toggleAllMute('twitch')" @else onclick="toggleAllMute('youtube')" @endif>Mute All</button></h1>
             <div class="button_gorup">
                 {{-- <button onclick="endLive('{{$sc_event['event_id']}}')">End Live</button>  --}}
                 {{-- <button onclick="myFunction()">Click me</button> --}}
@@ -20,7 +20,6 @@
                 <audio id="myAudio" src="{{ asset('assets/graph/audio/Crowd_1_100.mp3') }}" preload="auto" muted></audio>
 
                 <a class="endlive"> <button>End Live</button></a>
-                {{-- <a href="{{url('web/endlive/'.Crypt::encryptString($sc_event['event_id']))}}" class="endlive"> <button>End Live</button></a>  --}}
             </div>
         </div>
         <div class="row ">
@@ -148,75 +147,115 @@
 
 @section('golive')
 <script type="text/javascript">
-    var embed;
+    // twitch
+    
+        var embed;
+        var player;
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            var pElement = document.querySelector('.twitch-url');
+    
+    
+    var twitchUrl = pElement.textContent.trim();
+    
+        var channelId = extractChannelId(twitchUrl);
+            embed = new Twitch.Embed("twitch-embed", {
+                width: 760,
+                height: 380,
+                channel: channelId,
+                layout: "video",
+                autoplay: true,
+                parent: ["localhost"]
+            });
+    
+            embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
+                player = embed.getPlayer();
+                player.setMuted(false);
+            });
+        });
+    
+        function toggleMute() {
+            if (player) {
+                var isMuted = player.getMuted();
+                player.setMuted(!isMuted);
+            }
+        }
+        function extractChannelId(url) {
+            var match = url.match(/channel=([^&]+)/);
+            return match ? match[1] : null;
+        }
+        // twitch
+    
+        // youtube
+        var videoIframe = document.getElementById('videoIframe');
+    var muteButton = document.getElementById('muteButton');
     var player;
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var pElement = document.querySelector('.twitch-url');
-
-// Get the text content of the <p> element
-var twitchUrl = pElement.textContent.trim();
-
-    var channelId = extractChannelId(twitchUrl);
-        embed = new Twitch.Embed("twitch-embed", {
-            width: 760,
-            height: 380,
-            channel: channelId,
-            layout: "video",
-            autoplay: true,
-            parent: ["localhost"]
+    
+    
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('videoIframe', {
+            events: {
+                'onReady': onPlayerReady
+            }
         });
-
-        embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
-            player = embed.getPlayer();
-            player.setMuted(false);
-        });
-    });
-
-    function toggleMute() {
-        if (player) {
-            var isMuted = player.getMuted();
-            player.setMuted(!isMuted);
-        }
     }
-    function extractChannelId(url) {
-        var match = url.match(/channel=([^&]+)/);
-        return match ? match[1] : null;
-    }
-</script>
-<script>
-     var videoIframe = document.getElementById('videoIframe');
-var muteButton = document.getElementById('muteButton');
-var player;
-
-// Function to handle the YouTube API ready state
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('videoIframe', {
-        events: {
-            'onReady': onPlayerReady
-        }
-    });
-}
-
-// Function to handle player ready event
-function onPlayerReady(event) {
-    // Mute the audio initially
-    player.mute();
-}
-
-// Add click event listener to the mute button
-muteButton.addEventListener('click', function() {
-    if (player.isMuted()) {
-        // Unmute the audio
-        player.unMute();
-        muteButton.textContent = 'Mute Audio';
-    } else {
-        // Mute the audio
+    
+    
+    function onPlayerReady(event) {
+        
         player.mute();
-        muteButton.textContent = 'Unmute Audio';
     }
-});
-</script>
+    
+    
+    muteButton.addEventListener('click', function() {
+        if (player.isMuted()) {
+            
+            player.unMute();
+            muteButton.textContent = 'Mute Audio';
+        } else {
+            
+            player.mute();
+            muteButton.textContent = 'Unmute Audio';
+        }
+    });
+        // youtube
+    var mutevalue = 0;
+        // muteall
+        function unmuteAll() {
+        var audioElements = document.getElementsByTagName('audio');
+    
+        
+        for (var i = 0; i < audioElements.length; i++) {
+            audioElements[i].muted = false;
+        }
+    }
+        function muteAll() {
+        var audioElements = document.getElementsByTagName('audio');
+    
+        
+        for (var i = 0; i < audioElements.length; i++) {
+            audioElements[i].muted = true;
+        }
+    }
+    
+        function toggleAllMute(value) {
+            if(value == 'youtube'){
+                muteButton.click()
+            }else{
+                toggleMute();
+            }
+    
+            if(mutevalue == 0){
+                muteAll();
+                mutevalue = 1;
+            }else{
+                unmuteAll();
+                mutevalue = 0;
+            }
+    }
+    
+        // muteall
+    </script>
     <script>
         $(document).ready(function() {
             $(document).on("click", ".endlive", function(e) {
@@ -237,9 +276,10 @@ muteButton.addEventListener('click', function() {
 
         });
     </script>
-
+    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        var accessvalue = 0;
+         document.addEventListener('DOMContentLoaded', function() {
             const audio = document.getElementById('myAudio');
             const audioToggle = document.getElementById('audioToggle');
 
@@ -259,6 +299,7 @@ muteButton.addEventListener('click', function() {
 
             audioToggle.addEventListener('click', function() {
                 if (audio.paused) {
+                    accessvalue = 1;
                     audio.play()
                         .then(() => {
                             console.log('Audio started playing');
@@ -271,8 +312,6 @@ muteButton.addEventListener('click', function() {
                 }
             });
         });
-    </script>
-    <script>
         var audios_files;
         var ajax_call = function() {
             var url = "/web/audiofiles";
@@ -290,7 +329,6 @@ muteButton.addEventListener('click', function() {
 
         // socket script
         var socket = io.connect("https://live-stream.f2s.live");
-        //  var socket = io.connect("https://fan2stage-live.colanapps.in");
 
 
 
@@ -302,10 +340,6 @@ muteButton.addEventListener('click', function() {
             });
 
         }
-
-
-
-
         function signIn() {
             var event_id = $('#event_id').val();
             var userid = $('#user_id').val();
@@ -364,10 +398,12 @@ muteButton.addEventListener('click', function() {
             $.clapsss(livecount);
             console.log('live_fan_count response:', msg);
 
-            currentAudio.loop = true; // Enable loop for current audio
+            currentAudio.loop = true;
+            if(accessvalue == 1){
             currentAudio.play();
+            }
 
-            // Pause all other audio elements except the current one
+            
             Object.values(audioElements).forEach(audio => {
                 if (audio !== currentAudio) {
                     audio.pause();
@@ -385,7 +421,7 @@ muteButton.addEventListener('click', function() {
                     let GraphCount = Math.min(GraphCount1, 100);
 
                     document.getElementById("aact1").style.cssText = 'height:' + GraphCount + '%';
-
+                    if(accessvalue == 1){
                     const stopAllClaps = Array.from(document.querySelectorAll('[id^="Clap"]'));
                     // stopAllClaps.forEach(clap => $.stopAudio(clap));
                     const data = audios_files.data;
@@ -448,6 +484,7 @@ muteButton.addEventListener('click', function() {
                             countRange: [8, 10]
                         });
                     }
+                    
 
                     for (const range of clapRanges) {
                         const [startCount, endCount] = range.countRange;
@@ -463,6 +500,7 @@ muteButton.addEventListener('click', function() {
                         }
 
                     }
+                }
                 } else {
                     document.getElementById("aact1").style.cssText = `height:0%`;
                 }
@@ -472,6 +510,7 @@ muteButton.addEventListener('click', function() {
                     let GraphCount = Math.min(GraphCount1, 100);
 
                     document.getElementById("aact2").style.cssText = 'height:' + GraphCount + '%';
+                    if(accessvalue == 1){
 
                     const stopAllBoos = Array.from(document.querySelectorAll('[id^="Boo"]'));
                     // stopAllBoos.forEach(boo => $.stopAudio(boo));
@@ -550,6 +589,7 @@ muteButton.addEventListener('click', function() {
                         }
 
                     }
+                }
                 } else {
                     document.getElementById("aact2").style.cssText = `height:0%`;
                 }
@@ -559,6 +599,7 @@ muteButton.addEventListener('click', function() {
                     let GraphCount = Math.min(GraphCount1, 100);
 
                     document.getElementById("aact3").style.cssText = 'height:' + GraphCount + '%';
+                    if(accessvalue == 1){
 
                     const stopAllAwws = Array.from(document.querySelectorAll('[id^="Aww"]'));
                     // stopAllAwws.forEach(aww => $.stopAudio(aww));
@@ -637,6 +678,7 @@ muteButton.addEventListener('click', function() {
                         }
 
                     }
+                }
                 } else {
                     document.getElementById("aact3").style.cssText = `height:0%`;
                 }
@@ -646,6 +688,7 @@ muteButton.addEventListener('click', function() {
                     let GraphCount = Math.min(GraphCount1, 100);
 
                     document.getElementById("aact4").style.cssText = 'height:' + GraphCount + '%';
+                    if(accessvalue == 1){
 
                     const stopAllWhistles = Array.from(document.querySelectorAll('[id^="Whistle"]'));
                     // stopAllWhistles.forEach(whistle => $.stopAudio(whistle));
@@ -724,6 +767,7 @@ muteButton.addEventListener('click', function() {
                         }
 
                     }
+                }
                 } else {
                     document.getElementById("aact4").style.cssText = `height:0%`;
                 }
@@ -733,6 +777,7 @@ muteButton.addEventListener('click', function() {
                     let GraphCount = Math.min(GraphCount1, 100);
 
                     document.getElementById("aact5").style.cssText = 'height:' + GraphCount + '%';
+                    if(accessvalue == 1){
 
                     const stopAllCheers = Array.from(document.querySelectorAll('[id^="Cheer"]'));
                     // stopAllCheers.forEach(cheer => $.stopAudio(cheer));
@@ -811,6 +856,7 @@ muteButton.addEventListener('click', function() {
                         }
 
                     }
+                }
                 } else {
                     document.getElementById("aact5").style.cssText = `height:0%`;
                 }
@@ -820,6 +866,7 @@ muteButton.addEventListener('click', function() {
                     let GraphCount = Math.min(GraphCount1, 100);
 
                     document.getElementById("aact6").style.cssText = 'height:' + GraphCount + '%';
+                    if(accessvalue == 1){
 
                     const stopAllLaughs = Array.from(document.querySelectorAll('[id^="Laugh"]'));
                     stopAllLaughs.forEach(laugh => $.stopAudio(laugh));
@@ -898,6 +945,7 @@ muteButton.addEventListener('click', function() {
                         }
 
                     }
+                }
                 } else {
                     document.getElementById("aact6").style.cssText = `height:0%`;
                 }
