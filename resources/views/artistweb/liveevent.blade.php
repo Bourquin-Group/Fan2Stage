@@ -16,12 +16,16 @@
                 {{-- <button onclick="endLive('{{$sc_event['event_id']}}')">End Live</button>  --}}
                 {{-- <button onclick="myFunction()">Click me</button> --}}
                
-                <button id="audioToggle" class="btn btn-info" style="height:46px;"><img src="{{ asset('assets/web/images/mute.png') }}" alt="" style="height: 29px;"></button>
+                <button id="muteButton" class="btn" @if($sourcefrom != 'www.youtube.com') onclick="toggleMute()" @endif style="color: #95B1D8;">Stream <i class="fa-solid fa-volume-xmark"></i></button><button id="muteallButton" class="btn"  @if($sourcefrom != 'www.youtube.com') onclick="toggleAllMute('twitch')" @else onclick="toggleAllMute('youtube')" @endif style="color: #95B1D8;">Audio <i class="fa-solid fa-volume-xmark"></i></button>
                 <audio id="myAudio" src="{{ asset('assets/graph/audio/Crowd_1_100.mp3') }}" preload="auto" muted></audio>
 
                 <a class="endlive"> <button>End Live</button></a>
             </div>
         </div>
+        <p id="audioToggle" style="text-align: right;cursor:pointer;text-align: right;
+        cursor: pointer;
+        color: #95B1D8;
+        font-size: 20px;">Click For Audio Enabel</p>
         <div class="row ">
             <div class="col-lg-7 col-md-12 d-grid">
                 <div class="event_bg">
