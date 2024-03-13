@@ -950,10 +950,26 @@ class AuthController extends BaseController
                 $social_image = $request->socialimage;
                 if($socialid != null){
                     $socialId = User::where('social_id', $socialid)->first();
+                if ($socialId ->session_id && $socialId ->session_id !== session()->getId()) {
+                        return response()->json([
+                            'status' => 200,
+                            'success' => false,
+                        	'flag' => 1,
+                            'message' => 'You are already logged in.',
+                        ], 200);
+                    }
                 }
             
                 if($socialemail != null){
                     $socialEmail = User::where('email', $socialemail)->first();
+                if ($socialEmail->session_id && $socialEmail->session_id !== session()->getId()) {
+                        return response()->json([
+                            'status' => 200,
+                            'success' => false,
+                        	'flag' => 1,
+                            'message' => 'You are already logged in.',
+                        ], 200);
+                    }
                 }
                
                 if(isset($socialId))
