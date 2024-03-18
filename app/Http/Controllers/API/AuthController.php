@@ -950,6 +950,7 @@ class AuthController extends BaseController
                 $social_image = $request->socialimage;
                 if($socialid != null){
                     $socialId = User::where('social_id', $socialid)->first();
+                if($socialId){
                 if ($socialId ->session_id && $socialId ->session_id !== session()->getId()) {
                         return response()->json([
                             'status' => 200,
@@ -958,10 +959,33 @@ class AuthController extends BaseController
                             'message' => 'You are already logged in.',
                         ], 200);
                     }
+                }else{
+                $socialemail =$socialemail;
+                $createUser = User::updateOrCreate([
+                        'name' => $socialname?$socialname:$social_type,
+                        'email' => $socialemail,
+                        'social_id' => $socialid,
+                        'social_type' => $social_type,
+                        'image' => ($social_image != null) ? $social_image : null,
+                        'password' => encrypt('john123'),
+                        'last_login' =>  $current_date
+                    ]);
+                    Auth::login($createUser);
+                    $authUser = User::where('email', $socialemail)->first();
+                    $authToken = $authUser->createToken('MyApp')->accessToken;
+                
+                return response()->json([
+                            'access_token' => $authToken,
+                            'user_id' => $authUser->id,
+                            'user_email' => $authUser->email,
+                            
+                        ]);
+                }
                 }
             
                 if($socialemail != null){
                     $socialEmail = User::where('email', $socialemail)->first();
+                if($socialEmail){
                 if ($socialEmail->session_id && $socialEmail->session_id !== session()->getId()) {
                         return response()->json([
                             'status' => 200,
@@ -970,6 +994,28 @@ class AuthController extends BaseController
                             'message' => 'You are already logged in.',
                         ], 200);
                     }
+                }else{
+                $socialemail =$socialemail;
+                $createUser = User::updateOrCreate([
+                        'name' => $socialname?$socialname:$social_type,
+                        'email' => $socialemail,
+                        'social_id' => $socialid,
+                        'social_type' => $social_type,
+                        'image' => ($social_image != null) ? $social_image : null,
+                        'password' => encrypt('john123'),
+                        'last_login' =>  $current_date
+                    ]);
+                    Auth::login($createUser);
+                    $authUser = User::where('email', $socialemail)->first();
+                    $authToken = $authUser->createToken('MyApp')->accessToken;
+                
+                return response()->json([
+                            'access_token' => $authToken,
+                            'user_id' => $authUser->id,
+                            'user_email' => $authUser->email,
+                            
+                        ]);
+                }
                 }
                
                 if(isset($socialId))
@@ -1136,6 +1182,144 @@ class AuthController extends BaseController
                         'success' => false,
                         'message' => 'Invalid User',
                     ], 401);
+                }
+            }
+public function allsociallogoutsapi(Request $request){
+                $user = User::where('email', $request->socialemail)->first();
+
+                // Invalidate session for the user
+                $user->session_id = null;
+                $user->save();
+                $token = $user->tokens->first(); // Get the first token associated with the user
+                if ($token) {
+                    $token->revoke();
+                }
+                
+                $agent = new Agent();
+                $browser = $agent->browser();
+                $platform = $agent->platform();
+                date_default_timezone_set('UTC'); 
+                $current_date = Carbon::now(); 
+
+
+                
+                $socialid = $request->socialid;
+                $socialemail = $request->socialemail;
+                $socialname = $request->socialname;
+                $social_type = $request->socialtype;
+                $social_image = $request->socialimage;
+                if($socialid != null){
+                    $socialId = User::where('social_id', $socialid)->first();
+                }
+            
+                if($socialemail != null){
+                    $socialEmail = User::where('email', $socialemail)->first();
+                }
+               
+                if(isset($socialId))
+                {
+                    Auth::login($socialId);
+                    $authUser = User::where('email', $socialId->email)->first();
+                    if($social_image != null){
+
+                        $authUser->update(['last_login' => $current_date,'session_id' => session()->getId(), 'image' => $social_image]);
+                    }else{
+
+                        $authUser->update(['last_login' => $current_date,'session_id' => session()->getId()]);
+                    }
+                  
+                    $authToken = $authUser->createToken('MyApp')->accessToken; 
+                    if($browser)
+                    {
+                        return response()->json([
+                            'status'    =>200,
+                            'success' => true,
+                            'message' => 'Login Successfully',
+                        ]);
+                    }
+                    else
+                    {
+                        return response()->json([
+                            'status'    =>200,
+                            'success' => true,
+                            'message' => 'Login Successfully',
+                            'access_token' => $authToken,
+                            'user_id' => $authUser->id,
+                            'user_email' => $authUser->email,
+                        ]);
+                    }
+                }
+                elseif(isset($socialEmail))
+                {
+                    Auth::login($socialEmail);
+                    $authUser = User::where('email', $socialEmail->email)->first();
+                    if($social_image != null){
+
+                        $authUser->update(['last_login' => $current_date,'session_id' => session()->getId(), 'image' => $social_image]);
+                    }else{
+
+                        $authUser->update(['last_login' => $current_date,'session_id' => session()->getId()]);
+                    }
+                  
+                    $authToken = $authUser->createToken('MyApp')->accessToken; 
+                    if($browser)
+                    {
+                        return response()->json([
+                            'status'    =>200,
+                            'success' => true,
+                            'message' => 'Login Successfully',
+                        ]);
+                    }
+                    else
+                    {
+                        return response()->json([
+                            'status'    =>200,
+                            'success' => true,
+                            'message' => 'Login Successfully',
+                            'access_token' => $authToken,
+                            'user_id' => $authUser->id,
+                            'user_email' => $authUser->email,
+                        ]);
+                    }
+                }
+                else
+                {
+
+                    if(!$socialemail)
+                    {
+
+                        $socialemail =$socialname.'@gmail.com';
+                    }
+            
+                    $createUser = User::updateOrCreate([
+                        'name' => $socialname?$socialname:$social_type,
+                        'email' => $socialemail,
+                        'social_id' => $socialid,
+                        'social_type' => $social_type,
+                        'image' => ($social_image != null) ? $social_image : null,
+                        'password' => encrypt('john123'),
+                        'last_login' =>  $current_date
+                    ]);
+                    Auth::login($createUser);
+                    $authUser = User::where('email', $socialemail)->first();
+                    $authToken = $authUser->createToken('MyApp')->accessToken; 
+                    if($browser)
+                    {
+                        return response()->json([
+                            'status'    =>200,
+                            'success' => true,
+                            'message' => 'Login Successfully',
+                        ]);
+                    }
+                    else
+                    {
+                        return response()->json([
+                            'access_token' => $authToken,
+                            'user_id' => $authUser->id,
+                            'user_email' => $authUser->email,
+                            
+                        ]);
+                    }
                 }
             }
 }
