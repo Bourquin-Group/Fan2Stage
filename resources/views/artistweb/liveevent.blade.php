@@ -16,20 +16,21 @@
                 {{-- <button onclick="endLive('{{$sc_event['event_id']}}')">End Live</button>  --}}
                 {{-- <button onclick="myFunction()">Click me</button> --}}
                
-                <button id="muteButton" class="btn" @if($sourcefrom != 'www.youtube.com') onclick="toggleMute()" @endif style="color: #95B1D8;">Stream <i id="volumeIcon" class="fa-solid fa-volume-xmark"></i></button><button id="muteallButton" class="btn"  @if($sourcefrom != 'www.youtube.com') onclick="toggleAllMute('twitch')" @else onclick="toggleAllMute('youtube')" @endif style="color: #95B1D8;">Site <i id="volumeallIcon" class="fa-solid fa-volume-xmark"></i></button>
-                <audio id="myAudio" src="{{ asset('assets/graph/audio/Crowd_1_100.mp3') }}" preload="auto" muted></audio>
+                <button id="muteButton" class="btn" @if($sourcefrom != 'www.youtube.com') onclick="toggleMute()" @endif style="color: #95B1D8;">Stream <i id="volumeIcon" class="fa-solid fa-volume-xmark"></i></button>
+                {{-- <button id="muteallButton" class="btn"  @if($sourcefrom != 'www.youtube.com') onclick="toggleAllMute('twitch')" @else onclick="toggleAllMute('youtube')" @endif style="color: #95B1D8;">Site <i id="volumeallIcon" class="fa-solid fa-volume-xmark"></i></button> --}}
+                <audio id="myAudio" src="{{ asset('assets/graph/audio/Crowd_1_100.mp3') }}" loop muted></audio>
 
                 <a class="endlive"> <button>End Live</button></a>
             </div>
         </div>
-        <div style="display: flex;justify-content:space-between">
+        {{-- <div style="display: flex;justify-content:space-between">
             <p></p>
 
         <p id="audioToggle" style="cursor:pointer;
         cursor: pointer;
         color: #95B1D8;
         font-size: 20px;">Click For Audio Enable</p>
-        </div>
+        </div> --}}
         <div class="row ">
             <div class="col-lg-7 col-md-12 d-grid">
                 <div class="event_bg">
@@ -151,10 +152,35 @@
 
 
     </section>
+
+    <div class="modal fade onload-pop show" id="audioModal" tabindex="-1" aria-labelledby="audioModalLabel" aria-hidden="true"style="display: block;">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">   
+            <h5 class="modal-title font-24" id="audioModalLabel" style="
+            font-size: 20px;font-weight:bold;color: black;text-align:center;text-align: center;width: 100%;">Audio Enable</h5>
+            <button type="button" class="btn-close top-pos" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+             <p class="font-18" style="
+             color: black;
+             font-size: 20px;">Click "Accept" to proceed and hear the action audio.</p>
+            </div>
+            <div class="modal-footer premium-footer">
+                <button type="button" class="btn btn-info" id="audioToggle" data-bs-dismiss="modal">Accept</button>
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+        </div>
+    </div>
 @endsection
 
 @section('golive')
 <script type="text/javascript">
+$(window).on('load', function() {
+    $('#audioModal').modal('show');
+});
+
     // twitch
     var embed;
 var player;
@@ -245,44 +271,44 @@ var volumeIcon = document.getElementById('volumeIcon');
         }
     });
         // youtube
-    var mutevalue = 0;
-var volumeIcons = document.getElementById('volumeallIcon');
-        // muteall
-        function unmuteAll() {
-        var audioElements = document.getElementsByTagName('audio');
+//     var mutevalue = 0;
+// var volumeIcons = document.getElementById('volumeallIcon');
+//         // muteall
+//         function unmuteAll() {
+//         var audioElements = document.getElementsByTagName('audio');
     
         
-        for (var i = 0; i < audioElements.length; i++) {
-            audioElements[i].muted = false;
-        }
-         volumeIcons.className = 'fa-solid fa-volume-high';
-    }
-        function muteAll() {
-        var audioElements = document.getElementsByTagName('audio');
+//         for (var i = 0; i < audioElements.length; i++) {
+//             audioElements[i].muted = false;
+//         }
+//          volumeIcons.className = 'fa-solid fa-volume-high';
+//     }
+//         function muteAll() {
+//         var audioElements = document.getElementsByTagName('audio');
     
         
-        for (var i = 0; i < audioElements.length; i++) {
-            audioElements[i].muted = true;
-        }
-        volumeIcons.className = 'fa-solid fa-volume-xmark';
+//         for (var i = 0; i < audioElements.length; i++) {
+//             audioElements[i].muted = true;
+//         }
+//         volumeIcons.className = 'fa-solid fa-volume-xmark';
        
-    }
+//     }
     
-        function toggleAllMute(value) {
-            if(value == 'youtube'){
-                muteButton.click()
-            }else{
-                toggleMute();
-            }
+//         function toggleAllMute(value) {
+//             if(value == 'youtube'){
+//                 muteButton.click()
+//             }else{
+//                 toggleMute();
+//             }
     
-            if(mutevalue == 0){
-                muteAll();
-                mutevalue = 1;
-            }else{
-                unmuteAll();
-                mutevalue = 0;
-            }
-    }
+//             if(mutevalue == 0){
+//                 muteAll();
+//                 mutevalue = 1;
+//             }else{
+//                 unmuteAll();
+//                 mutevalue = 0;
+//             }
+//     }
     
         // muteall
     </script>
@@ -309,39 +335,24 @@ var volumeIcons = document.getElementById('volumeallIcon');
     
     <script>
         var accessvalue = 0;
-         document.addEventListener('DOMContentLoaded', function() {
-            const audio = document.getElementById('myAudio');
-            const audioToggle = document.getElementById('audioToggle');
 
-            // Check if the audio was playing before
-            const isAudioPlaying = localStorage.getItem('audioPlaying') === 'true';
+document.addEventListener('DOMContentLoaded', function() {
+    const audio = document.getElementById('myAudio');
+    const audioToggle = document.getElementById('audioToggle');
 
-            if (isAudioPlaying) {
-                audio.play()
-                    .then(() => {
-                        console.log('Audio started playing');
-                        // audioToggle.style.display = 'none'; // Hide the button
-                    })
-                    .catch(error => {
-                        console.error('Error playing audio:', error);
-                    });
-            }
+    audioToggle.addEventListener('click', function() {
+        accessvalue = 1;
+        audio.play()
+        console.log('Audio started playing');
+            // .then(() => {
+            //     console.log('Audio started playing');
+            // })
+            // .catch(error => {
+            //     console.error('Error playing audio:', error);
+            // });
+    });
+});
 
-            audioToggle.addEventListener('click', function() {
-                if (audio.paused) {
-                    accessvalue = 1;
-                    audio.play()
-                        .then(() => {
-                            console.log('Audio started playing');
-                            // audioToggle.style.display = 'none'; // Hide the button
-                            localStorage.setItem('audioPlaying', 'true'); // Store state
-                        })
-                        .catch(error => {
-                            console.error('Error playing audio:', error);
-                        });
-                }
-            });
-        });
         var audios_files;
         var ajax_call = function() {
             var url = "/web/audiofiles";
@@ -373,7 +384,7 @@ var volumeIcons = document.getElementById('volumeallIcon');
         function signIn() {
             var event_id = $('#event_id').val();
             var userid = $('#user_id').val();
-            // var event_id = 233;
+            // var event_id = 403;
             // var userid = 43;
 
             socket.emit('join-event', {
@@ -446,7 +457,7 @@ var volumeIcons = document.getElementById('volumeallIcon');
         socket.on('artist_action_graph_count', (msg) => {
             $.clapsss = function(count) {
                 if (msg['act1'] > 0) {
-                    let act1 = Math.min(msg['act1'], 10);
+                    let act1 = msg['act1'];
                     let GraphCount1 = (((act1 / 10) * 1.2) * (msg['c11'] / count)) * 100;
                     let GraphCount = Math.min(GraphCount1, 100);
 
@@ -455,6 +466,7 @@ var volumeIcons = document.getElementById('volumeallIcon');
                     const stopAllClaps = Array.from(document.querySelectorAll('[id^="Clap"]'));
                     // stopAllClaps.forEach(clap => $.stopAudio(clap));
                     const data = audios_files.data;
+                    console.log(data);
                     const datas = data.filter(item => item.audio_name.startsWith("Clap"));
 
                     const clapRanges = [];
@@ -516,26 +528,58 @@ var volumeIcons = document.getElementById('volumeallIcon');
                     }
                     
 
-                    for (const range of clapRanges) {
-                        const [startCount, endCount] = range.countRange;
-                        const [startAct, endAct, clap] = range.actRanges.find(([start, end]) => msg['c11'] >=
-                            startCount && msg['c11'] <= endCount && act1 >= start && act1 <= end) || [];
+                    let currentAudioElement = null; // Variable to hold the currently playing audio element
 
-                        const audioElement = document.getElementById(clap);
+                        for (const range of clapRanges) {
+                            const [startCount, endCount] = range.countRange;
+                            const [startAct, endAct, clap] = range.actRanges.find(([start, end]) => msg[
+                                    'c11'] >=
+                                startCount && msg['c11'] <= endCount && act1 >= start && act1 <= end) || [];
 
+                            const nextAudioElement = document.getElementById(clap);
 
-                        if (audioElement) {
-                            audioElement.play();
-                            break;
+                            if (nextAudioElement) {
+                                if (currentAudioElement) {
+                                    crossfade(currentAudioElement,
+                                        nextAudioElement); // Crossfade from current to next audio
+                                } else {
+                                    nextAudioElement
+                                        .play(); // If there's no current audio, simply play the next one
+                                }
+
+                                currentAudioElement = nextAudioElement; // Update the current audio element
+                                break; // Break the loop after handling one audio element
+                            }
                         }
 
-                    }
+                        function crossfade(currentAudio, nextAudio) {
+                            const duration = 2000; // Adjust the duration of the crossfade
+                            const fadeSteps = 50;
+                            const fadeInterval = duration / fadeSteps;
+                            const initialVolume = 1;
+
+                            nextAudio.volume = 0; // Start with zero volume for the new audio
+                            nextAudio.play(); // Start playing the new audio track
+
+                            let volumeStep = initialVolume / fadeSteps;
+
+                            const fadeOutInterval = setInterval(() => {
+                                if (currentAudio.volume > 0) {
+                                    currentAudio.volume -= volumeStep;
+                                    nextAudio.volume += volumeStep;
+                                } else {
+                                    clearInterval(fadeOutInterval);
+                                    currentAudio.pause(); // Pause the current audio track
+                                    currentAudio.volume = initialVolume; // Reset volume for reuse
+                                }
+                            }, fadeInterval);
+                        }
                 }
                 } else {
                     document.getElementById("aact1").style.cssText = `height:0%`;
                 }
                 if (msg['act2'] > 0) {
-                    let act2 = Math.min(msg['act2'], 10);
+                    let act2 = msg['act2'];
                     let GraphCount1 = (((act2 / 10) * 1.2) * (msg['c12'] / count)) * 100;
                     let GraphCount = Math.min(GraphCount1, 100);
 
@@ -605,26 +649,58 @@ var volumeIcons = document.getElementById('volumeallIcon');
                         });
                     }
 
-                    for (const range of booRanges) {
-                        const [startCount, endCount] = range.countRange;
-                        const [startAct, endAct, boo] = range.actRanges.find(([start, end]) => msg['c12'] >=
-                            startCount && msg['c12'] <= endCount && act2 >= start && act2 <= end) || [];
+                    let currentAudioElement = null; // Variable to hold the currently playing audio element
 
-                        const audioElement = document.getElementById(boo);
+                        for (const range of booRanges) {
+                            const [startCount, endCount] = range.countRange;
+                            const [startAct, endAct, boo] = range.actRanges.find(([start, end]) => msg[
+                                    'c12'] >=
+                                startCount && msg['c12'] <= endCount && act2 >= start && act2 <= end) || [];
 
+                            const nextAudioElement = document.getElementById(boo);
 
-                        if (audioElement) {
-                            audioElement.play();
-                            break;
+                            if (nextAudioElement) {
+                                if (currentAudioElement) {
+                                    crossfade2(currentAudioElement,
+                                        nextAudioElement); // Crossfade from current to next audio
+                                } else {
+                                    nextAudioElement
+                                        .play(); // If there's no current audio, simply play the next one
+                                }
+
+                                currentAudioElement = nextAudioElement; // Update the current audio element
+                                break; // Break the loop after handling one audio element
+                            }
                         }
 
-                    }
+                        function crossfade2(currentAudio, nextAudio) {
+                            const duration = 2000; // Adjust the duration of the crossfade
+                            const fadeSteps = 50;
+                            const fadeInterval = duration / fadeSteps;
+                            const initialVolume = 1;
+
+                            nextAudio.volume = 0; // Start with zero volume for the new audio
+                            nextAudio.play(); // Start playing the new audio track
+
+                            let volumeStep = initialVolume / fadeSteps;
+
+                            const fadeOutInterval = setInterval(() => {
+                                if (currentAudio.volume > 0) {
+                                    currentAudio.volume -= volumeStep;
+                                    nextAudio.volume += volumeStep;
+                                } else {
+                                    clearInterval(fadeOutInterval);
+                                    currentAudio.pause(); // Pause the current audio track
+                                    currentAudio.volume = initialVolume; // Reset volume for reuse
+                                }
+                            }, fadeInterval);
+                        }
                 }
                 } else {
                     document.getElementById("aact2").style.cssText = `height:0%`;
                 }
                 if (msg['act3'] > 0) {
-                    let act3 = Math.min(msg['act3'], 10);
+                    let act3 = msg['act3'];
                     let GraphCount1 = (((act3 / 10) * 1.2) * (msg['c13'] / count)) * 100;
                     let GraphCount = Math.min(GraphCount1, 100);
 
@@ -694,26 +770,58 @@ var volumeIcons = document.getElementById('volumeallIcon');
                         });
                     }
 
-                    for (const range of awwRanges) {
-                        const [startCount, endCount] = range.countRange;
-                        const [startAct, endAct, aww] = range.actRanges.find(([start, end]) => msg['c13'] >=
-                            startCount && msg['c13'] <= endCount && act3 >= start && act3 <= end) || [];
+                    let currentAudioElement = null; // Variable to hold the currently playing audio element
 
-                        const audioElement = document.getElementById(aww);
+                        for (const range of awwRanges) {
+                            const [startCount, endCount] = range.countRange;
+                            const [startAct, endAct, aww] = range.actRanges.find(([start, end]) => msg[
+                                    'c13'] >=
+                                startCount && msg['c13'] <= endCount && act3 >= start && act3 <= end) || [];
 
+                            const nextAudioElement = document.getElementById(aww);
 
-                        if (audioElement) {
-                            audioElement.play();
-                            break;
+                            if (nextAudioElement) {
+                                if (currentAudioElement) {
+                                    crossfade3(currentAudioElement,
+                                        nextAudioElement); // Crossfade from current to next audio
+                                } else {
+                                    nextAudioElement
+                                        .play(); // If there's no current audio, simply play the next one
+                                }
+
+                                currentAudioElement = nextAudioElement; // Update the current audio element
+                                break; // Break the loop after handling one audio element
+                            }
                         }
 
-                    }
+                        function crossfade3(currentAudio, nextAudio) {
+                            const duration = 2000; // Adjust the duration of the crossfade
+                            const fadeSteps = 50;
+                            const fadeInterval = duration / fadeSteps;
+                            const initialVolume = 1;
+
+                            nextAudio.volume = 0; // Start with zero volume for the new audio
+                            nextAudio.play(); // Start playing the new audio track
+
+                            let volumeStep = initialVolume / fadeSteps;
+
+                            const fadeOutInterval = setInterval(() => {
+                                if (currentAudio.volume > 0) {
+                                    currentAudio.volume -= volumeStep;
+                                    nextAudio.volume += volumeStep;
+                                } else {
+                                    clearInterval(fadeOutInterval);
+                                    currentAudio.pause(); // Pause the current audio track
+                                    currentAudio.volume = initialVolume; // Reset volume for reuse
+                                }
+                            }, fadeInterval);
+                        }
                 }
                 } else {
                     document.getElementById("aact3").style.cssText = `height:0%`;
                 }
                 if (msg['act4'] > 0) {
-                    let act4 = Math.min(msg['act4'], 10);
+                    let act4 = msg['act4'];
                     let GraphCount1 = (((act4 / 10) * 1.2) * (msg['c14'] / count)) * 100;
                     let GraphCount = Math.min(GraphCount1, 100);
 
@@ -783,26 +891,58 @@ var volumeIcons = document.getElementById('volumeallIcon');
                         });
                     }
 
-                    for (const range of whistleRanges) {
-                        const [startCount, endCount] = range.countRange;
-                        const [startAct, endAct, whistle] = range.actRanges.find(([start, end]) => msg['c14'] >=
-                            startCount && msg['c14'] <= endCount && act4 >= start && act4 <= end) || [];
+                    let currentAudioElement = null; // Variable to hold the currently playing audio element
 
-                        const audioElement = document.getElementById(whistle);
+                        for (const range of whistleRanges) {
+                            const [startCount, endCount] = range.countRange;
+                            const [startAct, endAct, whistle] = range.actRanges.find(([start, end]) => msg[
+                                    'c14'] >=
+                                startCount && msg['c14'] <= endCount && act4 >= start && act4 <= end) || [];
 
+                            const nextAudioElement = document.getElementById(whistle);
 
-                        if (audioElement) {
-                            audioElement.play();
-                            break;
+                            if (nextAudioElement) {
+                                if (currentAudioElement) {
+                                    crossfade4(currentAudioElement,
+                                        nextAudioElement); // Crossfade from current to next audio
+                                } else {
+                                    nextAudioElement
+                                        .play(); // If there's no current audio, simply play the next one
+                                }
+
+                                currentAudioElement = nextAudioElement; // Update the current audio element
+                                break; // Break the loop after handling one audio element
+                            }
                         }
 
-                    }
+                        function crossfade4(currentAudio, nextAudio) {
+                            const duration = 2000; // Adjust the duration of the crossfade
+                            const fadeSteps = 50;
+                            const fadeInterval = duration / fadeSteps;
+                            const initialVolume = 1;
+
+                            nextAudio.volume = 0; // Start with zero volume for the new audio
+                            nextAudio.play(); // Start playing the new audio track
+
+                            let volumeStep = initialVolume / fadeSteps;
+
+                            const fadeOutInterval = setInterval(() => {
+                                if (currentAudio.volume > 0) {
+                                    currentAudio.volume -= volumeStep;
+                                    nextAudio.volume += volumeStep;
+                                } else {
+                                    clearInterval(fadeOutInterval);
+                                    currentAudio.pause(); // Pause the current audio track
+                                    currentAudio.volume = initialVolume; // Reset volume for reuse
+                                }
+                            }, fadeInterval);
+                        }
                 }
                 } else {
                     document.getElementById("aact4").style.cssText = `height:0%`;
                 }
                 if (msg['act5'] > 0) {
-                    let act5 = Math.min(msg['act5'], 10);
+                    let act5 = msg['act5'];
                     let GraphCount1 = (((act5 / 10) * 1.2) * (msg['c15'] / count)) * 100;
                     let GraphCount = Math.min(GraphCount1, 100);
 
@@ -872,26 +1012,58 @@ var volumeIcons = document.getElementById('volumeallIcon');
                         });
                     }
 
-                    for (const range of cheerRanges) {
-                        const [startCount, endCount] = range.countRange;
-                        const [startAct, endAct, cheer] = range.actRanges.find(([start, end]) => msg['c15'] >=
-                            startCount && msg['c15'] <= endCount && act5 >= start && act5 <= end) || [];
+                    let currentAudioElement = null; // Variable to hold the currently playing audio element
 
-                        const audioElement = document.getElementById(cheer);
+                        for (const range of cheerRanges) {
+                            const [startCount, endCount] = range.countRange;
+                            const [startAct, endAct, cheer] = range.actRanges.find(([start, end]) => msg[
+                                    'c15'] >=
+                                startCount && msg['c15'] <= endCount && act5 >= start && act5 <= end) || [];
 
+                            const nextAudioElement = document.getElementById(cheer);
 
-                        if (audioElement) {
-                            audioElement.play();
-                            break;
+                            if (nextAudioElement) {
+                                if (currentAudioElement) {
+                                    crossfade5(currentAudioElement,
+                                        nextAudioElement); // Crossfade from current to next audio
+                                } else {
+                                    nextAudioElement
+                                        .play(); // If there's no current audio, simply play the next one
+                                }
+
+                                currentAudioElement = nextAudioElement; // Update the current audio element
+                                break; // Break the loop after handling one audio element
+                            }
                         }
 
-                    }
+                        function crossfade5(currentAudio, nextAudio) {
+                            const duration = 2000; // Adjust the duration of the crossfade
+                            const fadeSteps = 50;
+                            const fadeInterval = duration / fadeSteps;
+                            const initialVolume = 1;
+
+                            nextAudio.volume = 0; // Start with zero volume for the new audio
+                            nextAudio.play(); // Start playing the new audio track
+
+                            let volumeStep = initialVolume / fadeSteps;
+
+                            const fadeOutInterval = setInterval(() => {
+                                if (currentAudio.volume > 0) {
+                                    currentAudio.volume -= volumeStep;
+                                    nextAudio.volume += volumeStep;
+                                } else {
+                                    clearInterval(fadeOutInterval);
+                                    currentAudio.pause(); // Pause the current audio track
+                                    currentAudio.volume = initialVolume; // Reset volume for reuse
+                                }
+                            }, fadeInterval);
+                        }
                 }
                 } else {
                     document.getElementById("aact5").style.cssText = `height:0%`;
                 }
                 if (msg['act6'] > 0) {
-                    let act6 = Math.min(msg['act6'], 10);
+                    let act6 = msg['act6'];
                     let GraphCount1 = (((act6 / 10) * 1.2) * (msg['c16'] / count)) * 100;
                     let GraphCount = Math.min(GraphCount1, 100);
 
@@ -961,20 +1133,52 @@ var volumeIcons = document.getElementById('volumeallIcon');
                         });
                     }
 
-                    for (const range of laughRanges) {
-                        const [startCount, endCount] = range.countRange;
-                        const [startAct, endAct, laugh] = range.actRanges.find(([start, end]) => msg['c16'] >=
-                            startCount && msg['c16'] <= endCount && act6 >= start && act6 <= end) || [];
+                    let currentAudioElement = null; // Variable to hold the currently playing audio element
 
-                        const audioElement = document.getElementById(laugh);
+                        for (const range of laughRanges) {
+                            const [startCount, endCount] = range.countRange;
+                            const [startAct, endAct, laugh] = range.actRanges.find(([start, end]) => msg[
+                                    'c16'] >=
+                                startCount && msg['c16'] <= endCount && act6 >= start && act6 <= end) || [];
 
+                            const nextAudioElement = document.getElementById(laugh);
 
-                        if (audioElement) {
-                            audioElement.play();
-                            break;
+                            if (nextAudioElement) {
+                                if (currentAudioElement) {
+                                    crossfade6(currentAudioElement,
+                                        nextAudioElement); // Crossfade from current to next audio
+                                } else {
+                                    nextAudioElement
+                                        .play(); // If there's no current audio, simply play the next one
+                                }
+
+                                currentAudioElement = nextAudioElement; // Update the current audio element
+                                break; // Break the loop after handling one audio element
+                            }
                         }
 
-                    }
+                        function crossfade6(currentAudio, nextAudio) {
+                            const duration = 2000; // Adjust the duration of the crossfade
+                            const fadeSteps = 50;
+                            const fadeInterval = duration / fadeSteps;
+                            const initialVolume = 1;
+
+                            nextAudio.volume = 0; // Start with zero volume for the new audio
+                            nextAudio.play(); // Start playing the new audio track
+
+                            let volumeStep = initialVolume / fadeSteps;
+
+                            const fadeOutInterval = setInterval(() => {
+                                if (currentAudio.volume > 0) {
+                                    currentAudio.volume -= volumeStep;
+                                    nextAudio.volume += volumeStep;
+                                } else {
+                                    clearInterval(fadeOutInterval);
+                                    currentAudio.pause(); // Pause the current audio track
+                                    currentAudio.volume = initialVolume; // Reset volume for reuse
+                                }
+                            }, fadeInterval);
+                        }
                 }
                 } else {
                     document.getElementById("aact6").style.cssText = `height:0%`;
