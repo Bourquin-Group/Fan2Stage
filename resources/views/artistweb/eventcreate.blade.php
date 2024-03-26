@@ -123,7 +123,7 @@
             <div class="form-section">
               <label for="">Genre*</label>
                 <div class="genere_sec">
-              <select class="selectpicker" name="genre[]" id="genre" placeholder="Select genre" multiple>
+              <select name="genre" id="genre" placeholder="Select genre"> {{-- class="selectpicker" name="genre[]" multiple --}}
                 @forEach($genre as $value)
                     <option value="{{$value->genre1}}">{{$value->genre1}}</option>
                     @endforeach
