@@ -124,6 +124,7 @@
               <label for="">Genre*</label>
                 <div class="genere_sec">
               <select name="genre" id="genre" placeholder="Select genre"> {{-- class="selectpicker" name="genre[]" multiple --}}
+                <option value="">Select Genre</option>
                 @forEach($genre as $value)
                     <option value="{{$value->genre1}}">{{$value->genre1}}</option>
                     @endforeach

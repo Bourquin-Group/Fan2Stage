@@ -110,6 +110,7 @@
             <label for="">Genre</label>
             <div class="genere_sec">
               <select name="genre" id="genre"> {{-- class="selectpicker" name="genre[]" multiple --}}
+                <option value="">Select Genre</option>
                 <?php 
                         $genre = explode(',',$edit_event['event_genre']);?>
                         @forEach($genres as $value)
