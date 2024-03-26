@@ -12,6 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script src="https://embed.twitch.tv/embed/v1.js"></script>
+<script src="https://player.vimeo.com/api/player.js"></script>
 
 
 {{-- vimal --}}
