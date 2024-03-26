@@ -16,7 +16,7 @@
                 {{-- <button onclick="endLive('{{$sc_event['event_id']}}')">End Live</button>  --}}
                 {{-- <button onclick="myFunction()">Click me</button> --}}
                
-                <button id="muteButton" class="btn" @if($sourcefrom != 'www.youtube.com') onclick="toggleMute()" @endif style="color: #95B1D8;">Stream <i id="volumeIcon" class="fa-solid fa-volume-xmark"></i></button>
+                <button @if($sourcefrom == 'player.vimeo.com') id="vimeoButton" @else id="muteButton" @endif class="btn" @if($sourcefrom != 'www.youtube.com' && $sourcefrom != 'player.vimeo.com') onclick="toggleMute()" @endif style="color: #95B1D8;">Stream <i id="volumeIcon" class="fa-solid fa-volume-xmark"></i></button>
                 {{-- <button id="muteallButton" class="btn"  @if($sourcefrom != 'www.youtube.com') onclick="toggleAllMute('twitch')" @else onclick="toggleAllMute('youtube')" @endif style="color: #95B1D8;">Site <i id="volumeallIcon" class="fa-solid fa-volume-xmark"></i></button> --}}
                 <audio id="myAudio" src="{{ asset('assets/graph/audio/Crowd_1_100.mp3') }}" loop muted></audio>
 
@@ -35,7 +35,7 @@
             <div class="col-lg-7 col-md-12 d-grid">
                 <div class="event_bg">
                     <div class="imgsection">
-                        @if($sourcefrom == 'www.youtube.com')
+                        @if($sourcefrom == 'www.youtube.com' || $sourcefrom == 'player.vimeo.com')
                             <iframe id="videoIframe" src="{{$sc_event['link_to_event_stream']}}" frameborder="0" style="width:100%;height:100%" allowfullscreen=""></iframe>
                         @else
                             <p class="twitch-url" style="display: none">{{$sc_event['link_to_event_stream']}}</p>
@@ -311,6 +311,25 @@ var volumeIcon = document.getElementById('volumeIcon');
 //     }
     
         // muteall
+    </script>
+    <script>
+        var players = new Vimeo.Player('videoIframe');
+
+
+var muteButtons = document.getElementById('vimeoButton');
+var isMuted = false;
+
+muteButtons.addEventListener('click', function() {
+    if (isMuted) {
+        players.setVolume(1);
+            isMuted = false;
+            volumeIcon.className = 'fa-solid fa-volume-high';
+        } else {
+            players.setVolume(0);
+            isMuted = true;
+            volumeIcon.className = 'fa-solid fa-volume-xmark';
+        }
+});
     </script>
     <script>
         $(document).ready(function() {

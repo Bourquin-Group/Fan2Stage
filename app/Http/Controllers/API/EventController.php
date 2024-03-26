@@ -265,6 +265,23 @@ class EventController extends Controller
 
 
                 // youtube
+                // vimeo
+
+                // type1
+
+                // https://vimeo.com/776805071?enablejsapi=1
+                // https://player.vimeo.com/video/776805071?enablejsapi=1
+
+                // type 2
+
+                // https://vimeo.com/cooltoystv/ers-surf-4-09
+                // https://player.vimeo.com/video/cooltoystv/ers-surf-4-09
+                $contains4 = Str::contains($myString, 'vimeo.com');
+                if($contains4){
+                    $badUrl = $request['link_to_event_stream'];
+                    $contains1 = str_replace('vimeo.com', 'player.vimeo.com/video', $badUrl.'?api=1');
+                }
+                // vimeo
                 // url twitch and youtube
                 $duration = $request['event_duration'] * 60;
                 $newTime = strtotime($request['event_time']) + $duration;
@@ -638,6 +655,23 @@ class EventController extends Controller
                 }
                 }
                 // youtube
+                // vimeo
+
+                // type1
+
+                // https://vimeo.com/776805071?enablejsapi=1
+                // https://player.vimeo.com/video/776805071?enablejsapi=1
+
+                // type 2
+
+                // https://vimeo.com/cooltoystv/ers-surf-4-09
+                // https://player.vimeo.com/video/cooltoystv/ers-surf-4-09
+                $contains5 = Str::contains($myString, 'vimeo.com');
+                if($contains5){
+                    $badUrl = $request['link_to_event_stream'];
+                    $contains1 = str_replace('vimeo.com', 'player.vimeo.com/video', $badUrl.'?api=1');
+                }
+                // vimeo
                 // url twitch and youtube
 
                     // dd(date("g:i:s", strtotime($input['event_time']." GMT")));
