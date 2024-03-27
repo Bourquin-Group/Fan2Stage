@@ -639,6 +639,6 @@ class StripeController extends Controller
             'success'   => true,
             'message' => 'Payment has been success.',
         ];
-        return response()->json($response, 404);
+        return response()->json($response, 200);
     }
 }
