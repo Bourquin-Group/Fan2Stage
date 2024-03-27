@@ -17,6 +17,7 @@ class fanpayment extends Model
         'payment_status',
         'amount',
         'total',
+        'payment_method',
         'stripe_product_id',
         'stripe_price_id',
         'stripe_customer_id',

@@ -620,4 +620,25 @@ class StripeController extends Controller
             }   
         }
     }
+    function applePayment(Request $request){
+        $data = [
+            'user_id' => auth()->user()->id,
+            'event_id' =>$request->event_id,
+            'payment_date' =>Carbon::now(),
+            'type'  => $request->type,
+            'payment_status' => $request->payment_status,
+            'amount'  =>$request->eventamount,
+            'total'=> $request->totalamount,
+            'payment_method'=> $request->paymenttype,
+            'stripe_customer_id' => $request->customerid,
+            'stripe_charge_id' => $request->referenceno,
+        ];
+         $payment = fanpayment::create($data);
+         $response = [
+            'status' => 200,
+            'success'   => true,
+            'message' => 'Payment has been success.',
+        ];
+        return response()->json($response, 404);
+    }
 }

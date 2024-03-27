@@ -28,7 +28,7 @@ Route::get('auth/{service}/callback', 'App\Http\Controllers\SocialController@cal
   	
 
 Route::group(['prefix' => 'users'],function () {
-
+	Route::get('getAppletoken', 'App\Http\Controllers\AppleController@getAppletoken')->name('getAppletoken');
 // mobilesociallogin
 Route::post('mobilesociallogin', 'App\Http\Controllers\API\AuthController@mobilesociallogin')->name('mobilesociallogin');
 // mobilesociallogin
@@ -175,7 +175,6 @@ Route::middleware('auth:api')->group( function () {
     Route::post('change-password', 'App\Http\Controllers\API\AuthController@changePassword')->name('postChangePassword');
 	
 
-
 	// Billing Information
 	Route::get('getbillinfo', 'App\Http\Controllers\API\AuthController@getbillinfo')->name('getbillinfo');
     Route::post('storebillinginfo', 'App\Http\Controllers\API\AuthController@storebillinginfo')->name('storebillinginfo');
@@ -191,11 +190,15 @@ Route::middleware('auth:api')->group( function () {
 	Route::post('actioncount', 'App\Http\Controllers\API\GoliveController@actioncount')->name('actioncount');
 	Route::get('actiongraphcount/{id}', 'App\Http\Controllers\API\GoliveController@actiongraphcount')->name('actiongraphcount');
 	// Fans Action Count
+
+	// Apple payment
+	Route::post('applePaymentapi', 'App\Http\Controllers\API\StripeController@applePayment')->name('applePaymentapi');
 });
 
 });
 Route::post('alllogoutapi', 'App\Http\Controllers\API\AuthController@alllogoutsapi')->name('alllogoutapi');
-Route::post('allsociallogoutapi', 'App\Http\Controllers\API\AuthController@allsociallogoutsapi')->name('allsociallogoutapi');
+Route::post('allsocialogoutapi', 'App\Http\Controllers\API\AuthController@allsociallogoutsapi')->name('allsocialogoutapi');
+
 //CMS
 Route::get('about-us','App\Http\Controllers\API\CmsManageController@aboutus')->name('aboutus');
 Route::get('privacy-policy','App\Http\Controllers\API\CmsManageController@privacypolicy')->name('privacypolicy');
