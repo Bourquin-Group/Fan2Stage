@@ -633,12 +633,46 @@ class StripeController extends Controller
             'stripe_customer_id' => $request->customerid,
             'stripe_charge_id' => $request->referenceno,
         ];
-         $payment = fanpayment::create($data);
-         $response = [
-            'status' => 200,
-            'success'   => true,
-            'message' => 'Payment has been success.',
-        ];
-        return response()->json($response, 200);
+        
+        
+         if($request->type == 1){
+            $event_detail = Event::with('userDetail')->where('id',$request->event_id)->first();
+            $eventStatus = Eventbooking::where(['event_id' => $request->event_id,'artist_id' => $event_detail->userDetail->id,'status'=> 1,'user_id' => auth()->user()->id])->first();
+                if($eventStatus){
+                    $response = [
+                        'status' => 208,
+                        'success'   => false,
+                        'message' => 'Event Has Been Booked Already',
+                    ];
+                    return response()->json($response, 208);
+                }else{
+                    
+                     $payment = fanpayment::create($data);
+                    $inputs = [ 
+                        'artist_id' => $event_detail->userDetail->id,
+                        'event_id' => $request->event_id,
+                        'amount' => $request->eventamount,
+                        'payment_status' => 1,
+                        'status' => 1,
+                        'user_id' => auth()->user()->id
+                    ];
+                    $Event = Eventbooking::create($inputs);
+                    $response = [
+                        'status' => 200,
+                        'success'   => true,
+                        'message' => 'Event Booked Successfully',
+                    ];
+                    return response()->json($response, 200);
+                }
+
+         }else{
+            $payment = fanpayment::create($data);
+            $response = [
+                'status' => 200,
+                'success'   => true,
+                'message' => 'Payment has been success.',
+            ];
+            return response()->json($response, 200);
+         }
     }
 }
