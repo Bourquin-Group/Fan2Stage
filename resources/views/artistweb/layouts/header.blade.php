@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FanToStage</title>
+    <link rel="icon" href="{{ asset('assets/fan/favicon/onstage.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/web/bootstrap/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/web/css/fontawesome.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/web/css/style.css') }}" />
