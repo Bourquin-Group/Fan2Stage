@@ -62,7 +62,7 @@ class MainController extends Controller
         $type = $request->type;
         //type =0 is free plan, 1 is cost plan
         $subscriptionplan = subscriptionplan::find($subscription_plan_id);
-        $renewal_date = Carbon::now()->addMonth($subscriptionplan->events_per_month);
+        $renewal_date = Carbon::now()->addMonth('1');
         if($type ==0)
         {
             $artist = User::find(auth()->user()->id);
