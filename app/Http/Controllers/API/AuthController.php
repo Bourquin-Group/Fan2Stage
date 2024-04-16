@@ -1288,4 +1288,53 @@ class AuthController extends BaseController
             }
         }
     }
+
+    // Artist API
+    public function artistverifyOtp(Request $request)
+    {
+        $validator = $this->validate($request, [
+            'email' => ['required', 'regex:/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'],
+
+        ],
+            [
+                'email.required' => 'Please Enter Your EMail',
+                'email.regex' => 'Invalid Email Address',
+                'email.unique' => 'This Email Already Registered ',
+            ]
+        );
+
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            $now = time();
+            $startDate = date('Y-m-d H:i:s', $now);
+            if ($startDate <= $user->otp_expire_time) {
+                $user = User::where([['email', '=', $user->email], ['password_otp', '=', $request->otp]])->first();
+
+                if ($user) {
+
+                    $users = User::where('email', '=', $request->email)->update(['password_otp' => null, 'otp_expire_time' => null]);
+                    $success['status'] = 200;
+                    $success['mail'] = $user->email;
+                    $success['flag'] = true;
+                    if($request->type == 'register'){
+                        $data = array(
+                            'name' => $user->name,
+                        );
+                        $email = $user->email;
+                          Mail::send('mail.register',$data,function($message) use($email){
+                            $message->to($email);
+                            $message->subject('Congratulations');
+                            });
+                    }
+                    return $this->sendResponse($success, 'OTP Verified Successfully');
+                } else {
+                    return response(["status" => 401, 'message' => 'Invalid Otp']);
+                }
+            } else {
+                return response(["status" => 401, 'message' => 'Time expired']);
+            }
+        } else {
+            return response(["status" => 401, 'message' => 'This Email Address is Not Registered']); 
+        }
+    }
 }

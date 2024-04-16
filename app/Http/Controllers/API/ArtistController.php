@@ -547,4 +547,195 @@ class ArtistController extends Controller
         ];
         return response()->json($response, 200);
     }
+
+    // Artist API
+    public function artistProfile(Request $request){
+        // $artist_id = $request->artist_id;
+        $authid = Auth::user()->id; 
+        $artistDetail = Artist_profiles::whereHas('userArtist')->where('user_id',$authid)->first();
+        $aProfile = [];
+        if($artistDetail){
+            $aProfile['stage_name']=$artistDetail['stage_name'];
+            $aProfile['genre']=$artistDetail['genre'];
+            $aProfile['d_stagename']=$artistDetail['d_stagename'];
+            $aProfile['website_link']=$artistDetail['website_link'];
+            $aProfile['youtube_link']=$artistDetail['youtube_link'];
+            $aProfile['itunes_link']=$artistDetail['itunes_link'];
+            $aProfile['instagram_link']=$artistDetail['instagram_link'];
+            $aProfile['facebook_link']=$artistDetail['facebook_link'];
+            $aProfile['bio']=$artistDetail['bio'];
+            $aProfile['profile_image']=($artistDetail['profile_image'] != NUll)? url('').'/artist_profile_images/'.$artistDetail['profile_image'] : NULL;
+            $aProfile['landing_page_image']=($artistDetail['landing_page_image'] != NULL)?url('').'/artist_landingpage_images/'.$artistDetail['landing_page_image'] : NULL;
+            $aProfile['name']=$artistDetail['userArtist']['name'];
+            $aProfile['email']=$artistDetail['userArtist']['email'];
+            $aProfile['phone']=$artistDetail['userArtist']['phone_number'];
+            $aProfile['timezone']=$artistDetail['userArtist']['timezone'];
+            $followers = Favourite::where('artist_id',$artistDetail['userArtist']['id'])->pluck('id')->toArray();
+            $aProfile['followers']=count($followers);
+            $review =Event_joined_by_fans::where('user_id',$artistDetail['userArtist']['id'])->get();
+                $rating = 0;
+                if($review->isNotEmpty())
+                {
+                    $rating = ceil($review->sum('ratings')/$review->count());
+                }
+            $aProfile['rating']=$rating;
+        }
+        $response = [
+            'success' => true,
+            'profile' => $aProfile,
+            'message' =>"Profile retrived successfully",
+        ];
+        return response()->json($response, 200);    
+    }
+    public function updateArtistapi(Request $request){
+        $input = $request->all();
+        $authid = Auth::user()->id;
+        $artist = Artist_profiles::where('user_id',$authid)->first();
+        $validation = [
+            'full_name' => ['required', 'string', 'regex:/^[a-zA-Z]+(?:\s+[a-zA-Z]+)*$/'],
+            'email' => ['required','regex:/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'],
+            'stagename' => 'required',
+            'mobile_number' => ['required'],
+            // 'mobile_number' => ['required','numeric','digits:10'],
+            'genre' => 'required',
+            'timezone' => 'required',
+            'bio' => 'required',
+            
+        ];
+        if($request->facebook_link != null){
+            $facebbok_validation = [ 'facebook_link' => 'url'];
+            $validation = array_merge($validation, $facebbok_validation);
+        }
+        if($request->instagram_link != null){
+            $instagram_link_validation = [ 'instagram_link' => 'url'];
+            $validation = array_merge($validation, $instagram_link_validation);
+        }
+        if($request->itunes_link != null){
+            $itunes_link_validation = [ 'itunes_link' => 'url'];
+            $validation = array_merge($validation, $itunes_link_validation);
+        }
+        if($request->youtube_link != null){
+            $youtube_link_validation = [ 'youtube_link' => 'url'];
+            $validation = array_merge($validation, $youtube_link_validation);
+        }
+        if($request->website_link != null){
+            $website_link_validation = [ 'website_link' => 'url'];
+            $validation = array_merge($validation, $website_link_validation);
+        }
+
+        if(!$artist->profile_image || $artist->profile_image == null){
+            // dd($input['landing_page_image']);
+            $profileimage_validation = [ 'profile_image' => 'required|mimes:jpeg,png,jpg,gif,svg'];
+            $validation = array_merge($validation, $profileimage_validation);
+        }
+        if(!$artist->landing_page_image || $artist->landing_page_image == null){
+            $landingimage_validation = [ 'landing_page_image' => 'required'];
+            $validation = array_merge($validation, $landingimage_validation);
+        }     
+        $validator = $this->validate($request,$validation,
+        [
+            'full_name.required' => 'Please enter the name',
+            'full_name.string' => 'Please type only string',
+            'full_name.regex' => 'Please enter characters only',
+            'email.required' => 'Please enter the email',
+            'email.regex'=> 'Invalid email address',
+            'mobile_number.required' => 'Please enter the mobile number',
+            'genre.required' => 'Please select  the genre ',
+            'timezone.required' => 'Please select  the timezone ',
+            'profile_image.required' => 'Please upload the profile pic',
+            'profile_image.mimes' => 'Please upload only profile jpeg,png,jpg,svg,gif',
+            'landing_page_image.required' => 'Please upload the landingpage image',
+            'landing_page_image.mimes' => 'Please upload only landing jpeg,png,jpg,svg,gif',
+            'bio.required' => 'Please enter the bio-Data',
+            
+        ]
+    );
+        if($artist){
+            // artist profile images
+            $file = $request->file('profile_image');
+            
+            if($file){
+                $fileName = $file->getClientOriginalName();
+                $destinationPath = public_path().'/artist_profile_images' ;
+                $file->move($destinationPath,$fileName);
+                $old_path =public_path('/artist_profile_images/'.$artist->profile_image);
+                if(File::exists($old_path) && $artist->profile_image) {
+                    unlink($old_path);
+                }
+            }else{
+                $fileName = $artist->profile_image;
+            }
+            // artist profile images
+            
+            // artist landing page images
+            $file1 = $request->file('landing_page_image');
+            
+            if($file1){
+                $fileName1 = $file1->getClientOriginalName() ;
+                $destinationPath1 = public_path().'/artist_landingpage_images' ;
+                $file1->move($destinationPath1,$fileName1);
+                $old_path =public_path('/artist_landingpage_images/'.$artist->landing_page_image);
+                if(File::exists($old_path) && $artist->landing_page_image) {
+                    unlink($old_path);
+                }
+            }else{
+                $fileName1 = $artist->landing_page_image;
+            }
+            // artist landing page images
+            $artist->stage_name = $input['stagename'];
+            $artist->genre = implode(',',$input['genre']);
+            $artist->d_stagename = (isset($input['dsname'])) ? $input['dsname'] : '' ;
+            $artist->website_link = (isset($input['website_link'])) ? $input['website_link'] : '';
+            $artist->itunes_link = (isset($input['itunes_link'])) ? $input['itunes_link'] : '';
+            $artist->youtube_link = (isset($input['youtube_link'])) ? $input['youtube_link'] : '';
+            $artist->instagram_link = (isset($input['instagram_link'])) ? $input['instagram_link'] : '';
+            $artist->facebook_link = (isset($input['facebook_link'])) ? $input['facebook_link'] : '';
+            $artist->bio = $input['bio'];
+            $artist->profile_image = $fileName;
+            $artist->landing_page_image = $fileName1;
+            $artist->save();
+
+            $user = User::where('email',$request->email)->where('id',$authid)->first();
+            if($user){
+                $user->name = $input['full_name'];
+                $user->phone_number = $input['mobile_number'];
+                $user->email = $input['email'];
+                $user->timezone = $input['timezone'];
+                $user->verified_profile = 1;
+                $user->save();
+                Session::put('user_timezone', $input['timezone']);
+                // update day light time change
+                if($request['timezone'] != null){
+                    $timezone_date = timezone_change::where('user_id',Auth::user()->id)->first();
+                    $effectiveDate = date('Y-m-d');
+                    if($timezone_date){
+                        $timezone_date->modify_date = date('Y-m-d', strtotime("+3 months", strtotime($effectiveDate)));
+                        $timezone_date->status = 1;
+                        $timezone_date->save();
+                        Session::put('timezonechange', "yes");
+                    }else{
+                        $inputsss = [
+                            'status' => 1,
+                            'modify_date' => date('Y-m-d', strtotime("+3 months", strtotime($effectiveDate))),
+                            'user_id' => auth()->user()->id
+                        ];
+                        timezone_change::create($inputsss);
+                        Session::put('timezonechange', "yes");
+                    }
+                    
+                }
+                // update day light time change
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile updated successfully',
+            ]);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Profile not updated successfully',
+            ]);
+        }
+       
+    }
 }
