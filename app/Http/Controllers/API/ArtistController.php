@@ -558,18 +558,17 @@ class ArtistController extends Controller
             $aProfile['stage_name']=$artistDetail['stage_name'];
             $aProfile['genre']=$artistDetail['genre'];
             $aProfile['d_stagename']=$artistDetail['d_stagename'];
-            $aProfile['website_link']=$artistDetail['website_link'];
-            $aProfile['youtube_link']=$artistDetail['youtube_link'];
-            $aProfile['itunes_link']=$artistDetail['itunes_link'];
-            $aProfile['instagram_link']=$artistDetail['instagram_link'];
-            $aProfile['facebook_link']=$artistDetail['facebook_link'];
-            $aProfile['bio']=$artistDetail['bio'];
+            $aProfile['website_link']=($artistDetail['website_link'] != NULL) ? $artistDetail['website_link'] : NULL ;
+            $aProfile['youtube_link']=($artistDetail['youtube_link'] != NULL) ? $artistDetail['youtube_link'] : NULL ;
+            $aProfile['itunes_link']=($artistDetail['itunes_link'] != NULL) ? $artistDetail['itunes_link'] : NULL ;
+            $aProfile['instagram_link']=($artistDetail['instagram_link'] != NULL) ? $artistDetail['instagram_link'] : NULL ;
+            $aProfile['facebook_link']=($artistDetail['facebook_link'] != NULL) ? $artistDetail['facebook_link'] : NULL ;
             $aProfile['profile_image']=($artistDetail['profile_image'] != NUll)? url('').'/artist_profile_images/'.$artistDetail['profile_image'] : NULL;
             $aProfile['landing_page_image']=($artistDetail['landing_page_image'] != NULL)?url('').'/artist_landingpage_images/'.$artistDetail['landing_page_image'] : NULL;
             $aProfile['name']=$artistDetail['userArtist']['name'];
             $aProfile['email']=$artistDetail['userArtist']['email'];
             $aProfile['phone']=$artistDetail['userArtist']['phone_number'];
-            $aProfile['timezone']=$artistDetail['userArtist']['timezone'];
+            $aProfile['timezone']=(int)$artistDetail['userArtist']['timezone'];
             $followers = Favourite::where('artist_id',$artistDetail['userArtist']['id'])->pluck('id')->toArray();
             $aProfile['followers']=count($followers);
             $review =Event_joined_by_fans::where('user_id',$artistDetail['userArtist']['id'])->get();
@@ -737,5 +736,17 @@ class ArtistController extends Controller
             ]);
         }
        
+    }
+    public function fanfollowers(Request $request){
+    
+            $auth_id = Auth::user()->id;
+            $followerid = Favourite::where('artist_id',$auth_id)->pluck('user_id')->toArray();
+            $followerslist = User::whereIn('id',$followerid)->get();
+            return response()->json([
+                'success' => true,
+                'followers' => $followerslist,
+                'message' => 'Followers list retrived successfully',
+            ],200);
+           
     }
 }

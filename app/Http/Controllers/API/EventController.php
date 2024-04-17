@@ -1125,5 +1125,547 @@ class EventController extends Controller
         
     }
 
+    // Artist API
+    public function eventcreateApi(Request $request)
+    {
+        $timezone_region = timezone::where('id', Auth::user()->timezone)->first();
+        if ($timezone_region) {
+            date_default_timezone_set($timezone_region['region']);
+        }
+        $authid = Auth::User()->id;
+        $usertype = User::where('id', $authid)->first();
+        $planid = $usertype->subscription_plan_id;
+        $f2splan = subscriptionplan::where('id', $planid)->first();
+        $events_per_month = $f2splan->events_per_month;
+        $events_cost = $f2splan->cost;
+        $data = Event::select('*')
+            ->whereMonth('created_at', Carbon::now()->month)->where('user_id', $authid)
+            ->get();
+
+        $Events_per_month_count = count($data);
+        if ($usertype->user_type == 'artists' || $usertype->user_type == 'admin' || $usertype->typeupgrade_status == 1) {
+            if ($Events_per_month_count < $events_per_month) {
+                // $checktime = date("H:i:s", strtotime($request['event_time']));
+                // // dd($checktime);
+                // $eventcheck = Event::where('user_id',$authid)->where('event_date',$request ['event_date'])->where('event_time',$checktime)->first();
+                // if($eventcheck){
+                //     $response = [
+                //         'success'   => false,
+                //         'flag' => 1,
+                //         'message' => 'Already event will be existing with this time and date',
+                //     ];
+                //     return response()->json($response);
+                // }else{
+
+                $eventsToday = Event::where('user_id', $authid)
+                    ->where('event_status', 1)
+                    ->whereDate('event_date', $request['event_date']) // Filter events for today's date
+                    ->get(); // Retrieve all events for today
+
+                $falltime = strtotime($request['event_time']);
+
+                foreach ($eventsToday as $event) {
+                    $event_starttime = strtotime($event->event_time);
+                    $event_closetime = strtotime($event->event_closetime);
+
+                    if ($falltime >= $event_starttime && $falltime <= $event_closetime) {
+                        $response = [
+                            'success' => false,
+                            'flag' => 1,
+                            'message' => 'An event already exists with this time and date.',
+                        ];
+                        return response()->json($response);
+                    }
+                }
+                // $input = $request->all();
+                // dd($request ['event_date']);
+                $todayDate = date('Y-m-d');
+                $validator = Validator::make($request->all(), [
+                    'event_title' => 'required',
+                    'event_duration' => 'required',
+                    'link_to_event_stream' => 'required',
+                    // 'eventamount' => 'numeric',
+                    'event_image' => 'required',
+                    'genre' => 'required',
+                    'event_date' => 'required|after_or_equal:' . $todayDate,
+                    'event_time' => 'required',
+                    'event_timezone' => 'required',
+                    'event_description' => 'required',
+                    // 'eventamount' => 'numeric'
+                ],
+                    [
+                        'event_title.required' => 'Please Enter The Event Title',
+                        'event_duration.required' => 'Please Select Event Duration',
+                        'event_image.required' => 'Please Upload The Event Image',
+                        // 'event_image.mimes' => 'Upload valid image format jpeg,png,jpg,gif,svg',
+                        'event_time.required' => 'Please Select The Event Time',
+                        'genre.required' => 'Please Select  The Genre ',
+                        'link_to_event_stream.required' => 'Please Give The Event Link',
+                        // 'eventamount.required' => 'Please Enter The Amount',
+                        // 'eventamount.numeric' => 'Please Give Only Digits',
+                        'event_date.required' => 'Please Select The Event Date',
+                        'event_date.after_or_equal' => 'Please Select Today or Next Date',
+                        'event_timezone.required' => 'Please Select The Time Zone',
+                        'event_description.required' => 'Please Enter The Event Discription',
+
+                    ]);
+
+                if ($validator->fails()) {
+                    return response()->json(['success' => false, 'error' => $validator->errors()->toArray()]);
+                }
+
+                // $number = $request['number'];
+                // if ($number) {
+                //     $fil = [];
+                //     for ($i = 0; $i < $number; $i++) {
+                //         $name = $request['file_name' . $i];
+                //         $tmp = $request['file' . $i];
+                //         $destinationPath = public_path() . '/eventimages/' . $name;
+                //         move_uploaded_file($tmp, $destinationPath);
+                //         $fil[] = $name;
+                //     }
+                //     $filename_array = implode(',', $fil);
+                // }
+
+                $files = $request->file('event_image');
+                if ($files) {
+                    $fil = [];
+                    foreach ($files as $file) {
+                        $fileName = $file->getClientOriginalName();
+                        $destinationPath = public_path() . '/eventimages';
+                        $file->move($destinationPath, $fileName);
+                        $fil[] = $fileName;
+                    }
+                    $filename_array = implode(',', $fil);
+                } else {
+                    $filename_array = $data->event_image;
+                }
+                // url twitch and youtube
+                $myString = $request['link_to_event_stream'];
+
+                $contains = Str::contains($myString, 'player.twitch.tv');
+                if ($contains) {
+                    $contains1 = str_replace("www.example.com", "onstage.f2s.live", $myString);
+                } else {
+                    $contains1 = $request['link_to_event_stream'] . '?enablejsapi=1';
+                }
+
+                $contains2 = Str::contains($myString, 'www.twitch.tv');
+                if ($contains2) {
+                    $url = $request['link_to_event_stream'];
+                    // Parse the URL
+                    $urlParts = parse_url($url);
+
+                    if (isset($urlParts['path'])) {
+                        // Remove leading slash if present
+                        $path = ltrim($urlParts['path'], '/');
+
+                        // Split the path by '/' and get the username (which is the last part)
+                        $pathParts = explode('/', $path);
+                        $username = end($pathParts);
+                        if ($username == '' || $username == null) {
+                            $response = [
+                                'success' => false,
+                                'flag' => 1,
+                                'message' => 'Invalid Url',
+                            ];
+                            return response()->json($response);
+                        } else {
+                            $contains1 = "https://player.twitch.tv/?channel=" . $username . "&parent=onstage.f2s.live";
+                        }
+
+                    } else {
+                        $contains1 = $request['link_to_event_stream'] . '?enablejsapi=1';
+                    }
+                } else {
+                    $contains1 = $request['link_to_event_stream'] . '?enablejsapi=1';
+                }
+
+                // youtube
+                $contains3 = Str::contains($myString, 'watch?v=');
+                if ($contains3) {
+                    $badUrl = $request['link_to_event_stream'];
+                    $contains1 = str_replace('watch?v=', 'embed/', $badUrl . '?enablejsapi=1');
+                }
+                $contains5 = Str::contains($myString, 'youtu.be');
+                if ($contains5) {
+                    $badUrl = $request['link_to_event_stream'];
+                    $contains1 = str_replace('youtu.be', 'www.youtube.com/embed', $badUrl . '?enablejsapi=1');
+                }
+
+                // youtube
+                // vimeo
+
+                // type1
+
+                // https://vimeo.com/776805071?enablejsapi=1
+                // https://player.vimeo.com/video/776805071?enablejsapi=1
+
+                // type 2
+
+                // https://vimeo.com/cooltoystv/ers-surf-4-09
+                // https://player.vimeo.com/video/cooltoystv/ers-surf-4-09
+                $contains4 = Str::contains($myString, 'vimeo.com');
+                if ($contains4) {
+                    $badUrl = $request['link_to_event_stream'];
+                    $contains1 = str_replace('vimeo.com', 'player.vimeo.com/video', $badUrl . '?api=1');
+                }
+                // vimeo
+                // url twitch and youtube
+                $duration = $request['event_duration'] * 60;
+                $newTime = strtotime($request['event_time']) + $duration;
+                $inputs = [
+                    'event_title' => $request['event_title'],
+                    'event_duration' => $request['event_duration'],
+                    'event_image' => $filename_array,
+                    'event_status' => 1,
+                    'link_to_event_stream' => $contains1,
+                    'eventamount' => ($request['eventamount'] != null) ? $request['eventamount'] : 0,
+                    'genre' => $request['genre'],
+                    'event_count' => 0,
+                    'event_description' => $request['event_description'],
+                    'event_date' => $request['event_date'],
+                    'event_plan_type' => ($events_cost == 'free') ? 0 : 1,
+                    'event_time' => date("H:i:s", strtotime($request['event_time'])),
+                    'event_closetime' => date("H:i:s", $newTime),
+                    'event_timezone' => $request['event_timezone'],
+                    'user_id' => auth()->user()->id,
+                ];
+                $Event = Event::create($inputs);
+                // mail notification
+
+                $data = array(
+                    'name' => Auth::user()->name,
+                    'eventname' => $Event->event_title,
+                    'eventdate' => date('d F Y', strtotime($Event->event_date)),
+                    'eventtime' => date("H:i A", strtotime($Event->event_time)),
+                );
+                $email = Auth::user()->email;
+
+                $favouriteuserid = Favourite::where('artist_id', Auth::user()->id)->pluck('user_id')->toArray();
+                $favouriteuseremail = User::whereIn('id', $favouriteuserid)->pluck('email')->toArray();
+                $favouriteuser = User::whereIn('id', $favouriteuserid)->get();
+
+                foreach ($favouriteuser as $value) {
+                    // dd($value);
+                    $notification_detail = [
+                        'type_name' => 'Event Create',
+                        'description' => Auth::user()->name . ' created a Event',
+                        'event_id' => $Event->id,
+                        'artist_id' => Auth::user()->id,
+                        'status' => 1,
+                        'type' => 1,
+                        'user_id' => $value->id,
+                    ];
+                    Notificationdetail::create($notification_detail);
+                }
+
+                // Push notification
+                $FcmToken = User::whereIn('id', $favouriteuserid)->whereNotNull('device_token')->pluck('device_token')->all();
+
+                if ($FcmToken) {
+
+                    $title = "Event Create";
+                    $body = Auth::user()->name . ' created a Event';
+                    $event_id = $Event->id;
+                    $status = ($Event->golivestatus == 1) ? true : false;
+                    $type = "CREATED";
+                    send_notification_FCM($FcmToken, $title, $body, $event_id, $status, $type);
+                }
+                // Push notification
+
+                Mail::send('mail.eventcreate', $data, function ($message) use ($email, $favouriteuseremail) {
+                    $message->to($email);
+                    $message->cc($favouriteuseremail);
+                    $message->subject('Congratulations');
+                });
+                // mail notification
+
+                $response = [
+                    'status_code' => 200,
+                    'success' => true,
+                    'event_name' => $Event->event_title,
+                    'event_id' => $Event->id,
+                    'message' => 'Event created successfully',
+                ];
+                return response()->json($response, 200);
+                // }
+            } else {
+                $response = [
+                    'success' => false,
+                    'flag' => 1,
+                    'message' => 'You Have Reached Events Per Month',
+                ];
+                return response()->json($response);
+            }
+        } else {
+            $response = [
+
+                'success' => false,
+                'message' => 'You Could Not Create The Event',
+            ];
+            return response()->json($response);
+        }
+    }
+    public function eventdetailApi($id)
+    {
+            $event = Event::with('userDetail')->find($id);
+            // $event = Event::with('userDetail')->where('user_id',Auth::user()->id)->find($id);
+                if (is_null($event)) {
+                    return response()->json([
+                        'status'   => 404,
+                        'success' => false,
+                        'message' => 'No Event Found',
+                    ]);
+                }
+                $a_profile = Artist_profiles::where('user_id',$event->userDetail['id'])->first();
+                
+                // check event book by fan
+                $eventStatus = Eventbooking::where(['event_id' => $event->id,'artist_id' => $event->user_id,'status' => 1,'user_id' => auth()->user()->id])->first();
+                // check event book by fan
+
+                // check billing information
+                $billdetail = billinginformation::where('user_id',auth()->user()->id)->first();
+                // check billing information
+                $followers = Favourite::where('artist_id',optional($a_profile->userArtist)->id ? optional($a_profile->userArtist)->id : '')->pluck('id')->toArray();
+
+                $review =Event_joined_by_fans::where('user_id',$event->userDetail['id'])->get();
+                $raiting = 0;
+                if($review->isNotEmpty())
+                {
+                    $raiting = ceil($review->sum('ratings')/$review->count());
+                }
+                
+                $eventimage = explode(',',$event->event_image);
+            $data=[
+                'user_id' => auth()->user()->id,
+                'event_id' => $event->id,
+                'event_title' => $event->event_title,
+                'event_date' => $event->event_date,
+                'event_time' => $event->event_time,
+                'link_to_event_stream' => $event->link_to_event_stream,
+                'eventamount' => ($event->eventamount > 0)? (int)$event->eventamount: 0,
+                'booking_status' => ($eventStatus) ? true : false,
+                'billinginfo_status' => ($billdetail) ? true : false,
+                'verified_profile' => (Auth::user()->verified_profile == 1) ? true : false,
+                'event_duration' => $event->event_duration,
+                'event_image' => url('').'/eventimages/'.$eventimage[0],
+                'event_genre' => $event->genre,
+                'event_timezone' => $event->event_timezone,
+                'event_description' => $event->event_description,
+                'event_plan_type' => (int)$event->event_plan_type,
+                'event_status' => (int)$event->event_status,
+                'artist_id' => $event->user_id,
+                'artist_name' => $event->userDetail['name'],
+                'artist_stagename' => (isset($a_profile['stage_name'])) ? $a_profile['stage_name'] : '',
+                'd_stagename' => (isset($a_profile['d_stagename'])) ? $a_profile['d_stagename'] : 'off',
+                'artist_image' =>(isset($a_profile['profile_image'])) ? url('').'/artist_profile_images/'.$a_profile['profile_image']: '',      
+                'is_completed' => ($event->event_status == 0) ? 0 : 1,
+                'followers'=> count($followers),
+                'raiting'=> $raiting,
+            ];
+            return response()->json([
+                'status'   => 200,
+				'success' => true,
+                'message' => 'Event retrived successfully',
+                'data' => $data
+			]);
+    }
+    public function eventdestroyApi($id)
+    {
+        $authid = Auth::User()->id;
+        $usertype = User::where('id',$authid)->first();
+        $bookeduserid = Eventbooking::where('event_id',$id)->where('status',1)->pluck('user_id')->toArray();
+        $bookeduser = User::whereIn('id',$bookeduserid)->get();
+                   
+                    foreach($bookeduser as $value){
+                        $notification_detail = [
+                            'type_name' => 'Event Delete',
+                            'description' => Auth::user()->name.' delete a Event',
+                            'event_id' => $id,
+                            'artist_id' => Auth::user()->id,
+                            'status' => 1,
+                            'type' => 6, //5->Event delete
+                            'user_id' =>$value->id 
+                    ];
+                        Notificationdetail::create($notification_detail);
+                    }
+                    // Push notification
+                    $FcmToken = User::whereIn('id',$bookeduserid)->whereNotNull('device_token')->pluck('device_token')->all();
+                    
+                    if($FcmToken){
+                    $title = "Event Delete";
+                    $body = Auth::user()->name.' delete a Event';
+                    $event_id = $id;
+                    $status = false;
+                    $type = "DELETED";
+                    send_notification_FCM($FcmToken,$title, $body, $event_id, $status, $type);
+                    }
+                    // Push notification
+        //dd($usertype->user_type);
+        if($usertype->user_type=='artists')
+        {
+            $event = Event::where('user_id',Auth::user()->id)->where('id',$id)->first();
+            if($event){
+
+                $event->delete();
+                return response()->json([
+                    'status'  => 200,
+                    'success' => true,
+                    'message' => 'Event Deleted Successfully',
+                    'data' => []
+                ]);
+            }
+            else{
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Event Not Deleted Successfully', // the ,message you want to show
+                    
+                ], 422);
+            }
+        }
+        else{
+            $response = [
+                    'status'   => false,
+                    'message' => 'You Could Not Delete The Event',
+                ];
+            return response()->json($response);
+        }
+}
+    public function artistscheduledEventListApi(){
+        $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
+        if($timezone_region){
+        date_default_timezone_set($timezone_region['region']);
+        }
+        $scheduleEvents = Event::where('user_id',Auth::user()->id)->where('event_status',1)->where('event_date','>=',Carbon::today())->where('golivestatus', 0)->orderBy('event_time')->get();
+        $data = [];
+        $totData = [];
+        foreach($scheduleEvents as $value){
+            $data['event_id']=$value->id;
+            $data['event_title']=$value->event_title;
+            $data['event_date']=$value->event_date;
+            $eventStatus = Eventbooking::where(['event_id' => $value->id,'artist_id' => $value->user_id,'status' => 1,'user_id' => auth()->user()->id])->first();
+            $data['booking_status']=($eventStatus) ? true : false;
+            $data['event_duration']=$value->event_duration;
+            $data['event_amount']=($value->eventamount > 0)? (int)$value->eventamount: 0;
+            $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
+            $eventdate = date('Y-m-d',strtotime($value->event_date));
+            $eventtime = $value->event_time ;
+            $eventdatetime = $eventdate.' '.$eventtime;       
+            
+            $timezone_region1 = timezone::where('timezone',$value->event_timezone)->first();
+            
+            $date = new DateTime($eventdatetime, new DateTimeZone($timezone_region1->region));
+
+            $date->setTimezone(new DateTimeZone($timezone_region->region));
+            $resultdatefrom = $date->format('h:i A');
+
+            $minutesToAdd = $value->event_duration; 
+            $date->modify("+{$minutesToAdd} minutes");
+            $resultdateto = $date->format('h:i A');
+            $data['event_time']=$resultdatefrom ;
+            $data['event_description']=$value->event_description;
+            $data['event_plan_type']=(int)$value->event_plan_type;
+            $eventimage = explode(',',$value->event_image);
+            $data['event_image']=asset('/eventimages/'.$eventimage[0]);
+            
+
+            $totData[]=$data;
+        }
+        $response = [
+            'status' => 200,
+            'success' => true,
+            'message' => "Scheduled Event Data Retrived Successfully",
+            'data'    => $totData,
+        ];
+        return response()->json($response, 200);    
+    }
+
+    public function artistpastEventListApi(){
+        $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
+        if($timezone_region){
+        date_default_timezone_set($timezone_region['region']);
+        }
+        $pastEvents = Event::where('user_id',Auth::user()->id)->where('event_status',0)->where('event_date','<=',Carbon::today())->where('golivestatus', 0)->orderBy('event_time')->get();
+        $data = [];
+        $totData = [];
+        foreach($pastEvents as $value){
+            $data['event_id']=$value->id;
+            $data['event_title']=$value->event_title;
+            $data['event_date']=$value->event_date;
+            $eventStatus = Eventbooking::where(['event_id' => $value->id,'artist_id' => $value->user_id,'status' => 1,'user_id' => auth()->user()->id])->first();
+            $data['booking_status']=($eventStatus) ? true : false;
+            $data['event_duration']=$value->event_duration;
+            $data['event_amount']=($value->eventamount > 0)? (int)$value->eventamount: 0;
+            $timezone_region = timezone::where('id',Auth::user()->timezone)->first();
+            $eventdate = date('Y-m-d',strtotime($value->event_date));
+            $eventtime = $value->event_time ;
+            $eventdatetime = $eventdate.' '.$eventtime;       
+            
+            $timezone_region1 = timezone::where('timezone',$value->event_timezone)->first();
+            
+            $date = new DateTime($eventdatetime, new DateTimeZone($timezone_region1->region));
+
+            $date->setTimezone(new DateTimeZone($timezone_region->region));
+            $resultdatefrom = $date->format('h:i A');
+
+            $minutesToAdd = $value->event_duration; 
+            $date->modify("+{$minutesToAdd} minutes");
+
+            $resultdateto = $date->format('h:i A');
+            $data['event_time']=$resultdatefrom ;
+            $data['event_description']=$value->event_description;
+            $data['event_plan_type']=(int)$value->event_plan_type;
+            $eventimage = explode(',',$value->event_image);
+            $data['event_image']=asset('/eventimages/'.$eventimage[0]);
+            
+
+            $totData[]=$data;
+        }
+        $response = [
+            'status' => 200,
+            'success' => true,
+            'message' => "Past Event Data Retrived Successfully",
+            'data'    => $totData,
+        ];
+        return response()->json($response, 200);    
+    }
+    public function artistupcomingEventListApi(){
+        $artistliveEvent = Event::where('user_id',Auth::user()->id)->where('event_date',Carbon::today())->where('starteventflag',0)->where('event_status',1)->orderBy('event_time','ASC')->get();
+        $live_event = [];
+        $tolive_event = [];
+        foreach ($artistliveEvent as $value) {
+            
+            $even = date('H:i A', strtotime($value->event_time));
+            $event_time_set= timezone::where('id',Auth::user()->timezone)->first();
+            $dateNow = Carbon::now();
+            $dateNow->setTimezone($event_time_set->region);
+            $current_time = date('H:i A',strtotime($dateNow));
+            
+            if($current_time < $even){
+                $live_event['id'] = $value->id;
+                $live_event['event_title'] = $value->event_title;
+                $live_event['event_time'] = $value->event_time;
+                $live_event['date'] = $value->event_date;
+                $eventDateTime = Carbon::parse($value->event_time)->tz(Auth::user()->timezone);
+                $live_event['time'] = $eventDateTime;
+                $live_event['link_to_event_stream'] = $value->link_to_event_stream;
+                $live_event['duration'] = $value->event_duration;
+                $live_event['image'] = $value->event_image;
+                $live_event['genre'] = $value->genre;
+                $live_event['description'] = $value->event_description;
+                $live_event['count'] = $value->event_count;
+                $tolive_event[]=$live_event;
+            }
+        }
+        $response = [
+            'status' => 200,
+            'success' => true,
+            'message' => "Next upcoming event retrived successfully",
+            'data'    => $tolive_event,
+        ];
+        return response()->json($response, 200);    
+    }
+
     
 }

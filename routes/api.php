@@ -205,22 +205,20 @@ Route::get('introductory-screen', 'App\Http\Controllers\API\IntroductoryscreenCo
 // Introductory Screen
 
 Route::group(['prefix' => 'artist'], function () {
-	
-	Route::post('register', 'App\Http\Controllers\API\AuthController@register')->name('userRegister');
+
+    Route::post('register', 'App\Http\Controllers\API\AuthController@register')->name('userRegister');
     Route::post('login', 'App\Http\Controllers\API\AuthController@login')->name('userLogin');
     Route::post('forgotpassword', 'App\Http\Controllers\API\AuthController@forgotpassword')->name('forgotpassword');
     Route::post('verifyOtp', 'App\Http\Controllers\API\AuthController@artistverifyOtp')->name('verifyOtp');
     Route::post('resendotp', 'App\Http\Controllers\API\AuthController@resendotp')->name('resendotp');
     Route::post('resetPassword', 'App\Http\Controllers\API\AuthController@resetPassword')->name('resetPassword');
-	
-    Route::middleware('auth:api')->group(function () {
-		
-		Route::get('logout', 'App\Http\Controllers\API\AuthController@logout');
 
-		// Subscription
-		Route::get('subscription', [App\Http\Controllers\API\SubscriptionPlanController::class, 'subscriptionplanlistartist'])->name('subscription');
-		Route::post('subscriptionfree', [App\Http\Controllers\API\SubscriptionPlanController::class, 'subscriptionfree'])->name('subscriptionfree');
-		// Subscription
+    Route::middleware('auth:api')->group(function () {
+
+        // Subscription
+        Route::get('subscription', [App\Http\Controllers\API\SubscriptionPlanController::class, 'subscriptionplanlistartist'])->name('subscription');
+        Route::post('subscriptionfree', [App\Http\Controllers\API\SubscriptionPlanController::class, 'subscriptionfree'])->name('subscriptionfree');
+        // Subscription
 
         // Profile
         Route::get('artistprofile', 'App\Http\Controllers\API\ArtistController@artistProfile')->name('artistprofile');
@@ -230,10 +228,34 @@ Route::group(['prefix' => 'artist'], function () {
         // Billing Info
         Route::get('getbillinfo', 'App\Http\Controllers\API\AuthController@getbillinfo')->name('getbillinfo');
         Route::post('storebillinginfo', 'App\Http\Controllers\API\AuthController@storebillinginfo')->name('storebillinginfo');
-
         // Billing Info
-		
+        
+        // Event CRUD
+        Route::post('eventcreateApi', 'App\Http\Controllers\API\EventController@eventcreateApi')->name('eventcreateApi');
+        Route::get('eventdetailApi/{id}', 'App\Http\Controllers\API\EventController@eventdetailApi')->name('eventdetailApi');
+        Route::get('eventdestroyApi/{id}', 'App\Http\Controllers\API\EventController@eventdestroyApi')->name('eventdestroyApi');
+
+        // Event CRUD
+        
+        // Fan Followers
+        Route::get('followers', 'App\Http\Controllers\API\ArtistController@fanfollowers')->name('followers');
+        // Scheduled Events
+        Route::get('scheduled-event', 'App\Http\Controllers\API\EventController@artistscheduledEventListApi')->name('scheduled-event');
+        // Past Events
+        Route::get('past-event', 'App\Http\Controllers\API\EventController@artistpastEventListApi')->name('past-event');
+        // upcoming event
+        Route::get('nextupcoming-event', 'App\Http\Controllers\API\EventController@artistupcomingEventListApi')->name('nextupcoming-event');
+
+        // Logout
+        Route::get('logout', 'App\Http\Controllers\API\AuthController@logout');
+
     });
-	Route::post('alllogoutapi', 'App\Http\Controllers\API\AuthController@alllogoutsapi')->name('alllogoutapi');
+    Route::post('alllogoutapi', 'App\Http\Controllers\API\AuthController@alllogoutsapi')->name('alllogoutapi');
+
+    //CMS
+    Route::get('about-us', 'App\Http\Controllers\API\CmsManageController@aboutus')->name('aboutus');
+    Route::get('privacy-policy', 'App\Http\Controllers\API\CmsManageController@privacypolicy')->name('privacypolicy');
+    Route::get('terms-and-condition', 'App\Http\Controllers\API\CmsManageController@termsandcondition')->name('termsandcondition');
+    //CMS
 
 });
