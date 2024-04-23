@@ -201,7 +201,7 @@
                                
                                <td><?php echo $value->userArtist->name; ?></td>
                                <td><?php echo $value->stage_name; ?></td>
-                               <td><?php echo $value->created_at; ?></td>
+                               <td>{{ $value->created_at->format('Y-m-d') }}</td>
                                <td><img src="<?php echo $url; ?>"  width="50" height="50"></td> 
                                <!-- <td><//?php echo $artist_event->count('user_id'); ?></td> -->
                         </tr>
