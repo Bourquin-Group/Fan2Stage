@@ -28,7 +28,7 @@
             <h1 class="font-28">
               @if($pl_value['cost'] =='free')
                {{ ucfirst($pl_value['cost']) }}
-              @elseif($pl_value['cost'] =='call for quoate')
+              @elseif($pl_value['cost'] =='call for Quote')
                {{ ucfirst($pl_value['cost']) }}
               @else
               ${{$pl_value['cost_value']}}
@@ -45,7 +45,7 @@
                 <input type="hidden" value="0" name="type">
                 <button class="select-btn font-16" type="submit">Select</button>
               </form>
-            @elseif($pl_value['cost'] =='call for quoate')
+            @elseif($pl_value['cost'] =='call for Quote')
               <a class="header_profile_subscription" href="{{ url('web/contact')}}"><button class="font-16 save-btn">Contact us</button></a>
             @else
             <button class="select-btn font-16" ><a href="{{route('subscription-payment',$pl_value['id'])}}">Select</a></button>
