@@ -49,7 +49,7 @@
             <p>{{ ucfirst($a_profile['genre']) }}</p>
           </div>
           <div class="profilr_part_section">
-            <h6 class="sub_header">Social Linksss :</h6>
+            <h6 class="sub_header">Social Links :</h6>
 
             <div class="social_icon">
               @if($a_profile['facebook_link'])

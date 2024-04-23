@@ -340,7 +340,9 @@ class EventController extends Controller
                     $event_id = $Event->id;
                     $status = ($Event->golivestatus == 1) ? true : false;
                     $type = "CREATED";
+                    if($FcmToken){
                     send_notification_FCM($FcmToken,$title, $body, $event_id, $status, $type);
+                    }
                     // Push notification
  
                     
@@ -724,7 +726,9 @@ class EventController extends Controller
                     $event_id = $event->id;
                     $status = ($event->golivestatus == 1) ? true : false;
                     $type = "MODIFY";
+                    if( $FcmToken){
                     send_notification_FCM($FcmToken,$title, $body, $event_id, $status, $type);
+                    }
                     // Push notification
 
                     // dd($bookeduseremail);
@@ -795,7 +799,9 @@ class EventController extends Controller
                     $event_id = $id;
                     $status = false;
                     $type = "DELETED";
+                    if($FcmToken){
                     send_notification_FCM($FcmToken,$title, $body, $event_id, $status, $type);
+                    }
                     // Push notification
         //dd($usertype->user_type);
         if($usertype->user_type=='artists')
