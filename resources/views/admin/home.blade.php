@@ -170,8 +170,8 @@
                         <tr>
                           <th>Name</th>
                           <th>Stage Name</th>
-                          <th>Image</th>
                           <th>Date Joined</th> 
+                          <th>Image</th>
                        
                           <!-- <th>Start date</th>
                           <th>Salary</th> -->
