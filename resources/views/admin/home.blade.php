@@ -171,7 +171,7 @@
                           <th>Name</th>
                           <th>Stage Name</th>
                           <th>Image</th>
-                          <!-- <th>Events</th> -->
+                          <th>Date Joined</th> 
                        
                           <!-- <th>Start date</th>
                           <th>Salary</th> -->
@@ -201,6 +201,7 @@
                                
                                <td><?php echo $value->userArtist->name; ?></td>
                                <td><?php echo $value->stage_name; ?></td>
+                               <td><?php echo $value->created_at; ?></td>
                                <td><img src="<?php echo $url; ?>"  width="50" height="50"></td> 
                                <!-- <td><//?php echo $artist_event->count('user_id'); ?></td> -->
                         </tr>
