@@ -99,7 +99,7 @@
                                       @endif
                                   </div>
                                   <div class="button_gorup">
-                                  <button><a href="#">Cancel</a> </button>
+                                  <button><a href="{{ route('fanhome') }}">Cancel</a> </button>
                                   <button  type="submit"  > Pay Now</button>
                               </div>
           </form>
