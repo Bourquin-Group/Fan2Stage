@@ -35,8 +35,7 @@
           <div class="more_informstion">
                                 <div class="cardDetails">
                                   <form method="post" action="{{route('subscription.posts')}}"
-                                        role="form" 
-                                    action="{{ route('stripe.post') }}" 
+                                        role="form"
                                     method="post" 
                                     class="require-validation"
                                     data-cc-on-file="false"
@@ -211,7 +210,7 @@
                     }else{
                       $('#card-error').html("");
                     }
-                    if(response.error.code == "missing_payment_information"){
+                    if(response.error.code == "missing_payment_information" || response.error.code == "card_declined"){
                       $('#paymenterror').html(response.error.message);
                     }else{
                       $('#paymenterror').html("");
@@ -267,7 +266,7 @@
                     }else{
                       $('#card-error').html("");
                     }
-                    if(response.error.code == "missing_payment_information"){
+                    if(response.error.code == "missing_payment_information" || response.error.code == "card_declined"){
                       $('#paymenterror').html(response.error.message);
                     }else{
                       $('#paymenterror').html("");
