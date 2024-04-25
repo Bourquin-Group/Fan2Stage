@@ -86,7 +86,7 @@ label.error {
                       <div class="social-media-section">
                           <h6 class="font-16">Login Using</h6>
                           <div class="social-icon">
-                              <a href="{{ URL('auth/facebook')}}"><span class="fb-icon"></span></a>
+                              {{-- <a href="{{ URL('auth/facebook')}}"><span class="fb-icon"></span></a> --}}
                               <a href="{{ URL('auth/google')}}"><span class="google-icon"></span></a>
                          
                               <a  onclick="signInWithApple()"><span class="ios-icon"></span></a>

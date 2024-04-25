@@ -229,13 +229,27 @@ Route::group(['prefix' => 'artist'], function () {
         Route::get('getbillinfo', 'App\Http\Controllers\API\AuthController@getbillinfo')->name('getbillinfo');
         Route::post('storebillinginfo', 'App\Http\Controllers\API\AuthController@storebillinginfo')->name('storebillinginfo');
         // Billing Info
-        
+
         // Event CRUD
         Route::post('eventcreateApi', 'App\Http\Controllers\API\EventController@eventcreateApi')->name('eventcreateApi');
         Route::get('eventdetailApi/{id}', 'App\Http\Controllers\API\EventController@eventdetailApi')->name('eventdetailApi');
         Route::get('eventdestroyApi/{id}', 'App\Http\Controllers\API\EventController@eventdestroyApi')->name('eventdestroyApi');
-
+        Route::post('eventupdateApi/{id}', 'App\Http\Controllers\API\EventController@eventupdateApi')->name('eventupdateApi');
+        
         // Event CRUD
+        
+        // Event History
+        Route::get('eventhistoryApi', 'App\Http\Controllers\API\ArtistController@eventhistoryApi')->name('eventhistoryApi');
+        Route::get('eventhistoryviewApi/{id}', 'App\Http\Controllers\API\ArtistController@eventhistoryviewApi')->name('eventhistoryviewApi');
+        // Event History
+        
+        // Event Functionality
+        Route::post('starteventApi', 'App\Http\Controllers\API\EventController@starteventApi')->name('starteventApi');
+        Route::post('startendeventApi', 'App\Http\Controllers\API\EventController@startendeventApi')->name('startendeventApi');
+        Route::get('goliveApi/{id}', 'App\Http\Controllers\API\EventController@goliveApi')->name('goliveApi');
+        
+        // Event Functionality
+        
         
         // Fan Followers
         Route::get('followers', 'App\Http\Controllers\API\ArtistController@fanfollowers')->name('followers');
@@ -245,6 +259,11 @@ Route::group(['prefix' => 'artist'], function () {
         Route::get('past-event', 'App\Http\Controllers\API\EventController@artistpastEventListApi')->name('past-event');
         // upcoming event
         Route::get('nextupcoming-event', 'App\Http\Controllers\API\EventController@artistupcomingEventListApi')->name('nextupcoming-event');
+
+        //contact
+        Route::get('contactView', 'App\Http\Controllers\API\ContactController@contactviewApi')->name('contactView');
+        Route::post('contactSave', 'App\Http\Controllers\API\ContactController@contactsaveApi')->name('contactSave');
+
 
         // Logout
         Route::get('logout', 'App\Http\Controllers\API\AuthController@logout');
