@@ -188,11 +188,20 @@
                             $directory1 = "fans_profile_images/";
                             $filename1 = $value->profile_image;
                             $filename2 = $value->userArtist->image;
-                            if(file_exists($directory . $filename1) || file_exists($directory1 . $filename2)){
-                                $url = ($value->typeupgrade_status === 0) ? asset('artist_profile_images/'.$filename1) : asset('fans_profile_images/'.$filename2) ;
+                        if($value->userArtist->typeupgrade_status == 0){
+                        if(file_exists($directory . $filename1) && $value->profile_image != '' && $value->profile_image != NULL){
+                                $url = asset('artist_profile_images/'.$filename1);
                             }else{
                                 $url = asset('assets/images/introductory/thumbnail/noimage.jpg');
                             }
+                        }else{
+                        if(file_exists($directory1 . $filename2) && $value->userArtist->image != '' && $value->userArtist->image != NULL){
+                                $url =asset('fans_profile_images/'.$filename2) ;
+                            }else{
+                                $url = asset('assets/images/introductory/thumbnail/noimage.jpg');
+                            }
+                        }
+                            
                           }
                           else{
                           $url = asset('assets/images/introductory/thumbnail/noimage.jpg');
