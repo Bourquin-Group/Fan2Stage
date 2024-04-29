@@ -61,11 +61,11 @@
               <div class="card mt-0">
               <a href="/admin/user">
                 <div class="row" style="padding:20px;">
-                  <div class="col-md-6">
+                  {{-- <div class="col-md-6">
                     <div class="peity_line_neutral left text-center mt-2">
                     </div>
-                  </div>
-                  <div class="col-md-6 pt-2"> 
+                  </div> --}}
+                  <div class="col-md-12 pt-2 text-center"> 
                     <h3 class="mb-0 fw-bold" style="color:#3e5569;">{{ (count($fans_list))}}</h3>
                     <span class="text-muted">Fans</span> 
                   </div>
@@ -77,11 +77,11 @@
               <div class="card mt-0">
               <a href="/admin/artist">
                 <div class="row" style="padding:20px;">
-                  <div class="col-md-6">
+                  {{-- <div class="col-md-6">
                     <div class="peity_bar_bad left text-center mt-2">
                     </div>
-                  </div>
-                  <div class="col-md-6 border-left text-center pt-2">
+                  </div> --}}
+                  <div class="col-md-12 border-left text-center pt-2">
                     <h3 class="mb-0 fw-bold" style="color:#3e5569;">{{ (count($artist_list))}}</h3>
                     <span class="text-muted">Artist</span>
                   </div>
@@ -93,11 +93,11 @@
               <div class="card mt-0">
                 <a href="/admin/event">
                 <div class="row" style="padding:20px;">
-                  <div class="col-md-6">
+                  {{-- <div class="col-md-6">
                     <div class="peity_line_good left text-center mt-2">
                     </div>
-                  </div>
-                  <div class="col-md-6 border-left text-center pt-2">
+                  </div> --}}
+                  <div class="col-md-12 border-left text-center pt-2">
                     <h3 class="mb-0" style="color:#3e5569;">{{ (count($Event_lists))}}</h3>
                     <span class="text-muted">Events</span>
                   </div>
@@ -183,12 +183,13 @@
                        foreach ($artistrating as $value) 
                        {
 
-                          if($value->image !=''){
-                            $filename = explode(',',$value->image);
-                            $directory = "image/";
-                            $filename1 = $filename[0];
-                            if(file_exists($directory . $filename1)){
-                                $url = asset('image/'.$filename[0]);
+                        if($value->profile_image !=''){
+                          $directory = "artist_profile_images/";
+                            $directory1 = "fans_profile_images/";
+                            $filename1 = $value->profile_image;
+                            $filename2 = $value->userArtist->image;
+                            if(file_exists($directory . $filename1) || file_exists($directory1 . $filename2)){
+                                $url = ($value->typeupgrade_status === 0) ? asset('artist_profile_images/'.$filename1) : asset('fans_profile_images/'.$filename2) ;
                             }else{
                                 $url = asset('assets/images/introductory/thumbnail/noimage.jpg');
                             }
