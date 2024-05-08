@@ -268,7 +268,7 @@ class AuthController extends BaseController
     { //this for artist resend otp
 
         $validator = $this->validate($request, [
-            ['required','email'],
+            'email' => ['required','email'],
 
         ],
             [
