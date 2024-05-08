@@ -163,14 +163,14 @@ class AuthController extends BaseController
     public function login(Request $request)
     {
         $validator = $this->validate($request, [
-            'email' => ['required', 'regex:/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/i'],
+            'email' => ['required', 'email'],
             'password' => 'required',
 
         ],
             [
 
                 'email.required' => 'Please enter your email',
-                'email.regex' => 'Invalid email address',
+                'email.email' => 'Invalid email address',
                 'password.required' => 'Enter your password',
             ]
         );
@@ -230,12 +230,12 @@ class AuthController extends BaseController
 
         $validator = $this->validate($request, [
             'current_password' => 'required|string',
-            'new_password' => ['required', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/'],
+            'new_password' => ['required', 'email'],
             'c_password' => 'required|same:new_password',
         ], [
             'current_password.required' => 'Please enter current password',
             'new_password.required' => 'Please enter new password',
-            'new_password.regex' => 'Password must contains uppercase,lowercase,symbols & digits',
+            'new_password.email' => 'Password must contains uppercase,lowercase,symbols & digits',
             'c_password.required' => 'Please enter confirm password',
             'c_password.same' => 'Please give confirm password same as new password',
         ]);
@@ -268,12 +268,12 @@ class AuthController extends BaseController
     { //this for artist resend otp
 
         $validator = $this->validate($request, [
-            'email' => ['required', 'regex:/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'],
+            ['required','email'],
 
         ],
             [
                 'email.required' => 'Please Enter Your EMail',
-                'email.regex' => 'Invalid Email Address',
+                'email.email' => 'Invalid Email Address',
                 'email.unique' => 'This Email Already Registered ',
             ]
         );
@@ -304,22 +304,28 @@ class AuthController extends BaseController
                 $success['email'] = $user->email;
                 return $this->sendResponse($success, 'Otp sent to your email.');
             } else {
-                return response(["status" => 401, 'message' => 'Invalid']);
+                return response()->json([
+                    'status' => 406,
+                    'message' => 'Invalid Otp.',
+                ], 406);
             }
         } else {
-            return response(["status" => 401, 'message' => 'This Email Address is Not Registered']);
+            return response()->json([
+                'status' => 404,
+                'message' => 'This Email Address is Not Registered.',
+            ], 404);
         }
     }
     public function forgotpassword(Request $request)
     {
 
         $validator = $this->validate($request, [
-            'email' => ['required', 'regex:/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'],
+            'email' => ['required', 'email'],
 
         ],
             [
                 'email.required' => 'Please Enter Your EMail',
-                'email.regex' => 'Invalid Email Address',
+                'email.email' => 'Invalid Email Address',
                 'email.unique' => 'This Email Already Registered ',
             ]
         );
