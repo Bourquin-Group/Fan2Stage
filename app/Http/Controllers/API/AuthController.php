@@ -1293,12 +1293,12 @@ class AuthController extends BaseController
     public function artistverifyOtp(Request $request)
     {
         $validator = $this->validate($request, [
-            'email' => ['required', 'regex:/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'],
+            'email' => ['required','email'],
 
         ],
             [
                 'email.required' => 'Please Enter Your EMail',
-                'email.regex' => 'Invalid Email Address',
+                'email.email' => 'Invalid Email Address',
                 'email.unique' => 'This Email Already Registered ',
             ]
         );
@@ -1328,13 +1328,22 @@ class AuthController extends BaseController
                     }
                     return $this->sendResponse($success, 'OTP Verified Successfully');
                 } else {
-                    return response(["status" => 401, 'message' => 'Invalid Otp']);
+                return response()->json([
+                        'status' => 406,
+                        'message' => 'Invalid Otp.',
+                    ], 406);
                 }
             } else {
-                return response(["status" => 401, 'message' => 'Time expired']);
+                return response()->json([
+                        'status' => 401,
+                        'message' => 'Time Expired.',
+                    ], 401);
             }
         } else {
-            return response(["status" => 401, 'message' => 'This Email Address is Not Registered']); 
+        return response()->json([
+                        'status' => 404,
+                        'message' => 'This Email Address is Not Registered.',
+                    ], 404);
         }
     }
 }
