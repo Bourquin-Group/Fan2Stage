@@ -356,10 +356,16 @@ class AuthController extends BaseController
                 $success['email'] = $user->email;
                 return $this->sendResponse($success, 'Otp sent to your email.');
             } else {
-                return response(["status" => 401, 'message' => 'Invalid']);
+                 return response()->json([
+                    'status' => 406,
+                    'message' => 'Invalid Otp.',
+                ], 406);
             }
         } else {
-            return response(["status" => 401, 'message' => 'This Email Address is Not Registered']);
+            return response()->json([
+                'status' => 404,
+                'message' => 'This Email Address is Not Registered.',
+            ], 404);
         }
     }
 
