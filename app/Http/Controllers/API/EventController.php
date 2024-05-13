@@ -1414,7 +1414,7 @@ class EventController extends Controller
 
         $eventimage = explode(',', $event->event_image);
         foreach($eventimage as $value){
-            $images[]=$value;
+            $images[]=url('') . '/eventimages/' . $value;
         }
 
         $data = [
