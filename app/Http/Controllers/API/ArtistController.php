@@ -779,7 +779,7 @@ class ArtistController extends Controller
                 $eventStatus = Eventbooking::where(['event_id' => $value->id, 'artist_id' => $value->user_id, 'status' => 1, 'user_id' => auth()->user()->id])->first();
                 $data['booking_status'] = ($eventStatus) ? true : false;
                 $data['event_duration'] = $value->event_duration;
-                $data['event_amount'] = ($value->eventamount > 0) ? (int)$value->eventamount : 0;
+                $data['event_amount'] = ($value->eventamount > 0) ? (int) $value->eventamount : 0;
                 $data['event_time'] = $value->event_time;
                 $timezone_region = timezone::where('timezone', $value->event_timezone)->first();
                 $data['event_timezone'] = $timezone_region->region;
@@ -810,67 +810,89 @@ class ArtistController extends Controller
     public function eventhistoryviewApi($id)
     {
         $eventHistory = Event::find($id);
-        if($eventHistory){
-        $fantipsTotal = fanpayment::where('event_id', $id)->sum('amount');
-        $fantipsDetails = fanpayment::with('userDetail')->where('event_id', $id)->get();
+        if ($eventHistory) {
+            $fantipsTotal = fanpayment::where('event_id', $id)->sum('amount');
+            $fantipsDetails = fanpayment::with('userDetail')->where('event_id', $id)->get();
 
-        
-        $eventJoinedByFans = Event_joined_by_fans::where('event_id',$id);
-        $ratings = Event_joined_by_fans::where('event_id',$id)->avg('ratings');
+            $eventJoinedByFans = Event_joined_by_fans::where('event_id', $id);
+            $ratings = Event_joined_by_fans::where('event_id', $id)->avg('ratings');
 
-        $sum = fansactivitygraph::where('event_id', $id)->select(
-            DB::raw('SUM(actid1) as action1'),
-            DB::raw('SUM(actid2) as action2'),
-            DB::raw('SUM(actid3) as action3'),
-            DB::raw('SUM(actid4) as action4'),
-            DB::raw('SUM(actid5) as action5'),
-            DB::raw('SUM(actid6) as action6')
-        )->first();
+            $sum = fansactivitygraph::where('event_id', $id)->select(
+                DB::raw('SUM(actid1) as action1'),
+                DB::raw('SUM(actid2) as action2'),
+                DB::raw('SUM(actid3) as action3'),
+                DB::raw('SUM(actid4) as action4'),
+                DB::raw('SUM(actid5) as action5'),
+                DB::raw('SUM(actid6) as action6')
+            )->first();
 
-        $fanscount = fansactivitygraph::where('event_id', $id)->count();
-        $actionTotal = $sum ? array_sum($sum->toArray()) : 0;
-        $actionAverage = $fanscount > 0 ? ceil($actionTotal / $fanscount) : 0;
-                
-                $totData['event_id'] = $eventHistory->id;
-                $totData['event_title'] = $eventHistory->event_title;
-                $totData['event_date'] = $eventHistory->event_date;
-                $eventStatus = Eventbooking::where(['event_id' => $eventHistory->id, 'artist_id' => $eventHistory->user_id, 'status' => 1, 'user_id' => auth()->user()->id])->first();
-                $totData['booking_status'] = ($eventStatus) ? true : false;
-                $totData['event_duration'] = $eventHistory->event_duration;
-                $totData['event_amount'] = ($eventHistory->eventamount > 0) ? (int)$eventHistory->eventamount : 0;
-                $totData['event_time'] = $eventHistory->event_time;
-                $timezone_region = timezone::where('timezone', $eventHistory->event_timezone)->first();
-                $totData['event_timezone'] = $timezone_region->region;
-                $totData['event_plan_type'] = (int) $eventHistory->event_plan_type;
-                $eventimage = explode(',', $eventHistory->event_image);
-                $totData['event_image'] = asset('/eventimages/' . $eventimage[0]);
-        $data = [
-            "event_detail" => $totData,
-            "ratings_total" => $ratings,
-            "user_detail" => $eventHistory->eventJoinedByFans,
-            "fans_booked" => optional($eventHistory->eventBookingList)->count(),
-            "fans_participation" => optional($eventHistory->eventJoinedByFans)->count(),
-            "fans_action_average" => $actionAverage,
-            "fans_tips_amount" => $fantipsTotal,
-        ];
+            $fanscount = fansactivitygraph::where('event_id', $id)->count();
+            $actionTotal = $sum ? array_sum($sum->toArray()) : 0;
+            $actionAverage = $fanscount > 0 ? ceil($actionTotal / $fanscount) : 0;
 
-        $response = [
-            'status' => 200,
-            'success' => true,
-            'message' => "Event history retrieved successfully",
-            'data' => $data,
-        ];
+            $totData['event_id'] = $eventHistory->id;
+            $totData['event_title'] = $eventHistory->event_title;
+            $totData['event_date'] = $eventHistory->event_date;
+            $eventStatus = Eventbooking::where(['event_id' => $eventHistory->id, 'artist_id' => $eventHistory->user_id, 'status' => 1, 'user_id' => auth()->user()->id])->first();
+            $totData['booking_status'] = ($eventStatus) ? true : false;
+            $totData['event_duration'] = $eventHistory->event_duration;
+            $totData['event_amount'] = ($eventHistory->eventamount > 0) ? (int) $eventHistory->eventamount : 0;
+            $totData['event_time'] = $eventHistory->event_time;
+            $timezone_region = timezone::where('timezone', $eventHistory->event_timezone)->first();
+            $totData['event_timezone'] = $timezone_region->region;
+            $totData['event_plan_type'] = (int) $eventHistory->event_plan_type;
+            $eventimage = explode(',', $eventHistory->event_image);
+            $totData['event_image'] = asset('/eventimages/' . $eventimage[0]);
+            $data = [
+                "event_detail" => $totData,
+                "ratings_total" => $ratings,
+                "user_detail" => $eventHistory->eventJoinedByFans,
+                "fans_booked" => optional($eventHistory->eventBookingList)->count(),
+                "fans_participation" => optional($eventHistory->eventJoinedByFans)->count(),
+                "fans_action_average" => $actionAverage,
+                "fans_tips_amount" => $fantipsTotal,
+            ];
 
-        return response()->json($response, 200);
-    }else{
-        $response = [
+            $response = [
+                'status' => 200,
+                'success' => true,
+                'message' => "Event history retrieved successfully",
+                'data' => $data,
+            ];
+
+            return response()->json($response, 200);
+        } else {
+            $response = [
                 'status' => 404,
                 'success' => false,
                 'message' => 'Event not updated',
             ];
             return response()->json($response, 404);
 
-    }
+        }
 
+    }
+    public function fanslistapi($id)
+    {
+        $auth_id = Auth::user()->id;
+        $bookingid = Eventbooking::where('event_id', $id)->pluck('user_id')->toArray();
+
+        $fanslist = User::whereIn('id', $bookingid)->get();
+        $fans = [];
+        $data = [];
+        $fansData = [];
+        foreach ($fanslist as $fans) {
+            $data['id'] = $fans->id;
+            $data['name'] = $fans->name;
+            $data['image'] = ($fans->user_type == "users") ? public_path('/fans_profile_images/' . $fans->image) : public_path('/artist_profile_images/' . $fans->image);
+            $fansData[] = $data;
+        }
+        $response = [
+            'status' => 200,
+            'success' => true,
+            'message' => "Fan's list retrieved successfully",
+            'data' => $fansData,
+        ];
+        return response()->json($response, 200);
     }
 }

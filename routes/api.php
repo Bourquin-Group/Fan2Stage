@@ -253,6 +253,8 @@ Route::group(['prefix' => 'artist'], function () {
         
         // Fan Followers
         Route::get('followers', 'App\Http\Controllers\API\ArtistController@fanfollowers')->name('followers');
+        // Fan's List
+        Route::get('fanslist/{id}', 'App\Http\Controllers\API\ArtistController@fanslistapi')->name('fanslist');
         // Scheduled Events
         Route::get('scheduled-event', 'App\Http\Controllers\API\EventController@artistscheduledEventListApi')->name('scheduled-event');
         // Past Events

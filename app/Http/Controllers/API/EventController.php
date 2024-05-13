@@ -1443,6 +1443,7 @@ class EventController extends Controller
             'is_completed' => ($event->event_status == 0) ? 0 : 1,
             'followers' => count($followers),
             'raiting' => $raiting,
+            "fans_booked" => optional($event->eventBookingList)->count(),
         ];
         return response()->json([
             'status' => 200,
