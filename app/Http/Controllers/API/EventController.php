@@ -1429,7 +1429,7 @@ class EventController extends Controller
             'billinginfo_status' => ($billdetail) ? true : false,
             'verified_profile' => (Auth::user()->verified_profile == 1) ? true : false,
             'event_duration' => $event->event_duration,
-            'event_image' => url('') . '/eventimages/' . $eventimage[0],
+            'event_image' => $images,
             'event_genre' => $event->genre,
             'event_timezone' => $event->event_timezone,
             'event_description' => $event->event_description,
