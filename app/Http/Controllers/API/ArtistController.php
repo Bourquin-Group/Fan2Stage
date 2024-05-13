@@ -779,7 +779,7 @@ class ArtistController extends Controller
                 $eventStatus = Eventbooking::where(['event_id' => $value->id, 'artist_id' => $value->user_id, 'status' => 1, 'user_id' => auth()->user()->id])->first();
                 $data['booking_status'] = ($eventStatus) ? true : false;
                 $data['event_duration'] = $value->event_duration;
-                $data['event_amount'] = ($value->eventamount > 0) ? $value->eventamount : 0;
+                $data['event_amount'] = ($value->eventamount > 0) ? (int)$value->eventamount : 0;
                 $data['event_time'] = $value->event_time;
                 $timezone_region = timezone::where('timezone', $value->event_timezone)->first();
                 $data['event_timezone'] = $timezone_region->region;
@@ -830,8 +830,36 @@ class ArtistController extends Controller
         $fanscount = fansactivitygraph::where('event_id', $id)->count();
         $actionTotal = $sum ? array_sum($sum->toArray()) : 0;
         $actionAverage = $fanscount > 0 ? ceil($actionTotal / $fanscount) : 0;
+        if ($eventHistory) {
+            $data = [];
+            $totData = [];
+            foreach ($eventHistory as $value) {
+
+                $date = DateTime::createFromFormat('H:i:s', $value->event_time);
+                $date->modify('+' . $value->event_duration . ' minutes');
+                $event_web_start_time = date("g:i A", strtotime($value->event_time . " UTC"));
+                $event_web_end_time = $date->format('h:i A');
+
+                $data['event_id'] = $value->id;
+                $data['event_title'] = $value->event_title;
+                $data['event_date'] = $value->event_date;
+                $eventStatus = Eventbooking::where(['event_id' => $value->id, 'artist_id' => $value->user_id, 'status' => 1, 'user_id' => auth()->user()->id])->first();
+                $data['booking_status'] = ($eventStatus) ? true : false;
+                $data['event_duration'] = $value->event_duration;
+                $data['event_amount'] = ($value->eventamount > 0) ? (int)$value->eventamount : 0;
+                $data['event_time'] = $value->event_time;
+                $timezone_region = timezone::where('timezone', $value->event_timezone)->first();
+                $data['event_timezone'] = $timezone_region->region;
+                $data['event_web_start_time'] = $event_web_start_time;
+                $data['event_web_end_time'] = $event_web_end_time;
+                $data['event_plan_type'] = (int) $value->event_plan_type;
+                $eventimage = explode(',', $value->event_image);
+                $data['event_image'] = asset('/eventimages/' . $eventimage[0]);
+                $totData[] = $data;
+            }
+        }
         $data = [
-            "event_detail" => $eventHistory,
+            "event_detail" => $totData,
             "ratings_total" => $ratings,
             "user_detail" => $eventHistory->eventJoinedByFans,
             "fans_booked" => optional($eventHistory->eventBookingList)->count(),
