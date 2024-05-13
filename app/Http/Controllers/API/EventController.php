@@ -1413,6 +1413,10 @@ class EventController extends Controller
         }
 
         $eventimage = explode(',', $event->event_image);
+        foreach($eventimage as $value){
+            $images[]=$value;
+        }
+
         $data = [
             'user_id' => auth()->user()->id,
             'event_id' => $event->id,
