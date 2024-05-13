@@ -830,34 +830,20 @@ class ArtistController extends Controller
         $fanscount = fansactivitygraph::where('event_id', $id)->count();
         $actionTotal = $sum ? array_sum($sum->toArray()) : 0;
         $actionAverage = $fanscount > 0 ? ceil($actionTotal / $fanscount) : 0;
-        if ($eventHistory) {
-            $data = [];
-            $totData = [];
-            foreach ($eventHistory as $value) {
-
-                $date = DateTime::createFromFormat('H:i:s', $value->event_time);
-                $date->modify('+' . $value->event_duration . ' minutes');
-                $event_web_start_time = date("g:i A", strtotime($value->event_time . " UTC"));
-                $event_web_end_time = $date->format('h:i A');
-
-                $data['event_id'] = $value->id;
-                $data['event_title'] = $value->event_title;
-                $data['event_date'] = $value->event_date;
-                $eventStatus = Eventbooking::where(['event_id' => $value->id, 'artist_id' => $value->user_id, 'status' => 1, 'user_id' => auth()->user()->id])->first();
-                $data['booking_status'] = ($eventStatus) ? true : false;
-                $data['event_duration'] = $value->event_duration;
-                $data['event_amount'] = ($value->eventamount > 0) ? (int)$value->eventamount : 0;
-                $data['event_time'] = $value->event_time;
-                $timezone_region = timezone::where('timezone', $value->event_timezone)->first();
-                $data['event_timezone'] = $timezone_region->region;
-                $data['event_web_start_time'] = $event_web_start_time;
-                $data['event_web_end_time'] = $event_web_end_time;
-                $data['event_plan_type'] = (int) $value->event_plan_type;
-                $eventimage = explode(',', $value->event_image);
-                $data['event_image'] = asset('/eventimages/' . $eventimage[0]);
-                $totData[] = $data;
-            }
-        }
+                
+                $totData['event_id'] = $eventHistory->id;
+                $totData['event_title'] = $eventHistory->event_title;
+                $totData['event_date'] = $eventHistory->event_date;
+                $eventStatus = Eventbooking::where(['event_id' => $eventHistory->id, 'artist_id' => $eventHistory->user_id, 'status' => 1, 'user_id' => auth()->user()->id])->first();
+                $totData['booking_status'] = ($eventStatus) ? true : false;
+                $totData['event_duration'] = $eventHistory->event_duration;
+                $totData['event_amount'] = ($eventHistory->eventamount > 0) ? (int)$eventHistory->eventamount : 0;
+                $totData['event_time'] = $eventHistory->event_time;
+                $timezone_region = timezone::where('timezone', $eventHistory->event_timezone)->first();
+                $totData['event_timezone'] = $timezone_region->region;
+                $totData['event_plan_type'] = (int) $eventHistory->event_plan_type;
+                $eventimage = explode(',', $eventHistory->event_image);
+                $totData['event_image'] = asset('/eventimages/' . $eventimage[0]);
         $data = [
             "event_detail" => $totData,
             "ratings_total" => $ratings,
