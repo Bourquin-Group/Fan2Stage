@@ -884,7 +884,7 @@ class ArtistController extends Controller
         foreach ($fanslist as $fans) {
             $data['id'] = $fans->id;
             $data['name'] = $fans->name;
-            $data['image'] = ($fans->user_type == "users") ? public_path('/fans_profile_images/' . $fans->image) : public_path('/artist_profile_images/' . $fans->image);
+            $data['image'] = ($fans->user_type == "users") ? url('') . '/fans_profile_images/' .$fans->image : url('') . '/artist_profile_images/' .$fans->image;
             $fansData[] = $data;
         }
         $response = [
