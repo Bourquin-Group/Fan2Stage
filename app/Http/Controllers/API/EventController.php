@@ -1517,7 +1517,7 @@ class EventController extends Controller
         if ($timezone_region) {
             date_default_timezone_set($timezone_region['region']);
         }
-        $scheduleEvents = Event::where('user_id', Auth::user()->id)->where('event_status', 1)->where('event_date', '>=', Carbon::today())->where('golivestatus', 0)->orderBy('event_time')->get();
+        $scheduleEvents = Event::where('user_id', Auth::user()->id)->where('event_status', 1)->where('event_date', '>=', Carbon::today())->orderBy('event_time')->get();
         $data = [];
         $totData = [];
         foreach ($scheduleEvents as $value) {
