@@ -2074,6 +2074,7 @@ class EventController extends Controller
                 'status' => 200,
                 'success' => true,
                 'message' => 'Event has been live',
+                'artist_id' =>Auth::user()->id
             ];
             return response()->json($response, 200);
         }else{
