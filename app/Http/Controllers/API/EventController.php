@@ -1708,6 +1708,27 @@ class EventController extends Controller
                     return response()->json(['success' => false, 'error' => $validator->errors()->toArray()]);
                 }
 
+                $eventsToday = Event::where('user_id', $authid)
+                    ->where('event_status', 1)
+                    ->whereDate('event_date', $request['event_date']) 
+                    ->get();
+
+                $falltime = strtotime($request['event_time']);
+
+                foreach ($eventsToday as $event) {
+                    $event_starttime = strtotime($event->event_time);
+                    $event_closetime = strtotime($event->event_closetime);
+
+                    if ($falltime >= $event_starttime && $falltime <= $event_closetime) {
+                        $response = [
+                            'success' => false,
+                            'flag' => 1,
+                            'message' => 'An event already exists with this time and date.',
+                        ];
+                        return response()->json($response);
+                    }
+                }
+
                 $files = $request->file('event_image');
                 if (!$files) {
                     $filename_array = $event->event_image;
