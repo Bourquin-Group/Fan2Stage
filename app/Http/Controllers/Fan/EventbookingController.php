@@ -148,6 +148,8 @@ class EventbookingController extends Controller
 
                                     if($charge && $customer)
                                     {
+                                        \Log::info($charge);
+                                        \Log::info($customer);
                                         $data = [
                                             'user_id' => $fan->id,
                                             'event_id' => $event_id,
@@ -172,6 +174,8 @@ class EventbookingController extends Controller
                                         $Event = Eventbooking::create($inputs);
                                         
                                     }else{
+                                        \Log::info($charge);
+                                        \Log::info($customer);
                                         Session::flash('error', "Payment has been failed. Try again later..");
                                         return redirect()->back();
                                     }  
@@ -179,6 +183,7 @@ class EventbookingController extends Controller
                 Session::flash('paymentsuccess', "Event Booked Successfully");
               
             }catch (Exception $e) {
+                \Log::info($e);
                 Session::flash('error', "Payment has been failed. Try again later..");
                 return redirect()->back();
             }   
@@ -269,6 +274,8 @@ class EventbookingController extends Controller
 
                                     if($charge && $customer)
                                     {
+                                        \Log::info($charge);
+                                        \Log::info($customer);
                                         $data = [
                                             'user_id' => $fan->id,
                                             'event_id' => $event_id,
@@ -283,6 +290,8 @@ class EventbookingController extends Controller
                                          $payment = fanpayment::create($data);
                                         
                                     }else{
+                                        \Log::info($charge);
+                                        \Log::info($customer);
                                         Session::flash('error', "Payment has been failed. Try again later..");
                                         return redirect()->back();
                                     }  
@@ -290,7 +299,8 @@ class EventbookingController extends Controller
                 Session::flash('paymentsuccess', "Tips for the event success");
 
               
-            }catch (Exception $e) {
+            }catch (Exception $e) { 
+                \Log::info($e);
                 Session::flash('error', "Payment has been failed. Try again later..");
                 return redirect()->back();
             }   

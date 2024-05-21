@@ -183,6 +183,8 @@ class StripeController extends Controller
 
                                     if($charge && $customer)
                                     {
+                                        \Log::info($charge);
+                                        \Log::info($customer);
                                         $data = [
                                             'user_id' => $fan->id,
                                             'event_id' => $event_id,
@@ -213,6 +215,8 @@ class StripeController extends Controller
                                         return response()->json($response, 200);
                                         
                                     }else{
+                                        \Log::info($charge);
+                                        \Log::info($customer);
                                         $response = [
                                             'status' => 404,
                                             'success'   => false,
@@ -223,6 +227,7 @@ class StripeController extends Controller
                     }
                 }
             }catch (\Exception $e) {
+                \Log::info($e->getMessage());
                 $response = [
                     'status' => 406,
                     'success'   => false,
@@ -349,6 +354,8 @@ class StripeController extends Controller
 
                                     if($charge && $customer)
                                     {
+                                        \Log::info($charge);
+                                        \Log::info($customer);
                                         $data = [
                                             'user_id' => $fan->id,
                                             'event_id' => $event_id,
@@ -379,6 +386,8 @@ class StripeController extends Controller
                                         return response()->json($response, 200);
                                         
                                     }else{
+                                        \Log::info($charge);
+                                        \Log::info($customer);
                                         $response = [
                                             'status' => 404,
                                             'success'   => false,
@@ -389,6 +398,7 @@ class StripeController extends Controller
                     }
                 }
             }catch (Exception $e) {
+                \Log::info($e->getMessage());
                 $response = [
                     'status' => 404,
                     'success'   => false,
@@ -578,6 +588,8 @@ class StripeController extends Controller
 
                                     if($charge && $customer)
                                     {
+                                        \Log::info($charge);
+                                        \Log::info($customer);
                                         $data = [
                                             'user_id' => $fan->id,
                                             'event_id' => $event_id,
@@ -599,6 +611,8 @@ class StripeController extends Controller
                                         
                                         
                                     }else{
+                                        \Log::info($charge);
+                                        \Log::info($customer);
                                         $response = [
                                             'status' => 404,
                                             'success'   => false,
@@ -610,6 +624,7 @@ class StripeController extends Controller
 
               
             }catch (\Exception $e) {
+                \Log::info($e->getMessage());
                 $response = [
                     'status' => 404,
                     'success'   => false,
