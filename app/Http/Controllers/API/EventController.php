@@ -13,6 +13,7 @@ use App\Models\Notificationdetail;
 use App\Models\subscriptionplan;
 use App\Models\timezone;
 use App\Models\User;
+use App\Models\AudioFile;
 use Carbon\Carbon;
 use DateTime;
 use DateTimeZone;
@@ -2106,6 +2107,37 @@ class EventController extends Controller
             ];
             return response()->json($response, 404);
         }
+    }
+public function audioFilesApi(Request $request){
+        $audio = AudioFile::where('audio_status', 1)->get();
+
+        $data = [];
+        $audios = [];
+        if($audio){
+        foreach ($audio as $value) {
+            $data['audio_name'] = $value->audio_name;
+            $data['audio_file'] = asset('assets/graph/audio/' . $value->audio_file);
+            $data['block'] = $value->block;
+            $data['audio_type'] = $value->audio_type;
+            $audios[] = $data;
+        }
+        $response = [
+            'status' => 200,
+            'success' => true,
+            'message' => "Audio Data Retrived Successfully",
+            'data' => $audios,
+        ];
+        return response()->json($response, 200);
+    }else{
+        $response = [
+            'status' => 404,
+            'success' => false,
+            'message' => "Audio not found",
+            'data' => $audios,
+        ];
+        return response()->json($response, 404);
+    }
+
     }
 
 }

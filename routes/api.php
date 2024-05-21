@@ -265,6 +265,9 @@ Route::group(['prefix' => 'artist'], function () {
         //contact
         Route::get('contactView', 'App\Http\Controllers\API\ContactController@contactviewApi')->name('contactView');
         Route::post('contactSave', 'App\Http\Controllers\API\ContactController@contactsaveApi')->name('contactSave');
+    
+     // Audio files
+        Route::get('audioFiles', 'App\Http\Controllers\API\EventController@audioFilesApi')->name('audioFiles');
 
 
         // Logout
