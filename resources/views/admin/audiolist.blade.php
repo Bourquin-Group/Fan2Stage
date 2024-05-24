@@ -76,7 +76,7 @@ button.btn.btn-primary {
                         @if(count($audio)>0)
                       	<?php foreach ($audio as $value) {
                           if($value->audio_file !=''){
-                          $url = asset('assets/graph/audio/block'.$value->audio_type.'/'.$value->audio_file);}
+                          $url = asset('assets/graph/audio/block'.$value->block.'/'.$value->audio_file);}
                           else{
                           $url = asset('assets/graph/audio/noimage.jpg');
                           }
