@@ -81,7 +81,7 @@
                                     value="{{ isset(auth()->user()->id) ? auth()->user()->id : '' }}">
                                 <input type="range" orient="vertical" min="0" max="100" />
                                 @foreach ($audio as $value)
-                                    <audio id="{{ $value->audio_name . '_' . $value->block }}" src="{{ asset('assets/graph/audio/' . $value->audio_file) }}"></audio>
+                                    <audio id="{{ $value->audio_name . '_' . $value->block }}" src="{{ asset('assets/graph/audio/block'.$value->block.'/' . $value->audio_file) }}"></audio>
                                 @endforeach
                                 <div id="aact1"></div>
                                 <div class="range-slider__thumb"></div>

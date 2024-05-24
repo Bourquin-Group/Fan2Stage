@@ -2116,7 +2116,7 @@ public function audioFilesApi(Request $request){
         if($audio){
         foreach ($audio as $value) {
             $data['audio_name'] = $value->audio_name;
-            $data['audio_file'] = asset('assets/graph/audio/' . $value->audio_file);
+            $data['audio_file'] = asset('assets/graph/audio/block'.$value->audio_type.'/'. $value->audio_file);
             $data['block'] = $value->block;
             $data['audio_type'] = $value->audio_type;
             $audios[] = $data;
