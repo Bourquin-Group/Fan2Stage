@@ -844,6 +844,7 @@ class ArtistController extends Controller
             $totData['event_plan_type'] = (int) $eventHistory->event_plan_type;
             $eventimage = explode(',', $eventHistory->event_image);
             $totData['event_image'] = asset('/eventimages/' . $eventimage[0]);
+            if($eventHistory->eventJoinedByFans != null || $eventHistory->eventJoinedByFans != "" || $eventHistory->eventJoinedByFans){
             $userdetail=[];
             foreach ($eventHistory->eventJoinedByFans as $i=>$value) {
                 $userdetail['user'][$i]['id'] = $value->id;
@@ -857,6 +858,9 @@ class ArtistController extends Controller
                 $userdetail['user'][$i]['created_at'] = $value->created_at;
                 $userdetail['user'][$i]['updated_at'] = $value->updated_at;
             }
+        }else{
+            $userdetail=null;
+        }
             $data = [
                 "event_detail" => $totData,
                 "ratings_total" => $ratings,
