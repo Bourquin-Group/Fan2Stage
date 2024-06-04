@@ -843,10 +843,23 @@ class ArtistController extends Controller
             $totData['event_plan_type'] = (int) $eventHistory->event_plan_type;
             $eventimage = explode(',', $eventHistory->event_image);
             $totData['event_image'] = asset('/eventimages/' . $eventimage[0]);
+            $userdetail=[];
+            foreach ($eventHistory->eventJoinedByFans as $i=>$value) {
+                $userdetail['user'][$i]['id'] = $value->id;
+                $userdetail['user'][$i]['user_id'] = $value->user_id;
+                $userdetail['user'][$i]['user_name'] = $value->user->name;
+                $userdetail['user'][$i]['user_image'] = $value->user->image();
+                $userdetail['user'][$i]['artist_id'] = $value->artist_id;
+                $userdetail['user'][$i]['event_id'] = $value->event_id;
+                $userdetail['user'][$i]['event_review'] = $value->event_review;
+                $userdetail['user'][$i]['ratings'] = $value->ratings;
+                $userdetail['user'][$i]['created_at'] = $value->created_at;
+                $userdetail['user'][$i]['updated_at'] = $value->updated_at;
+            }
             $data = [
                 "event_detail" => $totData,
                 "ratings_total" => $ratings,
-                "user_detail" => $eventHistory->eventJoinedByFans,
+                "user_detail" => $userdetail,
                 "fans_booked" => optional($eventHistory->eventBookingList)->count(),
                 "fans_participation" => optional($eventHistory->eventJoinedByFans)->count(),
                 "fans_action_average" => $actionAverage,
