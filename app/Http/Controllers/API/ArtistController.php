@@ -833,6 +833,7 @@ class ArtistController extends Controller
             $totData['event_id'] = $eventHistory->id;
             $totData['event_title'] = $eventHistory->event_title;
             $totData['event_date'] = $eventHistory->event_date;
+            $totData['event_genre'] = $eventHistory->genre;
             $eventStatus = Eventbooking::where(['event_id' => $eventHistory->id, 'artist_id' => $eventHistory->user_id, 'status' => 1, 'user_id' => auth()->user()->id])->first();
             $totData['booking_status'] = ($eventStatus) ? true : false;
             $totData['event_duration'] = $eventHistory->event_duration;
