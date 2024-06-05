@@ -213,6 +213,10 @@ Route::group(['prefix' => 'artist'], function () {
     Route::post('resendotp', 'App\Http\Controllers\API\AuthController@resendotp')->name('resendotp');
     Route::post('resetPassword', 'App\Http\Controllers\API\AuthController@resetPassword')->name('resetPassword');
 
+    // delete account
+    Route::delete('deleteaccount/{id}', 'App\Http\Controllers\API\AuthController@deleteaccount')->name('deleteaccount');
+	// delete account
+
     Route::middleware('auth:api')->group(function () {
 
         // Subscription
