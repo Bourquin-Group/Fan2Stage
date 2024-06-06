@@ -846,7 +846,7 @@ class AuthController extends BaseController
                 'status' => 404,
                 'success' => false,
                 'message' => 'No data found',
-                'data' => $data,
+                'data' => null,
             ];
             return response()->json($response, 400);
         }
