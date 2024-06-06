@@ -568,6 +568,7 @@ class ArtistController extends Controller
             $aProfile['stage_name'] = $artistDetail['stage_name'];
             $aProfile['genre'] = $artistDetail['genre'];
             $aProfile['d_stagename'] = $artistDetail['d_stagename'];
+            $aProfile['bio'] = $artistDetail['bio'];
             $aProfile['website_link'] = ($artistDetail['website_link'] != null) ? $artistDetail['website_link'] : null;
             $aProfile['youtube_link'] = ($artistDetail['youtube_link'] != null) ? $artistDetail['youtube_link'] : null;
             $aProfile['itunes_link'] = ($artistDetail['itunes_link'] != null) ? $artistDetail['itunes_link'] : null;
