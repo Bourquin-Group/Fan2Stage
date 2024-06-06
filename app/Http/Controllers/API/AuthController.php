@@ -842,7 +842,13 @@ class AuthController extends BaseController
             ];
             return response()->json($response, 200);
         } else {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+            $response = [
+                'status' => 404,
+                'success' => false,
+                'message' => 'No data found',
+                'data' => $data,
+            ];
+            return response()->json($response, 400);
         }
     }
     public function storebillinginfo(Request $request)
