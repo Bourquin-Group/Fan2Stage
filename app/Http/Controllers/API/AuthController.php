@@ -848,7 +848,7 @@ class AuthController extends BaseController
                 'message' => 'No data found',
                 'data' => null,
             ];
-            return response()->json($response, 400);
+            return response()->json($response, 404);
         }
     }
     public function storebillinginfo(Request $request)
