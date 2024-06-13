@@ -848,6 +848,7 @@ class AuthController extends BaseController
                 'message' => 'No data found',
                 'data' => null,
             ];
+            
             return response()->json($response, 404);
         }
     }
