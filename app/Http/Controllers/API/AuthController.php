@@ -65,12 +65,6 @@ class AuthController extends BaseController
         $expiretime = date('Y-m-d H:i:s', $ten_minutes);
         // for otp
         $input = $request->all();
-        $phoneNumber = $request->phone_number;
-        // Remove parentheses, hyphen, and space
-        $phoneNumber = preg_replace('/\D/', '', $phoneNumber);
-        // Add +91 prefix
-        $phoneNumber = '+91' . $phoneNumber;
-        $input['phone_number'] = $phoneNumber;
         $input['user_type'] = $request->user_type;
         $input['password'] = bcrypt($input['password']);
 
@@ -155,20 +149,10 @@ class AuthController extends BaseController
             }
         }
 
-        // Mail::send('mail.registered-user-mail', $data, function ($message) use ($email) {
-        //     $message->to($email);
-        //     $message->subject('Congratulations');
-        // });
-        $sid = getenv("TWILIO_SID");
-        $token = getenv("TWILIO_AUTH_TOKEN");
-        $twilio = new Client($sid, $token);
-        $message = $twilio->messages
-            ->create($phoneNumber,
-                [
-                    "body" => "User verification from Fan2Stage",
-                    "from" => "+15626007469",
-                ]
-            );
+        Mail::send('mail.registered-user-mail', $data, function ($message) use ($email) {
+            $message->to($email);
+            $message->subject('Congratulations');
+        });
 
         // Mail::to($email)->send(new RegisteredUser($data));
 
@@ -309,20 +293,10 @@ class AuthController extends BaseController
             // store otp
             $user1 = User::where('email', '=', $request->email)->update(['password_otp' => $otp, 'otp_expire_time' => $expiretime]);
             if ($user1) {
-                // Mail::send('mail.resendmail', $data, function ($message) use ($mail) {
-                //     $message->to($mail);
-                //     $message->subject('Fan2Stage OTP Verification');
-                // });
-                $sid = getenv("TWILIO_SID");
-                $token = getenv("TWILIO_AUTH_TOKEN");
-                $twilio = new Client($sid, $token);
-                $message = $twilio->messages
-                    ->create($user->phone_number,
-                        [
-                            "body" => "User verification from Fan2Stage",
-                            "from" => "+15626007469",
-                        ]
-                    );
+                Mail::send('mail.resendmail', $data, function ($message) use ($mail) {
+                    $message->to($mail);
+                    $message->subject('Fan2Stage OTP Verification');
+                });
 
                 $success['status'] = 200;
                 $success['success'] = true;
@@ -371,22 +345,10 @@ class AuthController extends BaseController
             // store otp
             $user1 = User::where('email', '=', $request->email)->update(['password_otp' => $otp, 'otp_expire_time' => $expiretime]);
             if ($user1) {
-                // Mail::send('mail.forgotmail', $data, function ($message) use ($mail) {
-                //     $message->to($mail);
-                //     $message->subject('Fan2Stage OTP Verification');
-                // });
-                // });
-                $sid = getenv("TWILIO_SID");
-                $token = getenv("TWILIO_AUTH_TOKEN");
-                $twilio = new Client($sid, $token);
-                $message = $twilio->messages
-                    ->create($user->phone_number,
-                        [
-                            "body" => "User OTP verification from Fan2Stage",
-                            "from" => "+15626007469",
-                        ]
-                    );
-                
+                Mail::send('mail.forgotmail', $data, function ($message) use ($mail) {
+                    $message->to($mail);
+                    $message->subject('Fan2Stage OTP Verification');
+                });
 
                 $success['status'] = 200;
                 $success['success'] = true;
@@ -886,7 +848,6 @@ class AuthController extends BaseController
                 'message' => 'No data found',
                 'data' => null,
             ];
-            
             return response()->json($response, 404);
         }
     }
