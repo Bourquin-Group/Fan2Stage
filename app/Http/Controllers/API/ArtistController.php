@@ -813,6 +813,7 @@ class ArtistController extends Controller
         $eventHistory = Event::find($id);
         if ($eventHistory) {
             $fantipsTotal = fanpayment::where('event_id', $id)->sum('amount');
+            $fantips=fanpayment::with('userDetail')->where('event_id',$id)->get();
             $fantipsDetails = fanpayment::with('userDetail')->where('event_id', $id)->get();
 
             $eventJoinedByFans = Event_joined_by_fans::where('event_id', $id);
@@ -867,6 +868,7 @@ class ArtistController extends Controller
                 "fans_participation" => optional($eventHistory->eventJoinedByFans)->count(),
                 "fans_action_average" => $actionAverage,
                 "fans_tips_amount" => $fantipsTotal,
+                "fan_tips" => ($fantips->isEmpty()) ? null : $fantips,
             ];
 
             $response = [
