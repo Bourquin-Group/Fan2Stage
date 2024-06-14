@@ -34,7 +34,7 @@
               <a><h2>{{ ucfirst($a_profile['name']) }}</h2></a>
               <p>{{ucfirst($a_profile['stage_name'])}}</p>
               @endif
-          <p class="Followers_part">@if($a_profile['followers'] != 0)<a href="{{ url('web/followers') }}">{{ $a_profile['followers']}} Followers <span>(view)</span> </a>@else <span>You are yet to have a Fan Follower</span> @endif</p>
+          <p class="Followers_part">@if($a_profile['followers'] != 0)<a href="{{ url('web/followers') }}">{{ $a_profile['followers']}} Followers <span>(view)</span> </a>@else <span>No Followers Yet</span> @endif</p>
         </div>
         <div class="profile_section_inner">
           <div class="profilr_part_section">

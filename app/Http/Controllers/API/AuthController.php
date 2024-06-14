@@ -10,6 +10,7 @@ use App\Models\subscriptionplan;
 use App\Models\timezone_change;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -20,17 +21,39 @@ use Laravel\Socialite\Facades\Socialite;
 use Mail;
 use Newsletter;
 use Session;
+use Twilio\Rest\Client;
 
 class AuthController extends BaseController
 {
-    //f
+  
+    public function sms()
+    {
+        try {
+            $sid = getenv("TWILIO_SID");
+            $token = getenv("TWILIO_AUTH_TOKEN");
+            $twilio = new Client($sid, $token);
+
+            $message = $twilio->messages
+                ->create("+916383931546",
+                    [
+                        "body" => "This will be the body of the new message!",
+                        "from" => "+15626007469",
+                    ]
+                );
+
+            dd('SMS Sent Successfully.');
+        } catch (Exception $e) {
+            dd("Error: " . $e->getMessage());
+        }
+
+    }
     public function register(Request $request)
     {
         $validator = $this->validate($request, [
 
             'full_name' => ['required', 'string', 'regex:/^[a-zA-Z]+(?:\s+[a-zA-Z]+)*$/'],
             // 'last_name' => ['required','string','regex:/^[a-z|A-Z]+(?:( |-)[a-z|A-Z]+)*$/'],
-            //  'country_code' => ['required','regex:/^\+\d{1,2}$/'],
+            'country_code' => ['required','regex:/^\+\d{1,2}$/'],
             'phone_number' => ['required'],
             // 'phone_number' => ['required','numeric','digits:10'],
             //'email' => 'required|email|unique:users',
@@ -65,6 +88,13 @@ class AuthController extends BaseController
         $expiretime = date('Y-m-d H:i:s', $ten_minutes);
         // for otp
         $input = $request->all();
+        $country_code = $request->country_code;
+        $phoneNumber = $request->phone_number;
+        // Remove parentheses, hyphen, and space
+        $phoneNumber = preg_replace('/\D/', '', $phoneNumber);
+        // Add +91 prefix
+        $phoneNumber = $country_code . $phoneNumber;
+        $input['phone_number'] = $phoneNumber;
         $input['user_type'] = $request->user_type;
         $input['password'] = bcrypt($input['password']);
 
@@ -82,10 +112,20 @@ class AuthController extends BaseController
             $data = array(
                 'name' => $user->name,
             );
-            Mail::send('mail.register', $data, function ($message) use ($email) {
-                $message->to($email);
-                $message->subject('Congratulations');
-            });
+            $sid = getenv("TWILIO_SID");
+            $token = getenv("TWILIO_AUTH_TOKEN");
+            $twilio = new Client($sid, $token);
+            $message = $twilio->messages
+                ->create($phoneNumber,
+                    [
+                        "body" => "User verification from Fan2Stage",
+                        "from" => "+15626007469",
+                    ]
+                );
+            // Mail::send('mail.register', $data, function ($message) use ($email) {
+            //     $message->to($email);
+            //     $message->subject('Congratulations');
+            // });
             return $this->sendResponse($success, 'User register successfully.');
         }
         // Fan user end
@@ -149,10 +189,20 @@ class AuthController extends BaseController
             }
         }
 
-        Mail::send('mail.registered-user-mail', $data, function ($message) use ($email) {
-            $message->to($email);
-            $message->subject('Congratulations');
-        });
+        // Mail::send('mail.registered-user-mail', $data, function ($message) use ($email) {
+        //     $message->to($email);
+        //     $message->subject('Congratulations');
+        // });
+        $sid = getenv("TWILIO_SID");
+        $token = getenv("TWILIO_AUTH_TOKEN");
+        $twilio = new Client($sid, $token);
+        $message = $twilio->messages
+            ->create($phoneNumber,
+                [
+                    "body" => "User verification from Fan2Stage and your OTP :". $otp,
+                    "from" => "+15626007469",
+                ]
+            );
 
         // Mail::to($email)->send(new RegisteredUser($data));
 
@@ -268,7 +318,7 @@ class AuthController extends BaseController
     { //this for artist resend otp
 
         $validator = $this->validate($request, [
-            'email' => ['required','email'],
+            'email' => ['required', 'email'],
 
         ],
             [
@@ -293,16 +343,27 @@ class AuthController extends BaseController
             // store otp
             $user1 = User::where('email', '=', $request->email)->update(['password_otp' => $otp, 'otp_expire_time' => $expiretime]);
             if ($user1) {
-                Mail::send('mail.resendmail', $data, function ($message) use ($mail) {
-                    $message->to($mail);
-                    $message->subject('Fan2Stage OTP Verification');
-                });
+                // Mail::send('mail.resendmail', $data, function ($message) use ($mail) {
+                //     $message->to($mail);
+                //     $message->subject('Fan2Stage OTP Verification');
+                // });
+                $sid = getenv("TWILIO_SID");
+                $token = getenv("TWILIO_AUTH_TOKEN");
+                $twilio = new Client($sid, $token);
+    
+                $message = $twilio->messages
+                    ->create($user->phone_number,
+                        [
+                            "body" => "Fan2Stage OTP Verification",
+                            "from" => "+15626007469",
+                        ]
+                    );
 
                 $success['status'] = 200;
                 $success['success'] = true;
                 $success['uuid'] = $user->uuid;
                 $success['email'] = $user->email;
-                return $this->sendResponse($success, 'Otp sent to your email.');
+                return $this->sendResponse($success, 'Otp sent to your Mobile number.');
             } else {
                 return response()->json([
                     'status' => 406,
@@ -345,27 +406,33 @@ class AuthController extends BaseController
             // store otp
             $user1 = User::where('email', '=', $request->email)->update(['password_otp' => $otp, 'otp_expire_time' => $expiretime]);
             if ($user1) {
-                Mail::send('mail.forgotmail', $data, function ($message) use ($mail) {
-                    $message->to($mail);
-                    $message->subject('Fan2Stage OTP Verification');
-                });
+                // Mail::send('mail.forgotmail', $data, function ($message) use ($mail) {
+                //     $message->to($mail);
+                //     $message->subject('Fan2Stage OTP Verification');
+                // });
+                $sid = getenv("TWILIO_SID");
+                $token = getenv("TWILIO_AUTH_TOKEN");
+                $twilio = new Client($sid, $token);
+    
+                $message = $twilio->messages
+                    ->create($user->phone_number,
+                        [
+                            "body" => "Fan2Stage OTP Verification",
+                            "from" => "+15626007469",
+                        ]
+                    );
+                
 
                 $success['status'] = 200;
                 $success['success'] = true;
                 $success['uuid'] = $user->uuid;
                 $success['email'] = $user->email;
-                return $this->sendResponse($success, 'Otp sent to your email.');
+                return $this->sendResponse($success, 'Otp sent to your mobile number.');
             } else {
-                 return response()->json([
-                    'status' => 406,
-                    'message' => 'Invalid Otp.',
-                ], 406);
+                return response(["status" => 401, 'message' => 'Invalid']);
             }
         } else {
-            return response()->json([
-                'status' => 404,
-                'message' => 'This Email Address is Not Registered.',
-            ], 404);
+            return response(["status" => 401, 'message' => 'This Email Address is Not Registered']);
         }
     }
 
@@ -842,13 +909,7 @@ class AuthController extends BaseController
             ];
             return response()->json($response, 200);
         } else {
-            $response = [
-                'status' => 404,
-                'success' => false,
-                'message' => 'No data found',
-                'data' => null,
-            ];
-            return response()->json($response, 404);
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         }
     }
     public function storebillinginfo(Request $request)
@@ -1311,7 +1372,7 @@ class AuthController extends BaseController
     public function artistverifyOtp(Request $request)
     {
         $validator = $this->validate($request, [
-            'email' => ['required','email'],
+            'email' => ['required', 'email'],
 
         ],
             [
@@ -1334,34 +1395,34 @@ class AuthController extends BaseController
                     $success['status'] = 200;
                     $success['mail'] = $user->email;
                     $success['flag'] = true;
-                    if($request->type == 'register'){
+                    if ($request->type == 'register') {
                         $data = array(
                             'name' => $user->name,
                         );
                         $email = $user->email;
-                          Mail::send('mail.register',$data,function($message) use($email){
+                        Mail::send('mail.register', $data, function ($message) use ($email) {
                             $message->to($email);
                             $message->subject('Congratulations');
-                            });
+                        });
                     }
                     return $this->sendResponse($success, 'OTP Verified Successfully');
                 } else {
-                return response()->json([
+                    return response()->json([
                         'status' => 406,
                         'message' => 'Invalid Otp.',
                     ], 406);
                 }
             } else {
                 return response()->json([
-                        'status' => 401,
-                        'message' => 'Time Expired.',
-                    ], 401);
+                    'status' => 401,
+                    'message' => 'Time Expired.',
+                ], 401);
             }
         } else {
-        return response()->json([
-                        'status' => 404,
-                        'message' => 'This Email Address is Not Registered.',
-                    ], 404);
+            return response()->json([
+                'status' => 404,
+                'message' => 'This Email Address is Not Registered.',
+            ], 404);
         }
     }
 }

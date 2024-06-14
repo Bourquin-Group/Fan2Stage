@@ -40,7 +40,7 @@
                       <h2>{{(isset($profile['name'])) ? $profile['name'] : '-'}}</h2>
                       <p>{{(isset($profile['stage_name'])) ? $profile['stage_name'] : '-'}}</p>
                       @endif
-                      <p class="Followers_part">@if($profile['followers'] != 0){{ $profile['followers']}} Followers @else<span>You are yet to have a Fan Follower</span> @endif</p>
+                      <p class="Followers_part">@if($profile['followers'] != 0){{ $profile['followers']}} Followers @else<span>No Followers Yet</span> @endif</p>
                     </div>
                     <div class="profile_section_inner">
                       <div class="profilr_part_section">
