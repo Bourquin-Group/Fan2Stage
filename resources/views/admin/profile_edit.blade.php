@@ -66,7 +66,7 @@
 
 
 
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
                       <label
                         for="ccode"
                         class="col-sm-2 text-end control-label col-form-label"
@@ -95,10 +95,10 @@
                           <span class="invalid-feedback">{{$message }}</span>
                         @enderror
                       </div>
-                    </div>
+                    </div> --}}
 
                   
-                     <div class="form-group row">
+                     {{-- <div class="form-group row">
                       <label
                         for="phone"
                         class="col-sm-2 text-end control-label col-form-label"
@@ -115,7 +115,7 @@
                           <span class="invalid-feedback">{{$message }}</span>
                         @enderror
                       </div>
-                    </div>
+                    </div> --}}
                      <div class="form-group row">
                       <label
                         for="email1"
@@ -141,8 +141,11 @@
                         class="col-sm-2 text-end control-label col-form-label"
                         >Image</label
                       >
+                      
                       <div class="col-sm-5">
-                      @if($editprofile)
+                        <img src="{{ asset('assets/images/admin/thumbnail/' . auth()->user()->image) }}"
+                                            name="old_upload_image" id="old_upload_image" style="margin-top: 10px;" width="50" height="50">
+                      {{-- @if($editprofile)
                       <input type="file" name="image" class="form-control" id="image" accept=".svg, .jpg, .jpeg, .png" onchange="checkFile()">
                       <img src="{{asset('assets/images/profile/thumbnail/'.$editprofile->image)}}" name="old_upload_image" id="old_upload_image" style="margin-top: 10px;">
                      @else
@@ -151,18 +154,18 @@
                     <span id="fileError" class="invalid-feedback" style="display: none;"></span>
                         @error('image')
                           <span class="invalid-feedback">{{$message }}</span>
-                        @enderror
+                        @enderror --}}
                       </div>
                     </div>
                     
                   </div>
-                  <div class="border-top">
+                  {{-- <div class="border-top">
                     <div class="card-body">
                       <button type="submit" class="btn btn-primary">
                         Submit
                       </button>
                     </div>
-                  </div>
+                  </div> --}}
                 </form>
               </div>
               </div>
