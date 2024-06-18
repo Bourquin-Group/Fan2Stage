@@ -863,7 +863,7 @@ class ArtistController extends Controller
             $data = [
                 "event_detail" => $totData,
                 "ratings_total" => $ratings,
-                "user_detail" => (empty($userdetail)) ? null : $userdetail ,
+                "artist_review_detail" => (empty($userdetail)) ? null : $userdetail ,
                 "fans_booked" => optional($eventHistory->eventBookingList)->count(),
                 "fans_participation" => optional($eventHistory->eventJoinedByFans)->count(),
                 "fans_action_average" => $actionAverage,
