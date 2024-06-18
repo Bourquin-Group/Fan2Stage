@@ -268,16 +268,21 @@ class AuthController extends BaseController
                     ], 401);
                 }
             } else {
-                return $this->sendError('notverified', ['error' => 'You are not verified user']);
+                return response()->json([
+                    'status' => 403,
+                    'success' => false,
+                    'message' => 'You are not verified user',
+                ], 403);
+                // return $this->sendError('notverified', ['error' => 'You are not verified user']);
             }
         } else {
             return response()->json([
-                'status' => 401,
+                'status' => 404,
                 // 'flag'   => 1,
                 'success' => false,
                 'message' => 'Your Email Is Not Existing',
                 // 'data' => $event
-            ], 401);
+            ], 404);
         }
     }
 
