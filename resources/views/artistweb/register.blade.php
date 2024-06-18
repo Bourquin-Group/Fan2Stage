@@ -10,6 +10,12 @@
                   <div class="form-title">
                        <h1 class="font-32 wel-txt">Lets’s Get Started!</h1>
                        <h6 class="font-20 wel-sub-txt">Create an Account to Fan2Stage</h6>
+                       @if (session('Error'))
+                       <span class="error_msg">
+                         {{ session('Error') }}
+                       </span>
+                 @endif
+
                   </div>
                   <div class="form-input-section">
                       <form method="post" action="{{url('/web/registerstore')}}" autocomplete="on">

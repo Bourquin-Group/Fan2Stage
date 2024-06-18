@@ -104,6 +104,9 @@ class LoginController extends Controller
     $register = app('App\Http\Controllers\API\AuthController')->register($request);
         $register_dataArray = json_decode ($register->content(), true);
         //dd($register_dataArray);
+        if(isset($register_dataArray['flag']) == 3 ){
+          return redirect('/web/register')->with('Error', $register_dataArray['message']);
+        }
 
         //dd(old());
         if(isset($register_dataArray['errors'])){

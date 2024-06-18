@@ -193,16 +193,26 @@ class AuthController extends BaseController
         //     $message->to($email);
         //     $message->subject('Congratulations');
         // });
-        $sid = getenv("TWILIO_SID");
-        $token = getenv("TWILIO_AUTH_TOKEN");
-        $twilio = new Client($sid, $token);
-        $message = $twilio->messages
-            ->create($phoneNumber,
-                [
-                    "body" => "User verification from Fan2Stage and your OTP :". $otp,
-                    "from" => "+15626007469",
-                ]
-            );
+        try {
+            $sid = getenv("TWILIO_SID");
+            $token = getenv("TWILIO_AUTH_TOKEN");
+            $twilio = new Client($sid, $token);
+            $message = $twilio->messages
+                ->create($phoneNumber,
+                    [
+                        "body" => "User verification from Fan2Stage and your OTP :". $otp,
+                        "from" => "+15626007469",
+                    ]
+                );
+        } catch (\Twilio\Exceptions\TwilioException $e) {
+            return response()->json([
+                'status' => 400,
+                'flag' => 3,
+                'message' => $e->getMessage(),
+            ], 400);
+        } catch (\Exception $e) {
+            return $this->sendError('Error: ' . $e->getMessage());
+        }
 
         // Mail::to($email)->send(new RegisteredUser($data));
 
