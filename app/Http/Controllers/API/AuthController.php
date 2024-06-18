@@ -26,7 +26,7 @@ use Twilio\Rest\Client;
 class AuthController extends BaseController
 {
   
-    public function sms()
+ public function sms()
     {
         try {
             $sid = getenv("TWILIO_SID");
@@ -34,7 +34,7 @@ class AuthController extends BaseController
             $twilio = new Client($sid, $token);
 
             $message = $twilio->messages
-                ->create("+916383931546",
+                ->create("+019840714220",
                     [
                         "body" => "This will be the body of the new message!",
                         "from" => "+15626007469",

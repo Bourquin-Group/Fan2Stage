@@ -51,6 +51,16 @@
                 
               </li>
 
+               <li class="sidebar-item {{ (request()->is('admin/adminedit*') || request()->is('admin/admin*')) ? 'selected' : '' }}">
+                <a
+                  class="sidebar-link waves-effect waves-dark"
+                  href="/admin/admin"
+                  aria-expanded="false"
+                  ><i class="fas fa-columns"></i
+                  ><span class="hide-menu">Admin Management</span></a
+                >
+                
+              </li>
                <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark"

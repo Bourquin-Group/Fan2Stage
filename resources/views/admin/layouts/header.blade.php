@@ -242,16 +242,21 @@
             
             <span class="dropdown">
               <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                @if (auth()->user()->image)
+                     <img src="{{ asset('assets/images/admin/thumbnail/' . auth()->user()->image) }}"
+                     alt="user" class="rounded-circle"  width="31">
+                @else
                 <img
-                  src="{{ asset('assets/admin/images/users/1.jpg') }}" alt="user" class="rounded-circle"  width="31"/>
+                src="{{ asset('assets/admin/images/users/1.jpg') }}" alt="user" class="rounded-circle"  width="31"/>
+                @endif
               </a>
               <label>
                 <input type="checkbox">
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{{ url('admin/profileedit/1') }}"
+                  <a class="dropdown-item" href="{{ url('admin/profileedit').'/'.auth()->user()->id }}"
                     ><i class="mdi mdi-account me-1 ms-1"></i> My Profile</a
                   > 
-                  <a class="dropdown-item" href="{{ url('admin/passwordedit/1') }}"
+                  <a class="dropdown-item" href="{{ url('admin/passwordedit').'/'.auth()->user()->id }}"
                     ><i class="mdi mdi-wallet me-1 ms-1"></i>Change Password</a
                   >
                  <!--  <a class="dropdown-item" href="javascript:void(0)"

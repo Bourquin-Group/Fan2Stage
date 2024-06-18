@@ -110,8 +110,9 @@ class ProfileManageController extends Controller
 
          $request->session()->flash('success', 'Password changed');
         // route('logout')
-         Auth::logout();
-   return redirect('/admin/dashboard')->with('Success','Password Updated Sucessfully');
+        //  Auth::logout();
+//    return redirect('/admin/dashboard')->with('Success','Password Updated Sucessfully');
+   return redirect('/admin/login');
 
 } else {
     $request->session()->flash('error', 'Password does not match');
