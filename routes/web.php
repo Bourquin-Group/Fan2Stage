@@ -94,6 +94,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
         Route::get('deleteintroductory/{id}', [App\Http\Controllers\Admin\IntroductoryController::class, 'deleteintroductory']);
          //Introductory Management
 
+          //Admin Management
+        Route::get('admin', [App\Http\Controllers\Admin\AdminController::class, 'admin'])->name('admin');
+        Route::get('admin/add', [App\Http\Controllers\Admin\AdminController::class, 'admincreation'])->name('admin.add');
+        Route::post('adminstore', [App\Http\Controllers\Admin\AdminController::class, 'adminstore'])->name('adminstore');
+        Route::get('adminedit/{id}', [App\Http\Controllers\Admin\AdminController::class, 'editadmin'])->name('edit.admin');
+        Route::post('updateadmin/{id}', [App\Http\Controllers\Admin\AdminController::class, 'updateadmin'])->name('update.admin');
+        Route::get('deleteadmin/{id}', [App\Http\Controllers\Admin\AdminController::class, 'deleteadmin']);
+         //Admin Management
+
+
          //Audio Management
         Route::get('audio', [App\Http\Controllers\Admin\AudioController::class, 'audio'])->name('audio');
         Route::get('audio/add', [App\Http\Controllers\Admin\AudioController::class, 'audiocreation'])->name('audio.add');
