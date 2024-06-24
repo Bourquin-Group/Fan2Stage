@@ -170,6 +170,7 @@ class SubscriptionPlanController extends Controller
             'success' => true,
             'data'    => $data,
             'expiredstatus'=> $expired_status,
+            'billinginfo'=> (Auth::user()->billinginfo == 1) ? 1 : 0,
             'subscriptionplanid'=> Auth::user()->subscription_plan_id
         ];
         return response()->json($response, 200);
