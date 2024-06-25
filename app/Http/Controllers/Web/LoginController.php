@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\unverified_user;
 use App\Models\timezone_change;
 use App\Models\timezone_notify;
 use Auth;
@@ -103,11 +104,10 @@ class LoginController extends Controller
       $request->user_type ="artists";
     $register = app('App\Http\Controllers\API\AuthController')->register($request);
         $register_dataArray = json_decode ($register->content(), true);
-        //dd($register_dataArray);
+
         if(isset($register_dataArray['flag']) == 3 ){
           return redirect('/web/register')->with('Error', $register_dataArray['message']);
         }
-
         //dd(old());
         if(isset($register_dataArray['errors'])){
         $errors1= $register_dataArray['errors'];
@@ -119,24 +119,14 @@ class LoginController extends Controller
         return redirect('/web/otp/'.$uuid.'/'.$type);
        }else{
         $login = [];
-       //return redirect('/web/register')->with('Error', 'Unauthorized.');
-       // return back()->with(['errors1' => $errors1]);
-        // redirect()->back()->withInput(Input::all()->withMessage('some validation error message'));
-        //return redirect()->back()->withInput(Input::all());
         return Redirect::back()->withInput();
-    //     return back()
-    // ->withInput()
-    // ->withErrors(['name.required', 'Name is required']);
-        //return view('artistweb.register',compact('errors1'));
        }
      }
 
      public function otp(Request $request){
       $type = $request->type;
-      //dd( $request);
-    //$resend = "The OTP has been sent for your mail";
-      $user  = User::where('uuid',$request->uuid)->first();
-      //dd($user);
+      $user  = unverified_user::where('uuid',$request->uuid)->first();
+      // $user  = User::where('uuid',$request->uuid)->first();
         return view('artistweb.otpverification',compact('user','type'));
     }
 
@@ -163,7 +153,7 @@ class LoginController extends Controller
         // $otp = $otp_dataArray['data'];
        if(isset($otp_dataArray['success']) == 'true'){
         if($otp_dataArray['success'] == true){
-          $user = User::where('uuid',$uuid)->first();
+          $user = User::where('email',$request->email)->first();
           $data = array(
             'name' => $user->name,
         );
