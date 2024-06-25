@@ -48,7 +48,7 @@
                               @endif
                               <div class="num-drp">
                                   <p><select name="country_code" id="country_code">
-                                  <option value="+01" @if (old('country_code') == "+01") {{ 'selected' }} @endif>+01</option>
+                                  <option value="+1" @if (old('country_code') == "+1") {{ 'selected' }} @endif>+1</option>
                                   <option value="+07" @if (old('country_code') == "+07") {{ 'selected' }} @endif>+07</option>
                                   <option value="+61" @if (old('country_code') == "+61") {{ 'selected' }} @endif>+61</option>
                                   <option value="+91" @if (old('country_code') == "+91") {{ 'selected' }} @endif>+91</option>
