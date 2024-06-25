@@ -56,7 +56,7 @@
                           type="text"
                           class="form-control @error('name') is-invalid @enderror"
                           id="fname"
-                          placeholder="Enter Your Name"
+                          placeholder="Enter Your Name" readonly
                         />
                         @error('name')
                           <span class="invalid-feedback">{{$message }}</span>
@@ -127,7 +127,7 @@
                           type="text"
                           class="form-control @error('email') is-invalid @enderror"
                           id="email1"
-                          placeholder="Enter Your Email"
+                          placeholder="Enter Your Email" readonly
                         />
                          @error('email')
                           <span class="invalid-feedback">{{$message }}</span>
