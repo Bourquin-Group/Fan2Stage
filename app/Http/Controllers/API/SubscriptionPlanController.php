@@ -148,7 +148,7 @@ class SubscriptionPlanController extends Controller
                 $data['subscriptionplan1'][$i]['push_notification'] = $value->push_notification;
                 $data['subscriptionplan1'][$i]['favorite_link'] = $value->favorite_link;
                 $data['subscriptionplan1'][$i]['cost'] = $value->cost;
-                $data['subscriptionplan1'][$i]['cost_value'] = $value->cost_value;
+                $data['subscriptionplan1'][$i]['cost_value'] = ($value->cost_value == null) ? '0' : $value->cost_value;
                 $data['subscriptionplan1'][$i]['anual_plan'] = $value->anual_plan;
                 $data['subscriptionplan1'][$i]['hardware_required'] = $value->hardware_required;
                 $data['subscriptionplan1'][$i]['status'] = $value->status;
@@ -164,7 +164,6 @@ class SubscriptionPlanController extends Controller
                     $expired_status =1;
                 }
         }
-            
         $response = [
             'status' => 200,
             'success' => true,

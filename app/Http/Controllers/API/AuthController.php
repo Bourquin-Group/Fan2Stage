@@ -986,6 +986,10 @@ class AuthController extends BaseController
             $user->country = $request['country'];
             $user->postalcode = $request['postalcode'];
             $user->save();
+            $users = User::where('id', auth()->user()->id)->first();
+            $users->billinginfo = 1;
+            $users->save();
+
             return response()->json([
                 'status' => 200,
                 'success' => true,
@@ -1001,6 +1005,9 @@ class AuthController extends BaseController
                 'postalcode' => $request['postalcode'],
             ];
             $storebillinfo = billinginformation::create($inputs);
+            $user = User::where('id', auth()->user()->id)->first();
+            $user->billinginfo = 1;
+            $user->save();
             if ($storebillinfo) {
                 return response()->json([
                     'status' => 200,
