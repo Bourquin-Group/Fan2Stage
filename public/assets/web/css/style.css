@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* font-size css */
 
@@ -430,7 +430,7 @@ a.arrow-left:hover {left: 45px;}
     line-height: 16px;
     display: flex !important;
     align-items: center;
-    font-family: 'Mont';
+    font-family: "Urbanist";
     font-style: normal;
     font-weight: 500;
 }
@@ -1099,7 +1099,7 @@ span.pencil_icon {
 Default css start
 ================================================*/
 *{
-    font-family: 'Mont';
+    font-family: "Urbanist";
     font-style: normal;
     box-sizing: border-box;
     color: #FFFFFF;
@@ -2000,7 +2000,7 @@ input[type="date"]::after{
 .btn-align span {
     display: block;
     margin-top: 15px;
-    font-family: 'Mont';
+    font-family: "Urbanist";
     font-style: normal;
     font-weight: 600;
     line-height: 23px;
@@ -2860,7 +2860,7 @@ homepage popup css end
 
 .drop-zone button {
     background: #081A34;
-    font-family: 'Mont';
+    font-family: "Urbanist";
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -3487,7 +3487,7 @@ span.img_adding:after {
 /* 11-04-2023 */
 .prompt-button label {
     background: #081A34;
-    font-family: 'Mont';
+    font-family: "Urbanist";
     font-style: normal;
     font-weight: 600;
     font-size: 16px;

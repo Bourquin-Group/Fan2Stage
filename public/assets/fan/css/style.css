@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* font-size css */
 
@@ -430,7 +430,7 @@ a.arrow-left:hover {left: 45px;}
     line-height: 16px;
     display: flex;
     align-items: center;
-    font-family: 'Mont';
+    font-family: "Urbanist";
     font-style: normal;
     font-weight: 500;
 }
@@ -1337,7 +1337,7 @@ ul.nav_list li a {
 Default css start
 ================================================*/
 *{
-    font-family: 'Mont';
+    font-family: "Urbanist";
     font-style: normal;
     box-sizing: border-box;
     color: #FFFFFF;
@@ -3980,13 +3980,13 @@ ul.nav_list li.active a {
     font-weight: 400;
 font-size: 16px;
 color: #fff;
-font-family: 'Mont';
+font-family: "Urbanist";
 border-radius: 50px !important;
 }
 .date.seach_field input::placeholder{
     color:#A6C2E9 ;
     font-weight: 400;
-    font-family: 'Mont';
+    font-family: "Urbanist";
 }
 .seach_field label {
     position: absolute;
@@ -4010,7 +4010,7 @@ border-radius: 50px !important;
 }
 .edit-input-filed .profile-calender input::placeholder {
     font-weight: 300;
-    font-family: 'Mont';
+    font-family: "Urbanist";
     font-size: 16px;
 }
 /* jeevitha start */
