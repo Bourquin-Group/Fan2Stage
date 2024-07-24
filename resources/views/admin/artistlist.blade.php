@@ -81,6 +81,8 @@ button.btn.btn-primary {
                           <td><?php echo $value->phone_number; ?></td>
                           <td><?php echo $value->email; ?></td>
                            <td>
+                              <a href="{{url('/admin/artistview/'.base64_encode($value->id))}}"><button type="button" class="btn btn-success btn-sm">
+                              View</button></a>
                               <a href="{{url('/admin/artistedit/'.base64_encode($value->id))}}"><button type="button" class="btn btn-info btn-sm">
                               Edit</button></a>
                               <a href="{{url('/admin/deleteartist/'.base64_encode($value->id))}}" onclick="return confirm(' you want to delete?');"><button type="button" class="btn btn-danger btn-sm text-white">Delete</button></a>

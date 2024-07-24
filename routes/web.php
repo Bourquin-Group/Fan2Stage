@@ -63,6 +63,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
         Route::get('artist/add', [App\Http\Controllers\Admin\UserManagementController::class, 'artistcreation'])->name('artist.add');
         Route::post('artiststore', [App\Http\Controllers\Admin\UserManagementController::class, 'artiststore'])->name('artiststore');
         Route::get('artistedit/{id}', [App\Http\Controllers\Admin\UserManagementController::class, 'editartist'])->name('edit.artist');
+        Route::get('artistview/{id}', [App\Http\Controllers\Admin\UserManagementController::class, 'viewartist'])->name('view.artist');
         Route::post('updateartist/{id}', [App\Http\Controllers\Admin\UserManagementController::class, 'updateartist'])->name('update.artist');
         Route::get('deleteartist/{id}', [App\Http\Controllers\Admin\UserManagementController::class, 'deleteartist']);
         // User Management

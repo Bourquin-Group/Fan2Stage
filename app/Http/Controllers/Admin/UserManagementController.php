@@ -139,6 +139,19 @@ class UserManagementController extends Controller
        
         return view('admin.artist_edit', compact('edituser'));
     }
+    public function viewartist($id)
+    {
+      
+        $id             = base64_decode($id);
+        $edituser   = User::with('artistProfile')->where('id',$id)->first();
+        
+        if(!$edituser)
+        {
+            return redirect('/admin/artist')->with('Error','Artist id is not available');
+        }
+       
+        return view('admin.artist_view', compact('edituser'));
+    }
     public function updateartist(Request $request, $id)
     {
         $details              = [
