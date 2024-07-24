@@ -12,7 +12,7 @@ class Artist_profiles extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id','stage_name','bio','genre','ratings','website_link','itunes_link','youtube_link','instagram_link','facebook_link','profile_image','landing_page_image',
+        'user_id','stage_name','bio','genre','ratings','website_link','itunes_link','youtube_link','instagram_link','facebook_link','profile_image','account_number','landing_page_image',
     ];
     public function userArtist(){
         return $this->belongsTo(User::class,'user_id');

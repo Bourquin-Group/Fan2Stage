@@ -31,6 +31,10 @@
             
             <div class="first-column">
               <div class="form-section">
+                <label for="">Account Number</label>
+                <span class="edit-text1">{{(isset($a_profile['account_number'])) ? $a_profile['account_number']: ''}}</span>
+              </div>
+              <div class="form-section">
                 <label for="">Name</label>
                 <span class="edit-text1">{{(isset($a_profile['name'])) ? $a_profile['name']: ''}}</span>
               </div>

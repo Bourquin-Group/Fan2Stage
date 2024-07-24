@@ -38,6 +38,12 @@
                     <!-- <h4 class="card-title">Edit Artist</h4> -->
                     <div class="form-group row">
                         <div class="col-md-6 row">
+                            <div class="col-md-6 fw-bold">Account Number</div>
+                            <div class="col-md-6">{{($edituser->artistProfile->account_number != "") ? $edituser->artistProfile->account_number : "-"}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6 row">
                             <div class="col-md-6 fw-bold">Name</div>
                             <div class="col-md-6">{{$edituser->name}}</div>
                         </div>

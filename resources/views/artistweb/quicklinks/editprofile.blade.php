@@ -97,8 +97,11 @@
                 <div style="color:red;margin-left:12px;">(Please update mandatory fields and profile picture to proceed further)</div>
             </div>
             {{-- @if(isset($a_profile) && $a_profile) --}}
-            
             <div class="first-column">
+                <div class="form-section">
+                <label for="">Account Number</label>
+                <input class="edit-input1" type="text" name="accountnumber" value="{{ ($a_profile['account_number'] == null) ? "-" : $a_profile['account_number']}}" readonly>
+                </div>
                 <div class="form-section">
                 <label for="">Name*</label>
                 <input class="edit-input1" type="text" name="full_name" id="" placeholder="name" value="{{ ($a_profile)? (old('full_name')? old('full_name') : $a_profile['name']) : old('full_name') }}">
@@ -144,12 +147,20 @@
                 <div class="form-section">
                 <label for="">Genre*</label>
                 <div class="genere_sec">
-                <select class="selectpicker" name="genre[]" placeholder="Select genre" multiple>
+                {{-- <select class="selectpicker" name="genre[]" placeholder="Select genre" multiple>
                     <?php 
                         $genre = explode(',',$a_profile['genre']);?>
                      @forEach($genres as $value)
                      <option value="{{$value->genre1}}" {{(in_array($value->genre1, $genre)) ? 'selected' : ''}}>{{$value->genre1}}</option>
                      @endforeach
+                  </select> --}}
+                  <select name="genre" id="genre"> {{-- class="selectpicker" name="genre[]" multiple --}}
+                    <option value="">Select Genre</option>
+                    <?php 
+                            $genre = explode(',',$a_profile['genre']);?>
+                            @forEach($genres as $value)
+                            <option value="{{$value->genre1}}" {{(in_array($value->genre1, $genre)) ? 'selected' : ''}}>{{$value->genre1}}</option>
+                            @endforeach
                   </select>
                 </div>
                 @if ($errors->has('genre'))

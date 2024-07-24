@@ -189,16 +189,24 @@ class ArtistController extends Controller
                 $fileName1 = $artist->landing_page_image;
             }
             // artist landing page images
+            if($artist->account_number == null){
+                $accountNumber = $this->generateAccountNumber($input['genre']);
+            }else{
+                $accountNumber = $artist->account_number;
+            }
+            // account 
 
             // $artist->phone_number = $input['mobile_number'];
             $artist->stage_name = $input['stagename'];
-            $artist->genre = implode(',', $input['genre']);
+            $artist->genre = $input['genre'];
+            // $artist->genre = implode(',', $input['genre']);
             $artist->d_stagename = (isset($input['dsname'])) ? $input['dsname'] : '';
             $artist->website_link = (isset($input['website_link'])) ? $input['website_link'] : '';
             $artist->itunes_link = (isset($input['itunes_link'])) ? $input['itunes_link'] : '';
             $artist->youtube_link = (isset($input['youtube_link'])) ? $input['youtube_link'] : '';
             $artist->instagram_link = (isset($input['instagram_link'])) ? $input['instagram_link'] : '';
             $artist->facebook_link = (isset($input['facebook_link'])) ? $input['facebook_link'] : '';
+            $artist->account_number = $accountNumber;
             $artist->bio = $input['bio'];
             $artist->profile_image = $fileName;
             $artist->landing_page_image = $fileName1;
@@ -247,6 +255,43 @@ class ArtistController extends Controller
         }
 
     }
+// account Number
+private function generateAccountNumber($genre)
+    {
+        // Get the last registered user's account number for the given genre
+        $lastUser = Artist_profiles::where('genre', $genre)->orderBy('id', 'desc')->first();
+        $genres = strtoupper(substr($genre, 0, 1));
+
+        if ($lastUser && $lastUser->account_number != null) {
+            $lastAccountNumber = $lastUser->account_number;
+            
+            // Extract numeric and alphanumeric parts
+            $numericPart = intval(substr($lastAccountNumber, 1, 6));
+            $alphaNumericPart = substr($lastAccountNumber, 7, 1);
+            
+            // Increment the numeric part and update the alphanumeric part if necessary
+            if ($numericPart % 999999 == 0) {
+                $numericPart = 100000; // Reset numeric part to 100000 for next alpha
+                $alphaNumericPart++;
+            } else {
+                $numericPart++;
+            }
+
+            // Format numeric part to 6 digits
+            $numericPartFormatted = str_pad($numericPart, 6, '0', STR_PAD_LEFT);
+
+            // Generate the new account number
+            $newAccountNumber = $genres . $numericPartFormatted . $alphaNumericPart;
+        } else {
+            // If no previous users found, start with the initial account number
+            $newAccountNumber = $genres . '100001A';
+        }
+
+        return $newAccountNumber;
+    }
+// account Number
+
+
     public function timezone_no(Request $request)
     {
         $timezone_date = timezone_change::where('user_id', Auth::user()->id)->first();
@@ -326,6 +371,7 @@ class ArtistController extends Controller
         if ($artistDetail) {
             $aProfile['stage_name'] = $artistDetail['stage_name'];
             $aProfile['genre'] = $artistDetail['genre'];
+            $aProfile['account_number'] = $artistDetail['account_number'];
             $aProfile['d_stagename'] = $artistDetail['d_stagename'];
             $aProfile['website_link'] = $artistDetail['website_link'];
             $aProfile['youtube_link'] = $artistDetail['youtube_link'];
