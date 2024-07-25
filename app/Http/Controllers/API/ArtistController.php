@@ -284,7 +284,7 @@ private function generateAccountNumber($genre)
             $newAccountNumber = $genres . $numericPartFormatted . $alphaNumericPart;
         } else {
             // If no previous users found, start with the initial account number
-            $newAccountNumber = $genres . '100001A';
+            $newAccountNumber = 'F2S'.$genres . '100001A';
         }
 
         return $newAccountNumber;
