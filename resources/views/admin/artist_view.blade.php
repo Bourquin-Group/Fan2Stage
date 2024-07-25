@@ -59,7 +59,7 @@
                         </div>
                         <div class="col-md-6 row">
                             <div class="col-md-6 fw-bold">Genre</div>
-                            <div class="col-md-6">{{($edituser->genre != "") ? $edituser->genre : "-"}}</div>
+                            <div class="col-md-6">{{($edituser->artistProfile->genre != "") ? $edituser->artistProfile->genre : "-"}}</div>
                         </div>
                     </div>
                     <div class="form-group row">
