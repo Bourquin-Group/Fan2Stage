@@ -125,8 +125,11 @@ class LoginController extends Controller
 
      public function otp(Request $request){
       $type = $request->type;
-      $user  = unverified_user::where('uuid',$request->uuid)->first();
-      // $user  = User::where('uuid',$request->uuid)->first();
+      if($type == 'forgot'){
+        $user  = User::where('uuid',$request->uuid)->first();
+      }else{
+        $user  = unverified_user::where('uuid',$request->uuid)->first();
+      }
         return view('artistweb.otpverification',compact('user','type'));
     }
 
@@ -136,7 +139,8 @@ class LoginController extends Controller
         $type =  $request->type;
         $uuid = $request->uuid;
         //dd($uuid);
-    $otp = app('App\Http\Controllers\API\AuthController')->verifyOtp($request);
+       
+          $otp = app('App\Http\Controllers\API\AuthController')->verifyOtp($request);
         $otp_dataArray = json_decode ($otp->content(), true);
         // dd($otp_dataArray);
         //dd($otp_dataArray['data']);

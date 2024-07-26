@@ -625,6 +625,7 @@ private function generateAccountNumber($genre)
             $aProfile['name'] = $artistDetail['userArtist']['name'];
             $aProfile['email'] = $artistDetail['userArtist']['email'];
             $aProfile['phone'] = $artistDetail['userArtist']['phone_number'];
+            $aProfile['countrycode'] = $artistDetail['userArtist']['country_code'];
             $aProfile['timezone'] = (int) $artistDetail['userArtist']['timezone'];
             $followers = Favourite::where('artist_id', $artistDetail['userArtist']['id'])->pluck('id')->toArray();
             $aProfile['followers'] = count($followers);
@@ -651,6 +652,7 @@ private function generateAccountNumber($genre)
             'full_name' => ['required', 'string', 'regex:/^[a-zA-Z]+(?:\s+[a-zA-Z]+)*$/'],
             'email' => ['required', 'regex:/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'],
             'stagename' => 'required',
+            'country_code' => ['required', 'regex:/^\+\d{1,2}$/'],
             'mobile_number' => ['required'],
             // 'mobile_number' => ['required','numeric','digits:10'],
             'genre' => 'required',
@@ -755,6 +757,7 @@ private function generateAccountNumber($genre)
             if ($user) {
                 $user->name = $input['full_name'];
                 $user->phone_number = $input['mobile_number'];
+                $user->country_code = $input['country_code'];
                 $user->email = $input['email'];
                 $user->timezone = $input['timezone'];
                 $user->verified_profile = 1;

@@ -111,6 +111,7 @@ $(document).ready(function(){
 $(document).ready(function(){  
 $(".resend").click(function(){ 
 var email =  $(this).attr("value");
+var type =  $("#type").attr("value");
 //var email = $('#resend').val(); 
 //alert(email);
 jQuery.ajax({  
@@ -120,7 +121,7 @@ headers: {
     },
     //data: email, 
     data:{
-    email:email,
+    email:email,type:type,
 }, 
 type: 'POST',  
 success: function(data) {  

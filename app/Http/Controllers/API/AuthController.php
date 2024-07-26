@@ -366,7 +366,11 @@ class AuthController extends BaseController
         // $mailtemplate = new Forgotmail;
         $otp = rand(1000, 9999);
         // Log::info("password_otp = ".$otp);
-        $user = unverified_user::where('email', $request->email)->first();
+        if($request->type == 'forgot'){
+        $user = User::where('email', $request->email)->first();
+         }else{
+            $user = unverified_user::where('email', $request->email)->first();
+        }
         if ($user) {
             $data = array('name' => $user->name, 'link' => 'changepassword', 'mail' => $mail, 'otp' => $otp);
             $now = time();
@@ -374,29 +378,39 @@ class AuthController extends BaseController
             $startDate = date('Y-m-d H:i:s', $now);
             $expiretime = date('Y-m-d H:i:s', $ten_minutes);
             // store otp
-            $user1 = unverified_user::where('email', '=', $request->email)->update(['password_otp' => $otp, 'otp_expire_time' => $expiretime]);
+            if($request->type == 'forgot'){
+            $user1 = User::where('email', '=', $request->email)->update(['password_otp' => $otp, 'otp_expire_time' => $expiretime]);
+            }else{
+                $user1 = unverified_user::where('email', '=', $request->email)->update(['password_otp' => $otp, 'otp_expire_time' => $expiretime]);
+            }
             if ($user1) {
-                // Mail::send('mail.resendmail', $data, function ($message) use ($mail) {
-                //     $message->to($mail);
-                //     $message->subject('Fan2Stage OTP Verification');
-                // });
-                $sid = getenv("TWILIO_SID");
-                $token = getenv("TWILIO_AUTH_TOKEN");
-                $twilio = new Client($sid, $token);
+                if($request->type == 'forgot'){
+                    Mail::send('mail.resendmail', $data, function ($message) use ($mail) {
+                        $message->to($mail);
+                        $message->subject('Fan2Stage OTP Verification');
+                    });
+                    $smessage = "Otp sent to your Email.";
+                }else{
 
-                $message = $twilio->messages
-                    ->create($user->phone_number,
-                        [
-                            "body" => "Fan2Stage OTP Verification:" . $otp,
-                            "from" => "+15626007469",
-                        ]
-                    );
+                    $sid = getenv("TWILIO_SID");
+                    $token = getenv("TWILIO_AUTH_TOKEN");
+                    $twilio = new Client($sid, $token);
+    
+                    $message = $twilio->messages
+                        ->create($user->phone_number,
+                            [
+                                "body" => "Fan2Stage OTP Verification:" . $otp,
+                                "from" => "+15626007469",
+                            ]
+                        );
+                        $smessage = "Otp sent to your Mobile number.";
+                }
 
                 $success['status'] = 200;
                 $success['success'] = true;
                 $success['uuid'] = $user->uuid;
                 $success['email'] = $user->email;
-                return $this->sendResponse($success, 'Otp sent to your Mobile number.');
+                return $this->sendResponse($success, $smessage);
             } else {
                 return response()->json([
                     'status' => 406,
@@ -429,7 +443,13 @@ class AuthController extends BaseController
         // $mailtemplate = new Forgotmail;
         $otp = rand(1000, 9999);
         // Log::info("password_otp = ".$otp);
-        $user = User::where('email', $request->email)->first();
+        // $users = unverified_user::where('email', $request->email)->first();
+        // if(!$users){
+            $user = User::where('email', $request->email)->first();
+        // }else{
+        //     $user = $users;
+        // }
+       
         if ($user) {
             $data = array('name' => $user->name, 'link' => 'changepassword', 'mail' => $mail, 'otp' => $otp);
             $now = time();
@@ -437,29 +457,40 @@ class AuthController extends BaseController
             $startDate = date('Y-m-d H:i:s', $now);
             $expiretime = date('Y-m-d H:i:s', $ten_minutes);
             // store otp
-            $user1 = User::where('email', '=', $request->email)->update(['password_otp' => $otp, 'otp_expire_time' => $expiretime]);
+                $user1 = User::where('email', '=', $request->email)->update(['password_otp' => $otp, 'otp_expire_time' => $expiretime]);
+            
+           
             if ($user1) {
-                // Mail::send('mail.forgotmail', $data, function ($message) use ($mail) {
-                //     $message->to($mail);
-                //     $message->subject('Fan2Stage OTP Verification');
-                // });
-                $sid = getenv("TWILIO_SID");
-                $token = getenv("TWILIO_AUTH_TOKEN");
-                $twilio = new Client($sid, $token);
-
-                $message = $twilio->messages
-                    ->create($user->phone_number,
-                        [
-                            "body" => "Fan2Stage OTP Verification",
-                            "from" => "+15626007469",
-                        ]
-                    );
+                Mail::send('mail.forgotmail', $data, function ($message) use ($mail) {
+                    $message->to($mail);
+                    $message->subject('Fan2Stage OTP Verification');
+                });
+                    // try {
+                    //     $sid = getenv("TWILIO_SID");
+                    //     $token = getenv("TWILIO_AUTH_TOKEN");
+                    //     $twilio = new Client($sid, $token);
+                    //     $message = $twilio->messages
+                    //         ->create($user->phone_number,
+                    //             [
+                    //                 "body" => "Fan2Stage OTP Verification",
+                    //                 "from" => "+15626007469",
+                    //             ]
+                    //         );
+                    // } catch (\Twilio\Exceptions\TwilioException $e) {
+                    //     return response()->json([
+                    //         'status' => 401,
+                    //         'message' => $e->getMessage(),
+                    //     ], 401);
+                    // } catch (\Exception $e) {
+                    //     return $this->sendError('Error: ' . $e->getMessage());
+                    // }
+        
 
                 $success['status'] = 200;
                 $success['success'] = true;
                 $success['uuid'] = $user->uuid;
                 $success['email'] = $user->email;
-                return $this->sendResponse($success, 'Otp sent to your mobile number.');
+                return $this->sendResponse($success, 'Otp sent to your email.');
             } else {
                 return response(["status" => 401, 'message' => 'Invalid']);
             }
@@ -471,14 +502,26 @@ class AuthController extends BaseController
     public function verifyOtp(Request $request)
     {
 
-        $user = unverified_user::where('email', $request->email)->first();
+        if($request->type == 'forgot'){
+            $user = User::where('email', $request->email)->first();
+            }else{
+            $user = unverified_user::where('email', $request->email)->first();
+        }
         $now = time();
         $startDate = date('Y-m-d H:i:s', $now);
         if ($startDate <= $user->otp_expire_time) {
-            $user = unverified_user::where([['email', '=', $user->email], ['password_otp', '=', $request->otp]])->first();
+            if($request->type == 'forgot'){
+                $user = User::where([['email', '=', $user->email], ['password_otp', '=', $request->otp]])->first();
+                }else{
+                $user = unverified_user::where([['email', '=', $user->email], ['password_otp', '=', $request->otp]])->first();
+            }
 
             if ($user) {
-                $input['name'] = $user->name;
+                if($request->type == 'forgot'){
+                    $user->password_otp = null;
+                    $user->save();
+                }else{
+                    $input['name'] = $user->name;
                 $input['email'] = $user->email;
                 $input['country_code'] = $user->country_code;
                 $input['phone_number'] = $user->phone_number;
@@ -494,6 +537,8 @@ class AuthController extends BaseController
                     'user_id' => $users->id,
                 ];
                 $Artist = Artist_profiles::create($inputs);
+
+                }
                 $success['status'] = 200;
                 $success['mail'] = $user->email;
                 $success['flag'] = true;

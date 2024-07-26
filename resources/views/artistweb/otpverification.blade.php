@@ -30,7 +30,7 @@
                               <input type="number" name="otp[]" id="" class="font-24" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" disabled>
                               <input type="number" name="otp[]" id="" class="font-24" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" disabled>
                              <input type="hidden" value="{{$user->email}}" name="email">
-                             <input type="hidden" value="{{$type}}" name="type">
+                             <input type="hidden" id="type" value="{{$type}}" name="type">
                              <input type="hidden" value="{{$user->uuid}}" name="uuid">
                              <!--  <input type="number" name="" id="" class="font-24"  disabled>
                               <input type="number" name="" id="" class="font-24"  disabled> -->
