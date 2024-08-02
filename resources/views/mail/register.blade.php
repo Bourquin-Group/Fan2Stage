@@ -36,7 +36,7 @@
                                 <td style="color:#424242;font-size: 18px;font-family:'Calibri';">
                                    <span style="padding-left: 47px;">
                                        
-                                    Congratulations you have been successfully register with Fan2Stage.
+                                    Congratulations you have been successfully registered with Fan2Stage.
 
                                          
                                    </span>

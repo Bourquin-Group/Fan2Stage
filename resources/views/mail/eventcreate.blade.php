@@ -35,7 +35,7 @@
                             <tr>
                                 <td style="color:#424242;font-size: 18px;font-family:'Calibri';">
                                    <span style="padding-left: 47px;">
-                                    New!! show is waiting for you friends on below schedule.
+                                    Thank You!.  Your next show is now set up for your fans to watch.  We'll notify them if they let us, so make sure to remind them to download the Live Fan app from the app store and allow notifications so they never miss your show.
                                    </span>
                                 </td>
                             </tr>
