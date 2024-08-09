@@ -237,6 +237,12 @@ class EventController extends Controller
                     $badUrl = $request['link_to_event_stream'];
                     $contains1 = str_replace('youtu.be', 'www.youtube.com/embed', $badUrl . '?enablejsapi=1');
                 }
+                $contains6 = Str::contains($myString, 'live');
+                if ($contains6) {
+                    $badUrl = $request['link_to_event_stream'];
+                    $contains1 = str_replace('live', 'embed', $badUrl . '?enablejsapi=1');
+                }
+
                 // dd($contains1);
 //                 $contains4 = Str::contains($myString, '?si=');
 //                 // https://youtu.be/EQ783EHQkng?si=jTV8piWnHfWTQMRL
