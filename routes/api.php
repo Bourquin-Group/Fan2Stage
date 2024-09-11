@@ -287,3 +287,5 @@ Route::group(['prefix' => 'artist'], function () {
     //CMS
 
 });
+
+Route::get('check', 'App\Http\Controllers\Fan\EventbookingController@stripeTransfer')->name('check');

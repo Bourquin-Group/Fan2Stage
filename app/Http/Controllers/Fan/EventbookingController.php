@@ -437,4 +437,134 @@ class EventbookingController extends Controller
             }
         }
     }
+
+    public function stripeTransfer(Request $request){
+
+        $stripe = new Stripe\StripeClient(env('STRIPE_SECRET'));
+
+
+        //Create connecetd account
+        
+        $accountCreate = $stripe->accounts->create([
+            'country' => 'US',
+            'email' => 'testconnectuser1@yopmail.com',
+            'controller' => [
+            'fees' => ['payer' => 'application'],
+            'losses' => ['payments' => 'application'],
+            'stripe_dashboard' => ['type' => 'express'],
+            ],
+        ]);
+        dd($accountCreate);
+
+
+        //Transfer the amount
+        /*
+        $transfer = $stripe->transfers->create([
+            'amount' => 7000,
+            'currency' => 'usd',
+            'destination' => 'acct_1PskoQQDR5dY1SOO',
+        ]);
+        */
+
+       /*
+        $token = $stripe->tokens->create([
+            'account' => [
+              'individual' => [
+                'first_name' => 'test',
+                'last_name' => 'user',
+              ],
+              'tos_shown_and_accepted' => true,
+            ],
+        ]);
+        */
+
+        //Create an token
+        /*
+        $token = $stripe->tokens->create([
+            'bank_account' => [
+              'country' => 'US',
+              'currency' => 'usd',
+              'account_holder_name' => 'Jenny Rosen',
+              'account_holder_type' => 'individual',
+              'routing_number' => '110000000',
+              'account_number' => '000123456789',
+            ],
+          ]);
+          */
+
+       // added the connected bank account details
+          /*
+        $connectedAccountId = 'acct_connected_account_id'; 
+        $bankAccount = $stripe->accounts->createExternalAccount(
+            $connectedAccountId,
+            ['external_account' => $token->id]
+        );
+        dd($token);
+        */
+
+
+        // Create Account Session
+        // $stripe->accountSessions->create([
+        //     'account' => '{{CONNECTED_ACCOUNT_ID}}',
+        //     'components' => ['account_onboarding' => 
+        //                         [
+        //                             'enabled' => true,
+        //                             'features' => ['external_account_collection' => true],
+        //                         ],
+        //     ],
+        // ]);
+
+        //Token create
+        //     $token = $stripe->token::create([
+        //             'bank_account' => [
+        //                 'country' => 'US',
+        //                 'currency' => 'usd',
+        //                 'account_holder_name' => 'Jane Doe',
+        //                 'account_holder_type' => 'individual',
+        //                 'routing_number' => '110000000',
+        //                 'account_number' => '000123456789',
+        //             ],
+        //         ]);
+
+        //    $d = $stripe->transfers->create
+        //     ([
+        //       'amount
+        //     ' => 7000,
+        //       'currency
+        //     ' => 'usd',
+        //       'destination
+        //     ' => 'acct_1PskoQQDR5dY1SOO'
+        //     ,
+        //       'transfer_group
+        //     ' => 'ORDER100',
+        //     ]);
+
+        //     dd($d);
+
+
+
+        //create an account
+        //         $account = $stripe->accounts->create([
+        //             'country' => 'US',
+        //             'email' => 'syedbasheer@colanonline.com',
+        //             'controller' => [
+        //             'fees' => ['payer' => 'application'],
+        //             'losses' => ['payments' => 'application'],
+        //             'stripe_dashboard' => ['type' => 'express'],
+        //             ],
+        //         ]);dd($account);
+
+        //   $token = $stripe->tokens->create([
+        //     'bank_account' => [
+        //         'country' => 'US',
+        //         'currency' => 'usd',
+        //         'account_holder_name' => 'Jane Doe',
+        //         'account_holder_type' => 'individual',
+        //         'routing_number' => '110000000',
+        //         'account_number' => '000123456789',
+        //     ],
+        // ]);
+        // dd($token);
+    
+    }
 }
