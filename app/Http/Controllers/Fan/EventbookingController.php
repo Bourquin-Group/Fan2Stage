@@ -453,6 +453,20 @@ class EventbookingController extends Controller
             'losses' => ['payments' => 'application'],
             'stripe_dashboard' => ['type' => 'express'],
             ],
+            'capabilities' => [
+                'transfers' => ['requested' => true],
+            ],
+            'tos_acceptance' => [
+                'date' => 1726333180176, // TODO: Replace with the date of the acceptance of the ToS
+                'ip' => '8.8.8.8' // TODO: Replace with the user's IP address
+            ],
+            'external_account' => [
+                'object' => 'bank_account',
+                'country' => 'US', // TODO: Replace with collected bank account details
+                'currency' => 'usd', // TODO: Replace with collected bank account details
+                'routing_number' => '110000000', // TODO: Replace with collected bank account details
+                'account_number' => '000999999991', // TODO: Replace with collected bank account details
+            ],
         ]);
         dd($accountCreate);
 
