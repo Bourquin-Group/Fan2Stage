@@ -502,43 +502,35 @@ class AuthController extends BaseController
     public function verifyOtp(Request $request)
     {
 
-        if($request->type == 'forgot'){
-            $user = User::where('email', $request->email)->first();
-            }else{
-            $user = unverified_user::where('email', $request->email)->first();
-        }
+        $user = User::where('email', $request->email)->first();
         $now = time();
         $startDate = date('Y-m-d H:i:s', $now);
         if ($startDate <= $user->otp_expire_time) {
-            if($request->type == 'forgot'){
-                $user = User::where([['email', '=', $user->email], ['password_otp', '=', $request->otp]])->first();
-                }else{
-                $user = unverified_user::where([['email', '=', $user->email], ['password_otp', '=', $request->otp]])->first();
-            }
+            $user = User::where([['email', '=', $user->email], ['password_otp', '=', $request->otp]])->first();
 
             if ($user) {
-                if($request->type == 'forgot'){
+                // if($request->type == 'forgot'){
                     $user->password_otp = null;
                     $user->save();
-                }else{
-                    $input['name'] = $user->name;
-                $input['email'] = $user->email;
-                $input['country_code'] = $user->country_code;
-                $input['phone_number'] = $user->phone_number;
-                $input['timezone'] = 1;
-                $input['user_type'] = $user->user_type;
-                $input['status'] = $user->status;
-                $input['password_otp'] = null;
-                $input['password'] = $user->password;
-                $input['uuid'] = $user->uuid;
-                $users = User::create($input);
+                // }else{
+                //     $input['name'] = $user->name;
+                // $input['email'] = $user->email;
+                // $input['country_code'] = $user->country_code;
+                // $input['phone_number'] = $user->phone_number;
+                // $input['timezone'] = 1;
+                // $input['user_type'] = $user->user_type;
+                // $input['status'] = $user->status;
+                // $input['password_otp'] = null;
+                // $input['password'] = $user->password;
+                // $input['uuid'] = $user->uuid;
+                // $users = User::create($input);
 
-                $inputs = [
-                    'user_id' => $users->id,
-                ];
+                // $inputs = [
+                //     'user_id' => $users->id,
+                // ];
                 $Artist = Artist_profiles::create($inputs);
 
-                }
+                // }
                 $success['status'] = 200;
                 $success['mail'] = $user->email;
                 $success['flag'] = true;
