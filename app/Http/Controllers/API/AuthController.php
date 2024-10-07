@@ -528,7 +528,7 @@ class AuthController extends BaseController
                 // $inputs = [
                 //     'user_id' => $users->id,
                 // ];
-                $Artist = Artist_profiles::create($inputs);
+                // $Artist = Artist_profiles::create($inputs);
 
                 // }
                 $success['status'] = 200;
