@@ -198,14 +198,9 @@ class EventController extends Controller
                 $contains2 = Str::contains($myString, 'www.twitch.tv');
                 if ($contains2) {
                     $url = $request['link_to_event_stream'];
-                    // Parse the URL
                     $urlParts = parse_url($url);
-
                     if (isset($urlParts['path'])) {
-                        // Remove leading slash if present
                         $path = ltrim($urlParts['path'], '/');
-
-                        // Split the path by '/' and get the username (which is the last part)
                         $pathParts = explode('/', $path);
                         $username = end($pathParts);
                         if ($username == '' || $username == null) {
@@ -218,67 +213,41 @@ class EventController extends Controller
                         } else {
                             $contains1 = "https://player.twitch.tv/?channel=" . $username . "&parent=onstage.f2s.live";
                         }
-
-                    } else {
+                    }else {
                         $contains1 = $request['link_to_event_stream'] . '?enablejsapi=1';
                     }
-                } else {
+                }else {
                     $contains1 = $request['link_to_event_stream'] . '?enablejsapi=1';
                 }
 
-                // youtube
-                $contains3 = Str::contains($myString, 'watch?v=');
-                if ($contains3) {
-                    $badUrl = $request['link_to_event_stream'];
-                    $contains1 = str_replace('watch?v=', 'embed/', $badUrl . '?enablejsapi=1');
+                $containsLive = Str::contains($myString, 'youtube.com/live');
+                if ($containsLive) {
+                    $contains1 = str_replace('/live/', '/embed/', $myString);
+                } else {
+                    $contains3 = Str::contains($myString, 'watch?v=');
+                    if ($contains3) {
+                        $badUrl = $request['link_to_event_stream'];
+                        $contains1 = str_replace('watch?v=', 'embed/', $badUrl . '?enablejsapi=1');
+                    }
+                    $contains5 = Str::contains($myString, 'youtu.be');
+                    if ($contains5) {
+                        $badUrl = $request['link_to_event_stream'];
+                        $contains1 = str_replace('youtu.be', 'www.youtube.com/embed', $badUrl . '?enablejsapi=1');
+                    }
+                    $contains6 = Str::contains($myString, 'live');
+                    if ($contains6) {
+                        $badUrl = $request['link_to_event_stream'];
+                        $contains1 = str_replace('live', 'embed', $badUrl . '?enablejsapi=1');
+                    }
                 }
-                $contains5 = Str::contains($myString, 'youtu.be');
-                if ($contains5) {
-                    $badUrl = $request['link_to_event_stream'];
-                    $contains1 = str_replace('youtu.be', 'www.youtube.com/embed', $badUrl . '?enablejsapi=1');
-                }
-                $contains6 = Str::contains($myString, 'live');
-                if ($contains6) {
-                    $badUrl = $request['link_to_event_stream'];
-                    $contains1 = str_replace('live', 'embed', $badUrl . '?enablejsapi=1');
-                }
 
-                // dd($contains1);
-//                 $contains4 = Str::contains($myString, '?si=');
-//                 // https://youtu.be/EQ783EHQkng?si=jTV8piWnHfWTQMRL
-//                 if($contains4){
-//                     $url = $request['link_to_event_stream'];
-//                 // Parse the URL
-//                 $urlParts = parse_url($url);
-//                 if (isset($urlParts['path'])) {
-//                     // Remove leading slash if present
-//                     $path = ltrim($urlParts['path'], '/');
-
-//                     // Split the path by '/' and get the username (which is the last part)
-//                     $pathParts = explode('/', $path);
-//                     $youtubename = end($pathParts);
-//                     $contains1 = "https://www.youtube.com/embed/".$youtubename;
-//                 }
-//                 }
-
-                // youtube
-                // vimeo
-
-                // type1
-
-                // https://vimeo.com/776805071?enablejsapi=1
-                // https://player.vimeo.com/video/776805071?enablejsapi=1
-
-                // type 2
-
-                // https://vimeo.com/cooltoystv/ers-surf-4-09
-                // https://player.vimeo.com/video/cooltoystv/ers-surf-4-09
                 $contains4 = Str::contains($myString, 'vimeo.com');
                 if ($contains4) {
                     $badUrl = $request['link_to_event_stream'];
                     $contains1 = str_replace('vimeo.com', 'player.vimeo.com/video', $badUrl . '?api=1');
                 }
-                // vimeo
+
+                
                 // url twitch and youtube
                 $duration = $request['event_duration'] * 60;
                 $newTime = strtotime($request['event_time']) + $duration;
